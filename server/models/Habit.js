@@ -7,20 +7,20 @@ const HabitSchema = new mongoose.Schema({
     // habit id
     id:{
         type:String,
-        require: true,
+        required: true,
         unique:true
     },
 
     // habit name
     name:{
         type:String,
-        require: true
+        required: true
     },
 
     // event cues
     eventCues:{
         type:String,
-        require: true
+        required: true
     },
 
     // days to complete habit
@@ -32,19 +32,22 @@ const HabitSchema = new mongoose.Schema({
     // frequency of notifications
     notificationFrequency: {
         type:Number,
-        default:1
+        default:1,
+        required:true
     },
 
     // how many days in a row compelted
     consecutiveDaysCompleted:{
         type:Number,
-        default:0
+        default:0,
+        required:true
     },
 
     // how many days in a row not completed
     consecutiveDaysMissed:{
         type:Number,
-        default:0
+        default:0,
+        required:true
     },
 
     // journal notes

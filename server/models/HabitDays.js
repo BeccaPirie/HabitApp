@@ -7,12 +7,14 @@ const HabitDaysSchema = new Schema({
         type:String,
         enum: ['Monday', 'Tuesday', 'Wednesday',
         'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        required: true
     },
     
     // whether habit should be carried out
     toComplete: {
         type:Boolean,
-        default:true
+        default:true,
+        required:true
     }
 })
 
