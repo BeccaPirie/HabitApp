@@ -27,7 +27,7 @@ const HabitSchema = new mongoose.Schema({
     daystoComplete:[[HabitDays]],
 
     // completed/missed/skipped each day
-    daysCompleted:[[Calendar]],
+    calendarData:[[Calendar]],
 
     // frequency of notifications
     notificationFrequency: {
@@ -36,22 +36,22 @@ const HabitSchema = new mongoose.Schema({
         required:true
     },
 
-    // how many days in a row compelted
-    consecutiveDaysCompleted:{
+    // how many days in a row completed
+    DaysCompleted:{
         type:Number,
         default:0,
         required:true
     },
 
     // how many days in a row not completed
-    consecutiveDaysMissed:{
+    DaysMissed:{
         type:Number,
         default:0,
         required:true
     },
 
     // journal notes
-    journalNotes: {
+    journal: {
         type:String
     },
 

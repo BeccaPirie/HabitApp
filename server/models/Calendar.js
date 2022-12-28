@@ -6,11 +6,10 @@ const CalendarSchema = new mongoose.Schema({
     date: {
         type:Date,
         required:true,
-        default:Date.now()
     },
 
     // completed status
-    Status: {
+    status: {
         type:String,
         enum: ['Completed', 'Skipped', 'Missed', 'No data'],
         default: 'No data'

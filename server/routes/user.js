@@ -16,7 +16,7 @@ router.put('/:id', async(req, res) => {
             }
         })
     } catch (err) {
-        
+        res.status(500).json(err)
     }
 })
 
@@ -30,7 +30,7 @@ router.delete('/:id', async(req, res) => {
     try {
         await User.findByIdAndDelete(req.params.id)
     } catch (err) {
-        
+        res.status(500).json(err)
     }
 })
 
@@ -43,7 +43,7 @@ router.get('/:id/get-habits', async(req, res) => {
             })
         )
     } catch (err) {
-
+        res.status(500).json(err)
     }
 })
 
