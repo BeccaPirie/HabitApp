@@ -4,11 +4,11 @@ import mongoose from 'mongoose'
 
 async function main() {
     dotenv.config()
-    const port = 5000 || 8000
+    const port = process.env.PORT || 3000
 
     try {
         await mongoose.connect(process.env.DATABASE_URI,
-            { useNewUrlParser: true, useUnifiedTopology: true});
+            {useNewUrlParser: true, useUnifiedTopology: true});
         app.listen(port, ()=> {
                 console.log(`listening on port: ${port}`)
             })
