@@ -16,4 +16,4 @@ const CalendarSchema = new mongoose.Schema({
     }
 })
 
-export default mongoose.model("Calendar", CalendarSchema)
+export default CalendarSchema

@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
-import HabitDays from "./HabitDays.js"
-import Calendar from "./Calendar.js"
+import HabitDaysSchema from "./HabitDays.js"
+import CalendarSchema from "./Calendar.js"
 
 // habit details
 const HabitSchema = new mongoose.Schema({
@@ -24,10 +24,10 @@ const HabitSchema = new mongoose.Schema({
     },
 
     // days to complete habit
-    daystoComplete:[[HabitDays]],
+    daysToComplete:[[HabitDaysSchema]],
 
     // completed/missed/skipped each day
-    calendarData:[[Calendar]],
+    calendarData:[[CalendarSchema]],
 
     // frequency of notifications
     notificationFrequency: {
@@ -37,14 +37,14 @@ const HabitSchema = new mongoose.Schema({
     },
 
     // how many days in a row completed
-    DaysCompleted:{
+    daysCompleted:{
         type:Number,
         default:0,
         required:true
     },
 
     // how many days in a row not completed
-    DaysMissed:{
+    daysMissed:{
         type:Number,
         default:0,
         required:true

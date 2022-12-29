@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 // days of the week habit is to be carried out
-const HabitDaysSchema = new Schema({
+const HabitDaysSchema = new mongoose.Schema({
     // day of the week
     dayOfWeek: {
         type:String,
@@ -18,4 +18,4 @@ const HabitDaysSchema = new Schema({
     }
 })
 
-export default mongoose.model('HabitDays', HabitDaysSchema)
+export default HabitDaysSchema
