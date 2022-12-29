@@ -32,7 +32,7 @@ router.put('/:id/update', async(req, res) => {
             $set: {
               name: req.body.name,
               eventCues: req.body.eventCues,
-              // TODO days to complete
+              daysToComplete: req.body.daysToComplete,
               preventingActions: req.body.preventing,
               intentions: req.body.intentions
             }
