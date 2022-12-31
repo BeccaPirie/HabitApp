@@ -2,96 +2,21 @@ import Navbar from "../../components/navbar/Navbar"
 import HabitList from "../../components/habitList/HabitList"
 import Habit from "../../components/habit/Habit"
 import Footer from "../../components/footer/Footer"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import axios from "axios"
 
 export default function Main() {
+    const [user, setUser] = useState({})
+    const [userHabits, setUserHabits] = useState([])
     const [selectedHabit, setSelectedHabit] = useState({})
-    const [userHabits, setUserHabits] = useState([
-        {
-            id: 1,
-            name:"habit one",
-            eventCues: "waking up",
-            daysToComplete: [
-                {
-                    dayOfWeek: "Monday",
-                    toComplete: true
-                },
-                {
-                    dayOfWeek: "Tuesday",
-                    toComplete: true
-                },
-            ],
-            calendarData: [
-                {
-                    date: new Date(),
-                    status: 'Completed'
-                }
-            ],
-            notificationFrequency: 1,
-            daysCompleted: 5,
-            daysMissed: 0,
-            journal: "the journal entry",
-            preventingActions: "preventing actions",
-            intentions: "intentions",
-            habitCompleted: false,
-        },
-        {
-            id: 2,
-            name:"habit two",
-            eventCues: "going to bed",
-            daysToComplete: [
-                {
-                    dayOfWeek: "Monday",
-                    toComplete: true
-                },
-                {
-                    dayOfWeek: "Tuesday",
-                    toComplete: true
-                },
-            ],
-            calendarData: [
-                {
-                    date: new Date(),
-                    status: 'Skipped'
-                }
-            ],
-            notificationFrequency: 1,
-            daysCompleted: 5,
-            daysMissed: 0,
-            journal: "journal",
-            preventingActions: "preventing actions",
-            intentions: "intentions",
-            habitCompleted: false,
-        },
-        {
-            id: 3,
-            name:"habit three",
-            eventCues: "lunch time",
-            daysToComplete: [
-                {
-                    dayOfWeek: "Monday",
-                    toComplete: true
-                },
-                {
-                    dayOfWeek: "Tuesday",
-                    toComplete: true
-                },
-            ],
-            calendarData: [
-                {
-                    date: new Date(),
-                    status: 'Missed'
-                }
-            ],
-            notificationFrequency: 1,
-            daysCompleted: 5,
-            daysMissed: 0,
-            journal: "journal",
-            preventingActions: "preventing actions",
-            intentions: "intentions",
-            habitCompleted: false,
+
+    useEffect(() => {
+        const fetchUserHabits = async () => {
+            const res = await axios.get(`http://localhost:5000/server/user/get-habits/63b0873e52ab88fb84175239`)
+            setUserHabits(res.data)
         }
-    ])
+        fetchUserHabits()
+    },[user])
 
     const handleHabitClick = (id) => {
         const updateObj = userHabits.find((habit) => habit.id === id)

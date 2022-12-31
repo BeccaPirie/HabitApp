@@ -3,13 +3,18 @@ import Habit from '../models/Habit.js'
 
 const router = express.Router()
 
-router.get('/', async(req, res) => {res.send("habit route")})
-
 // add habit
 router.post('/add', async(req, res) => {
-    const habit = new Habit(req.body)
+    const habit = new Habit({
+        id: req.body.id,
+        name: req.body.name,
+        eventCues: req.body.eventCues,
+        preventingActions: req.body.preventingActions,
+        intentions: req.body.intentions
+    })
     try {
-        await habit.save()
+        const newHabit = await habit.save()
+        res.json(newHabit)
     }
     catch (err) {
         res.status(500).send(err)

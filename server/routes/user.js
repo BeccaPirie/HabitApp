@@ -67,13 +67,31 @@ router.delete('/:id', async(req, res) => {
 })
 
 // get users habits
-router.get('/:id/get-habits', async(req, res) => {
+router.get('/get-habits/:id', async(req, res) => {
     try {
+        // use ids stored in array to find habits
+        const user = await User.findById(req.params.id)
         const habits = await Promise.all(
-            req.params.id.habits.map((habitId) => {
-                return Habit.findById(habitId)
+            user.habits.map((habitId) => {
+                return Habit.findOne({id:habitId})
             })
         )
+        res.json(habits)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
+// add habit to users list
+router.put('/add-habit/:habitId', async (req, res) => {
+    try {
+        // push habit id to array
+        await User.findByIdAndUpdate(req.body.userId, {
+            $push:{
+                habits: req.params.habitId
+            }
+        })
+        res.json(`habit ${req.params.habitId} added to user ${req.body.userId}`)
     } catch (err) {
         res.status(500).json(err)
     }

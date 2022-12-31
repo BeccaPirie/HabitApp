@@ -1,5 +1,6 @@
 import Navbar from "../../components/navbar/Navbar";
 import { useRef } from "react"
+import axios from "axios";
 
 export default function Add() {
     const name = useRef()
@@ -12,11 +13,20 @@ export default function Add() {
         console.log("submit clicked")
 
         const newHabit = {
-            id: Math.floor(Math.random * 10000) + 1,
-            name: name,
-            eventCues: cue,
-            preventingActions: actions,
-            intentions: intentions
+            id: (Math.floor(Math.random() * 10000) + 1).toString(),
+            name: name.current.value,
+            eventCues: cue.current.value,
+            preventingActions: actions.current.value,
+            intentions: intentions.current.value
+        }
+
+        try {
+            await axios.post("http://localhost:5000/server/habit/add", newHabit)
+            await axios.put(`http://localhost:5000/server/user/add-habit/${newHabit.id}`, {
+                userId: '63b0873e52ab88fb84175239'
+            })
+        } catch (err) {
+            console.log(err)
         }
     }
 
