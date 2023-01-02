@@ -1,4 +1,24 @@
-export default function Habit({habit}) {
+import { useState, useEffect } from "react"
+import axios from "axios"
+
+export default function Habit({habitId}) {
+    const [habit, setHabit] = useState({})
+
+    useEffect(() => {
+        const fetchHabit = async () => {
+            try {
+                const res =  await axios.get(`http://localhost:5000/server/habit/${habitId}`)            
+                setHabit(res.data)
+            } catch (err) {
+                console.error(err.response.data)
+            }
+        }
+        fetchHabit()
+    }, [habitId])
+
+    const handleEditClick= () => {
+        console.log("edit button clicked")
+    }
     return(
         <>
             <div>Habit Component</div>
@@ -7,6 +27,8 @@ export default function Habit({habit}) {
 
             <div>{habit.name}</div>
             <div>{habit.journal}</div>
+
+            <button onClick={handleEditClick}>Edit</button>
         </>
     )
 }

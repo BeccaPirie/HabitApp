@@ -11,13 +11,13 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path='/' element={<Main />}>
+        <Route exact path='/:id?' element={<Main />}>
         </Route>
         <Route path='/login' element={<Login />}>
         </Route>
         <Route path='/signup' element={<Signup />}>
         </Route>
-        <Route path='add' element={<Add />}>
+        <Route path='/add' element={<Add />}>
         </Route>
         <Route path='/edit' element={<Edit />}>
         </Route>

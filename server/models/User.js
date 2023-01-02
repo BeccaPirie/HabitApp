@@ -27,10 +27,10 @@ const UserSchema = new mongoose.Schema({
     },
     
     // list of habit ids
-    habits:{
-        type:Array,
-        default:[]
-    }
+    // habits:{
+    //     type:Array,
+    //     default:[]
+    // }
 })
 
 export default mongoose.model("User", UserSchema)

@@ -5,8 +5,6 @@ import bcrypt from 'bcrypt'
 
 const router = express.Router()
 
-router.get('/', async(req, res) => {res.send("user route")})
-
 // update user
 router.put('/:id', async(req, res) => {
     // only update own account
@@ -24,7 +22,6 @@ router.put('/:id', async(req, res) => {
     } else {
         res.status(403).json("You can only update your own account")
     }
-    
 })
 
 // update password
@@ -67,34 +64,34 @@ router.delete('/:id', async(req, res) => {
 })
 
 // get users habits
-router.get('/get-habits/:id', async(req, res) => {
-    try {
-        // use ids stored in array to find habits
-        const user = await User.findById(req.params.id)
-        const habits = await Promise.all(
-            user.habits.map((habitId) => {
-                return Habit.findOne({id:habitId})
-            })
-        )
-        res.json(habits)
-    } catch (err) {
-        res.status(500).json(err)
-    }
-})
+// router.get('/get-habits/:id', async(req, res) => {
+//     try {
+//         // use ids stored in array to find habits
+//         const user = await User.findById(req.params.id)
+//         const habits = await Promise.all(
+//             user.habits.map((habitId) => {
+//                 return Habit.findOne({id:habitId})
+//             })
+//         )
+//         res.json(habits)
+//     } catch (err) {
+//         res.status(500).json(err)
+//     }
+// })
 
 // add habit to users list
-router.put('/add-habit/:habitId', async (req, res) => {
-    try {
-        // push habit id to array
-        await User.findByIdAndUpdate(req.body.userId, {
-            $push:{
-                habits: req.params.habitId
-            }
-        })
-        res.json(`habit ${req.params.habitId} added to user ${req.body.userId}`)
-    } catch (err) {
-        res.status(500).json(err)
-    }
-})
+// router.put('/add-habit/:habitId', async (req, res) => {
+//     try {
+//         // push habit id to array
+//         await User.findByIdAndUpdate(req.body.userId, {
+//             $push:{
+//                 habits: req.params.habitId
+//             }
+//         })
+//         res.json(`habit ${req.params.habitId} added to user ${req.body.userId}`)
+//     } catch (err) {
+//         res.status(500).json(err)
+//     }
+// })
 
 export default router

@@ -1,8 +1,10 @@
-import Navbar from "../../components/navbar/Navbar";
+import Navbar from "../../components/navbar/Navbar"
+import HabitList from "../../components/habitList/HabitList"
 import { useRef } from "react"
-import axios from "axios";
+import axios from "axios"
 
 export default function Add() {
+    const userId = '63b0873e52ab88fb84175239'
     const name = useRef()
     const cue = useRef()
     const actions = useRef()
@@ -13,7 +15,7 @@ export default function Add() {
         console.log("submit clicked")
 
         const newHabit = {
-            id: (Math.floor(Math.random() * 10000) + 1).toString(),
+            userId: userId,
             name: name.current.value,
             eventCues: cue.current.value,
             preventingActions: actions.current.value,
@@ -22,17 +24,15 @@ export default function Add() {
 
         try {
             await axios.post("http://localhost:5000/server/habit/add", newHabit)
-            await axios.put(`http://localhost:5000/server/user/add-habit/${newHabit.id}`, {
-                userId: '63b0873e52ab88fb84175239'
-            })
         } catch (err) {
-            console.log(err)
+            console.error(err.response.data)
         }
     }
 
     return(
         <>
         <Navbar />
+        <HabitList />
         <form onSubmit={submitFunction}>
             <label htmlFor="habitName">Habit Name</label>
             <input

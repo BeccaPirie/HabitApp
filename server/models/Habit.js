@@ -4,11 +4,10 @@ import CalendarSchema from "./Calendar.js"
 
 // habit details
 const HabitSchema = new mongoose.Schema({
-    // habit id
-    id:{
+    // user id
+    userId:{
         type:String,
         required: true,
-        unique:true
     },
 
     // habit name
