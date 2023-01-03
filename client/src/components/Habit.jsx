@@ -15,20 +15,13 @@ export default function Habit({habitId}) {
         }
         fetchHabit()
     }, [habitId])
-
-    const handleEditClick= () => {
-        console.log("edit button clicked")
-    }
     return(
-        <>
-            <div>Habit Component</div>
-
+        <div>
             <button>{habit.habitCompleted ? "Mark habit as incomplete" : "Mark habit as complete"}</button>
 
             <div>{habit.name}</div>
-            <div>{habit.journal}</div>
-
-            <button onClick={handleEditClick}>Edit</button>
-        </>
+        
+            <button>Edit</button>
+        </div>
     )
 }

@@ -1,5 +1,5 @@
-import Navbar from "../../components/navbar/Navbar"
-import HabitList from "../../components/habitList/HabitList"
+import Navbar from "../../components/Navbar"
+import Sidebar from "../../components/Sidebar"
 import { useRef } from "react"
 import axios from "axios"
 
@@ -32,7 +32,7 @@ export default function Add() {
     return(
         <>
         <Navbar />
-        <HabitList />
+        <Sidebar />
         <form onSubmit={submitFunction}>
             <label htmlFor="habitName">Habit Name</label>
             <input
