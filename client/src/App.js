@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Add from './pages/add/Add'
-import Edit from './pages/edit/Edit'
-import EditProfile from './pages/editProfile/EditProfile'
-import Login from './pages/login/Login'
-import Main from './pages/main/Main'
-import Profile from './pages/profile/Profile'
-import Signup from './pages/signup/Signup'
+import Add from './pages/Add'
+import Edit from './pages/Edit'
+import EditProfile from './pages/EditProfile'
+import Login from './pages/Login'
+import Main from './pages/Main'
+import Profile from './pages/Profile'
+import Signup from './pages/Signup'
 
 export default function App() {
   return (
