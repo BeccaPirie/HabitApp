@@ -1,46 +1,93 @@
 import styled from "styled-components"
 
 export const StyledSidebar = styled.div`
-    background-color: pink;
     width: 100%;
-    height: calc(100vh - 70px);
-    overflow-y: auto;
+    min-height: calc(100vh - 70px);
     padding: 0;
     margin: 0;
 
     ul {
+        margin: 0;
         list-style-type: none;
     }
 
     li {
-        padding: 20px;
+        padding: 30px;
         margin-left: -40px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    li:hover {
+        background-color: rgb(248, 248, 248);
     }
 
     a {
         text-decoration: none;
+        color: black;
+    }
+
+    .addBtn {
+        background-color: lightblue;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 40px;
+        position: -webkit-sticky;
+        position: sticky;
+        bottom: 40px;
+        left: calc(100vw - 100px);
+
+        span {
+        font-size: 50px;
+        font-weight: bold;
+        color: #fff;
+        }
     }    
 
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
+    // ::-webkit-scrollbar {
+    //     width: 10px;
+    // }
     
-    ::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-    }
+    // ::-webkit-scrollbar-track {
+    // background-color: #f1f1f1;
+    // }
     
-    ::-webkit-scrollbar-thumb {
-    background-color: rgb(179, 179, 179);
-    }
+    // ::-webkit-scrollbar-thumb {
+    // background-color: rgb(179, 179, 179);
+    // }
 
     @media (min-width: 660px) {
         width: 280px;
+        height: calc(100vh - 70px);
         overflow-y: scroll;
+        position: -webkit-sticky;
         position: sticky;
         top: 70px;
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+        background-color: rgb(179, 179, 179);
+        }
+
+        .addBtn {
+            left: 180px;
+            right: 0;
+        }
     }
 
     @media (min-width: 992px) {
         width: 310px;
+
+        .addBtn {
+            left: 210px;
+        }
     }
 `

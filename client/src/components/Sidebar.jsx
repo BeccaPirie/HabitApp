@@ -18,21 +18,23 @@ export default function Sidebar() {
             }
         }
         fetchUserHabits()
-    },[userId])
+    },[userId, userHabits])
     return(
             <StyledSidebar>
                 <ul>
                     {userHabits.map((habit) => (
                         <Link key={habit._id} to={`/${habit._id}`}>
                             <li className="habitListItem"> 
-                                <div>{habit.name}</div>
+                                <span>{habit.name}</span>
                             </li>
                         </Link>
                     ))}
                 </ul>
 
                 <Link to={'/add'}>
-                    <div>+</div>
+                    <div className="addBtn">
+                        <span>+</span>
+                    </div>
                 </Link>
             </StyledSidebar>
     )
