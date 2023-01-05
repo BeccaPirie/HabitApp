@@ -1,9 +1,10 @@
+import HabitList from "./HabitList"
 import axios from "axios"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { Form } from "./styles/Form.styled"
 
-export default function Edit() {
+export default function Details() {
     const habitId = useParams().id
     const [habit, setHabit] = useState({})
 
@@ -28,14 +29,19 @@ export default function Edit() {
             console.error(err.response.data)
         }
     }
-
     return(
-        <Form onSubmit={submitFunction}>
+        <>
+            {/* <HabitList /> */}
+            {/* <div>Event cues, day to complete etc.</div>
+            {On click change div to input/textbox
+            <button>Mark habit as completed</button> */}
+
+            <Form onSubmit={submitFunction}>
                 <label htmlFor="habitName">Habit Name</label>
                 <input
                     id="habitName"
                     type="text"
-                    value={habit.name}
+                    value={habit.name || ''}
                     onChange={(e) => setHabit({...habit, name: e.target.value})}
                     required>
                 </input>
@@ -44,7 +50,7 @@ export default function Edit() {
                 <textarea
                     id="eventCues"
                     rows="5"
-                    value={habit.eventCues}
+                    value={habit.eventCues || ''}
                     onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
                     required>
                 </textarea>
@@ -53,7 +59,7 @@ export default function Edit() {
                 <textarea
                     id="preventingActions"
                     rows="10"
-                    value={habit.preventingActions}
+                    value={habit.preventingActions || ''}
                     onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
                     required>
                 </textarea>
@@ -62,7 +68,7 @@ export default function Edit() {
                 <textarea
                     id="intention"
                     rows="10"
-                    value={habit.intentions}
+                    value={habit.intentions || ''}
                     onChange={(e) => setHabit({...habit, intentions: e.target.value})}
                     required>
                 </textarea>
@@ -71,5 +77,7 @@ export default function Edit() {
                     <button>Save</button>
                 </div>
             </Form>
+        </>
+        
     )
 }

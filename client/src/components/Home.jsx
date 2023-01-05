@@ -1,23 +1,30 @@
-import Habit from "./Habit"
-import Sidebar from "./Sidebar"
-import NoSelection from "./NoSelection"
+import HabitCalendar from "./HabitCalendar"
 import { useParams } from "react-router-dom"
+import HabitList from "./HabitList"
+import Habit from "./Habit"
+import Journal from "./Journal"
+import { Link } from "react-router-dom"
 
-export default function Home({lg}) {
+export default function Home() {
     const habitId = useParams().id
-    if(lg) {
+
+    if(habitId) {
         return(
         <>
-            {habitId ? <Habit habitId={habitId}/> : <NoSelection />}
+            <Habit habitId={habitId} />
+            <HabitCalendar />
+            <Journal />       
+            <Link to={`/${habitId}/details`}>
+               <button>Details</button> 
+            </Link>
         </>
         )  
     }
     else {
         return(
-            <>
-            {habitId ? <Habit habitId={habitId}/> : <Sidebar />}
+        <>
+            <HabitList />
         </>
         )
-    }
-    
+    }   
 }

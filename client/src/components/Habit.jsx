@@ -21,10 +21,6 @@ export default function Habit({habitId}) {
             <button>{habit.habitCompleted ? "Mark habit as incomplete" : "Mark habit as complete"}</button>
 
             <div>{habit.name}</div>
-        
-            <Link to={`/${habitId}/edit`}>
-               <button>Edit</button> 
-            </Link>
             
         </div>
     )
