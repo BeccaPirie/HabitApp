@@ -53,17 +53,10 @@ router.delete('/:id/delete', async(req, res) => {
 })
 
 // update habit details
-router.put('/:id/update', async(req, res) => {
+router.put('/update/:id', async(req, res) => {
     try {
-        await Habit.findByIdAndUpdate(req.params.id, {
-            $set: {
-              name: req.body.name,
-              eventCues: req.body.eventCues,
-              daysToComplete: req.body.daysToComplete,
-              preventingActions: req.body.preventing,
-              intentions: req.body.intentions
-            }
-        })
+        const habit = await Habit.findByIdAndUpdate(req.params.id, {$set: req.body})
+        console.log(habit)
     } catch (err) {
         res.status(500).json(err)
     }

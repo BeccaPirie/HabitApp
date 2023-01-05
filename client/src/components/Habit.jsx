@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
+import { Link } from "react-router-dom"
 
 export default function Habit({habitId}) {
     const [habit, setHabit] = useState({})
@@ -21,7 +22,10 @@ export default function Habit({habitId}) {
 
             <div>{habit.name}</div>
         
-            <button>Edit</button>
+            <Link to={`/${habitId}/edit`}>
+               <button>Edit</button> 
+            </Link>
+            
         </div>
     )
 }

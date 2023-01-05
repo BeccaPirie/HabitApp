@@ -16,7 +16,7 @@ export default function App() {
         <Route path='/' element={<Main lg={lg}/>}>
           <Route path=':id?' element={<Home lg={lg} />}></Route>
           <Route path='add' element={<Add />}></Route>
-          <Route path='edit' element={<Edit />}></Route>
+          <Route path=':id/edit' element={<Edit />}></Route>
         </Route>
         <Route path='/login' element={<Login />}>
         </Route>
