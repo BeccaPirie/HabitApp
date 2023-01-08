@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Start from './pages/Start'
+import Index from './pages/Index'
 import useMediaQuery from "@mui/material/useMediaQuery"
 import Details from './components/Details'
 import Add from './components/Add'
-import Home from './components/Home'
+import Habit from './components/Habit'
+import HabitList from './components/HabitList'
 
 export default function App() {
   const lg = useMediaQuery('(min-width:660px)');
@@ -11,9 +12,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Start lg={lg}/>}>
-          {/* <Route path='' element={<Home />}></Route> */}
-          <Route path=':id?' element={<Home />}></Route>
+        <Route path='/' element={<Index lg={lg}/>}>
+          <Route path='' element={''}></Route>
+          <Route path=':id' element={<Habit />}></Route>
           <Route path='add' element={<Add />}></Route>
           <Route path=':id/Details' element={<Details />}></Route>
         </Route>

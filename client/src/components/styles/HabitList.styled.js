@@ -2,8 +2,9 @@ import styled from "styled-components"
 
 export const StyledHabitList = styled.div`
     width: 100%;
+    min-height: 100vh;
     padding: 0;
-    margin: auto;
+    margin: 0;
 
     ul {
         margin: 0;
@@ -12,7 +13,8 @@ export const StyledHabitList = styled.div`
 
     li {
         padding: 30px;
-        margin: 0 0 5px -40px;
+        margin-left: -40px;
+        border-bottom: 1px solid #ccc;
     }
 
     li:hover {
@@ -56,25 +58,23 @@ export const StyledHabitList = styled.div`
     // }
 
     @media (min-width: 660px) {
-        width: 90%;
-        background-color: #ade0c9;
-        // box-shadow: 10px 10px 60px 20px #f1f1f1;
-                
-        ul {
-            height: 400px;
-            overflow-y: scroll;
-
-            ::-webkit-scrollbar {
-                width: 10px;
-            }
-            
-            ::-webkit-scrollbar-track {
-            background-color: #f1f1f1;
-            }
-            
-            ::-webkit-scrollbar-thumb {
-            background-color: rgb(179, 179, 179);
-            }
+        width: 280px;
+        height: 100vh;
+        overflow-y: scroll;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+        background-color: rgb(179, 179, 179);
         }
 
         .addBtn {
@@ -83,21 +83,11 @@ export const StyledHabitList = styled.div`
         }
     }
 
-    // @media (min-width: 800px) {
-    //     width: 450px;
-    // }
+    @media (min-width: 992px) {
+        width: 310px;
 
-    // @media (min-width: 992px) {
-    //     .addBtn {
-    //         left: 210px;
-    //     }
-    // }
-
-    // @media (min-width: 1080px) {
-    //     width: 580px;
-    // }
-
-    // @media (min-width: 1200px) {
-    //     width: 650px;
-    // }
+        .addBtn {
+            left: 210px;
+        }
+    }
 `

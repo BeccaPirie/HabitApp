@@ -1,8 +1,8 @@
-import HabitList from "./HabitList"
 import axios from "axios"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { Form } from "./styles/Form.styled"
+import TextareaAutosize from "react-autosize-textarea"
 
 export default function Details() {
     const habitId = useParams().id
@@ -31,11 +31,6 @@ export default function Details() {
     }
     return(
         <>
-            {/* <HabitList /> */}
-            {/* <div>Event cues, day to complete etc.</div>
-            {On click change div to input/textbox
-            <button>Mark habit as completed</button> */}
-
             <Form onSubmit={submitFunction}>
                 <label htmlFor="habitName">Habit Name</label>
                 <input
@@ -47,31 +42,28 @@ export default function Details() {
                 </input>
 
                 <label htmlFor="eventCues">Event-based cue</label>
-                <textarea
+                <TextareaAutosize
                     id="eventCues"
                     rows="5"
                     value={habit.eventCues || ''}
                     onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
-                    required>
-                </textarea>
+                    required />
 
                 <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
-                <textarea
+                <TextareaAutosize
                     id="preventingActions"
                     rows="10"
                     value={habit.preventingActions || ''}
                     onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
-                    required>
-                </textarea>
+                    required />
 
                 <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
-                <textarea
+                <TextareaAutosize
                     id="intention"
                     rows="10"
                     value={habit.intentions || ''}
                     onChange={(e) => setHabit({...habit, intentions: e.target.value})}
-                    required>
-                </textarea>
+                    required />
 
                 <div>
                     <button>Save</button>

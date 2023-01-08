@@ -4,10 +4,6 @@ import axios from "axios"
 import { StyledHabitList } from "./styles/HabitList.styled"
 
 export default function HabitList() {
-    // if habitId is not empty, return that habit
-    // if user has no habits return <ClickToAdd />
-    // if user has habits, return list   
-
     const [userHabits, setUserHabits] = useState([])
     const userId = "63b0873e52ab88fb84175239"
 
@@ -26,11 +22,6 @@ export default function HabitList() {
 
     return(
         <StyledHabitList>
-            <Link to={'/add'}>
-                <div>
-                    <span>+</span>
-                </div>
-            </Link>
             <h3>Your habits</h3>
             <ul>            
                 {userHabits.map((habit) => (
@@ -41,6 +32,12 @@ export default function HabitList() {
                     </Link>
                 ))}
             </ul>
+
+            <Link to={'/add'}>
+                <div className="addBtn">
+                    <span>+</span>
+                </div>
+            </Link>
         </StyledHabitList>
     )
 }

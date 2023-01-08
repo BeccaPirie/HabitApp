@@ -1,6 +1,7 @@
 import { useRef } from "react"
 import axios from "axios"
 import { Form } from "./styles/Form.styled"
+import TextareaAutosize from "react-autosize-textarea"
 
 export default function Add() {
     const userId = '63b0873e52ab88fb84175239'
@@ -34,32 +35,28 @@ export default function Add() {
                     id="habitName"
                     type="text"
                     ref={name}
-                    required>
-                </input>
+                    required />
 
                 <label htmlFor="eventCues">Event-based cue</label>
-                <textarea
+                <TextareaAutosize
                     id="eventCues"
                     rows="5"
                     ref={cue}
-                    required>
-                </textarea>
+                    required />
 
                 <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
-                <textarea
+                <TextareaAutosize
                     id="preventingActions"
                     rows="10"
                     ref={actions}
-                    required>
-                </textarea>
+                    required />
 
                 <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
-                <textarea
+                <TextareaAutosize
                     id="intention"
                     rows="10"
                     ref={intentions}
-                    required>
-                </textarea>
+                    required />
 
                 <div>
                     <button>Add habit</button>

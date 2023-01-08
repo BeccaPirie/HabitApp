@@ -3,13 +3,16 @@ import Rightbar from "../components/Rightbar"
 import { PageContainer } from "../components/styles/PageContainer.styled"
 import { Outlet } from 'react-router-dom'
 import { MainContainer } from "../components/styles/MainContainer.styled"
+import Navbar from "../components/Navbar"
+import HabitList from "../components/HabitList"
 
-export default function Main({lg}) {
+export default function Index({lg}) {
     if(lg) {
         return(
             <>
                 <PageContainer>
-                    <Sidebar />
+                    <HabitList />
+                    {/* <Navbar /> */}
                     <MainContainer>
                         <Outlet />
                     </MainContainer>

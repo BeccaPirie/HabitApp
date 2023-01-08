@@ -1,8 +1,11 @@
 import styled from "styled-components"
 
 export const StyledCalendar = styled.div`
+// margin-bottom: 50px;
+background-color: lightgreen;
+
 .react-calendar {
-    width: 350px;
+    // width: 350px;
     max-width: 100%;
     background: white;
     border: 1px solid #a0a096;
