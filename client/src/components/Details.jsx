@@ -2,8 +2,9 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { Form } from "./styles/Form.styled"
+import TextareaAutosize from "react-autosize-textarea"
 
-export default function Edit() {
+export default function Details() {
     const habitId = useParams().id
     const [habit, setHabit] = useState({})
 
@@ -28,48 +29,47 @@ export default function Edit() {
             console.error(err.response.data)
         }
     }
-
     return(
-        <Form onSubmit={submitFunction}>
+        <>
+            <Form onSubmit={submitFunction}>
                 <label htmlFor="habitName">Habit Name</label>
                 <input
                     id="habitName"
                     type="text"
-                    value={habit.name}
+                    value={habit.name || ''}
                     onChange={(e) => setHabit({...habit, name: e.target.value})}
                     required>
                 </input>
 
                 <label htmlFor="eventCues">Event-based cue</label>
-                <textarea
+                <TextareaAutosize
                     id="eventCues"
                     rows="5"
-                    value={habit.eventCues}
+                    value={habit.eventCues || ''}
                     onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
-                    required>
-                </textarea>
+                    required />
 
                 <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
-                <textarea
+                <TextareaAutosize
                     id="preventingActions"
                     rows="10"
-                    value={habit.preventingActions}
+                    value={habit.preventingActions || ''}
                     onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
-                    required>
-                </textarea>
+                    required />
 
                 <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
-                <textarea
+                <TextareaAutosize
                     id="intention"
                     rows="10"
-                    value={habit.intentions}
+                    value={habit.intentions || ''}
                     onChange={(e) => setHabit({...habit, intentions: e.target.value})}
-                    required>
-                </textarea>
+                    required />
 
                 <div>
                     <button>Save</button>
                 </div>
             </Form>
+        </>
+        
     )
 }

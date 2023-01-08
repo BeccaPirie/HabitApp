@@ -1,6 +1,8 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
-export const StyledNavBar = styled.div`
+export const StyledNavbar = styled.div`
+display: block;
+width: 100vw;
 height: 70px;
 background-color: lightblue;
 position: sticky;

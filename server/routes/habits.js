@@ -8,7 +8,7 @@ const router = express.Router()
 router.get('/:id', async(req, res) => {
     try {
         const habit = await Habit.findOne({_id:req.params.id})
-        res.json(habit) 
+        res.json(habit)
     } catch (err) {
         res.status(500).send(err)
     }    
@@ -20,6 +20,25 @@ router.get('/get-habits/:userId', async(req, res) => {
         const user = await User.findById(req.params.userId)
         const habits = await Habit.find({userId:user._id})
         res.json(habits)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
+// get habits due on current day
+// TODO fix
+router.get('/due-habits/:userId/:dayOfWeek', async(req, res) => {
+    try {
+        const user = await User.findById(req.params.userId)
+        const dueHabits = await Habit.find({
+            userId:user._id,
+            daysToComplete: {
+                dayOfWeek: req.params.dayOfWeek,
+                toComplete: true
+            }
+        })
+        console.log(dueHabits)
+        res.json(dueHabits)
     } catch (err) {
         res.status(500).json(err)
     }
