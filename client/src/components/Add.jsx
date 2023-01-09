@@ -40,21 +40,21 @@ export default function Add() {
                 <label htmlFor="eventCues">Event-based cue</label>
                 <TextareaAutosize
                     id="eventCues"
-                    rows="5"
+                    rows={5}
                     ref={cue}
                     required />
 
                 <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
                 <TextareaAutosize
                     id="preventingActions"
-                    rows="10"
+                    rows={10}
                     ref={actions}
                     required />
 
                 <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
                 <TextareaAutosize
                     id="intention"
-                    rows="10"
+                    rows={10}
                     ref={intentions}
                     required />
 

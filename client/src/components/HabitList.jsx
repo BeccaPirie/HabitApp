@@ -3,6 +3,8 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import { StyledHabitList } from "./styles/HabitList.styled"
 
+// TODO handle different viewport sizes
+
 export default function HabitList() {
     const [userHabits, setUserHabits] = useState([])
     const userId = "63b0873e52ab88fb84175239"

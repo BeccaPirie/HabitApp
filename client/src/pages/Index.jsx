@@ -1,4 +1,3 @@
-import Sidebar from "../components/Sidebar"
 import Rightbar from "../components/Rightbar"
 import { PageContainer } from "../components/styles/PageContainer.styled"
 import { Outlet } from 'react-router-dom'

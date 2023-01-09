@@ -23,7 +23,7 @@ const HabitSchema = new mongoose.Schema({
     },
 
     // days to complete habit
-    daysToComplete:[[HabitDaysSchema]],
+    daysToComplete:[HabitDaysSchema],
 
     // completed/missed/skipped each day
     calendarData:[[CalendarSchema]],

@@ -30,14 +30,17 @@ router.get('/get-habits/:userId', async(req, res) => {
 router.get('/due-habits/:userId/:dayOfWeek', async(req, res) => {
     try {
         const user = await User.findById(req.params.userId)
-        const dueHabits = await Habit.find({
-            userId:user._id,
-            daysToComplete: {
-                dayOfWeek: req.params.dayOfWeek,
-                toComplete: true
+        const userHabits = await Habit.find({userId:user._id})
+
+        const dueHabits = []
+        for (const habit of userHabits) {
+            for(let i = 0; i < habit.daysToComplete.length; i++) {
+                if(habit.daysToComplete[i].dayOfWeek === req.params.dayOfWeek
+                    && habit.daysToComplete[i].toComplete === true) {
+                        dueHabits.push(habit)
+                }
             }
-        })
-        console.log(dueHabits)
+        }
         res.json(dueHabits)
     } catch (err) {
         res.status(500).json(err)

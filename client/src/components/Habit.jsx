@@ -61,7 +61,7 @@ export default function Habit() {
                 </label>
                 <TextareaAutosize
                     id="journal"
-                    rows="15"
+                    rows={15}
                 /> 
             </form>
 

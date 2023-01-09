@@ -44,7 +44,7 @@ export default function Details() {
                 <label htmlFor="eventCues">Event-based cue</label>
                 <TextareaAutosize
                     id="eventCues"
-                    rows="5"
+                    rows={5}
                     value={habit.eventCues || ''}
                     onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
                     required />
@@ -52,7 +52,7 @@ export default function Details() {
                 <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
                 <TextareaAutosize
                     id="preventingActions"
-                    rows="10"
+                    rows={10}
                     value={habit.preventingActions || ''}
                     onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
                     required />
@@ -60,7 +60,7 @@ export default function Details() {
                 <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
                 <TextareaAutosize
                     id="intention"
-                    rows="10"
+                    rows={10}
                     value={habit.intentions || ''}
                     onChange={(e) => setHabit({...habit, intentions: e.target.value})}
                     required />
