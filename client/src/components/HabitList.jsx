@@ -24,7 +24,7 @@ export default function HabitList() {
 
     return(
         <StyledHabitList>
-            <h3>Your habits</h3>
+            <h2 className="list-header">Habit App</h2>
             <ul>            
                 {userHabits.map((habit) => (
                     <Link key={habit._id} to={`/${habit._id}`}>

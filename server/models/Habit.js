@@ -26,7 +26,7 @@ const HabitSchema = new mongoose.Schema({
     daysToComplete:[HabitDaysSchema],
 
     // completed/missed/skipped each day
-    calendarData:[[CalendarSchema]],
+    calendarData:[CalendarSchema],
 
     // frequency of notifications
     notificationFrequency: {

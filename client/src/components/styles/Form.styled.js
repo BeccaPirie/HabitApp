@@ -20,7 +20,6 @@ input {
     padding: 5px 0;
     border: none;
 	border-bottom:3px solid #000;
-	// height:28px;
 }
 
 textarea {

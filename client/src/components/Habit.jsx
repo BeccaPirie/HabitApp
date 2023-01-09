@@ -33,6 +33,18 @@ export default function Habit() {
         }
         fetchHabit()
     }, [habitId])
+
+    const calendarButtonClick = async (e) => {
+        try {
+            await axios.put(`http://localhost:5000/server/habit/${habitId}/calendar`, {
+                date: `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`,
+                status: e.target.id
+            })
+        } catch (err) {
+            console.error(err.response.data)
+        }
+    }
+
     return(
         <StyledHabit>
 
@@ -50,9 +62,9 @@ export default function Habit() {
             </StyledCalendar>
 
             <div className="calendar-btns">
-                <button>Missed</button>
-                <button>Skipped</button>
-                <button>Completed</button>
+                <button id="Missed" onClick={((e) => calendarButtonClick(e))}>Missed</button>
+                <button id="Skipped" onClick={((e) => calendarButtonClick(e))}>Skipped</button>
+                <button id="Completed" onClick={((e) => calendarButtonClick(e))}>Completed</button>
             </div>
 
             <form>

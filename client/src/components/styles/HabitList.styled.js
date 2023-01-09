@@ -6,6 +6,10 @@ export const StyledHabitList = styled.div`
     padding: 0;
     margin: 0;
 
+    .list-header {
+        margin-left: 20px;
+    }
+
     ul {
         margin: 0;
         list-style-type: none;
@@ -43,19 +47,7 @@ export const StyledHabitList = styled.div`
         font-weight: bold;
         color: #fff;
         }
-    }    
-
-    // ::-webkit-scrollbar {
-    //     width: 10px;
-    // }
-    
-    // ::-webkit-scrollbar-track {
-    // background-color: #f1f1f1;
-    // }
-    
-    // ::-webkit-scrollbar-thumb {
-    // background-color: rgb(179, 179, 179);
-    // }
+    }
 
     @media (min-width: 660px) {
         width: 280px;

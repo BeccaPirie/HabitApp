@@ -4,7 +4,7 @@ import mongoose from "mongoose"
 const CalendarSchema = new mongoose.Schema({
     // selected date
     date: {
-        type:Date,
+        type:String,
         required:true,
     },
 

@@ -40,6 +40,10 @@ label {
     border-radius:12px;
     -webkit-border-radius:12px;
     resize: none;
+
+    :focus {
+        outline: none;
+    }
 }
 
 .details-btn {

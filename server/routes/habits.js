@@ -26,7 +26,6 @@ router.get('/get-habits/:userId', async(req, res) => {
 })
 
 // get habits due on current day
-// TODO fix
 router.get('/due-habits/:userId/:dayOfWeek', async(req, res) => {
     try {
         const user = await User.findById(req.params.userId)
@@ -111,30 +110,33 @@ router.put('/:id/journal', async(req, res) => {
 })
 
 // update calendar
-router.put('/:id/calendar', async(req, res) => {
+router.put('/:habitId/calendar', async(req, res) => {
     try {
-        const habit = await Habit.findById(req.params.id)
-        const selectedDate = habit.calendarData.find({date:req.body.date})
-
-        if(selectedDate !== undefined) {
-            await habit.calendarData.updateOne({
-                $push: {
-                        date: req.body.date,
-                        status: req.body.status
-                }
-            })
-        } else {
-            await habit.calendarData.updateOne({
-                $set: {
-                        date: req.body.date,
-                        status: req.body.status
-                }
-            })
+        const calendarData = {
+            date: req.body.date,
+            status: req.body.status
         }
-        
+
+        const habit = await Habit.findById(req.params.habitId)
+
+        if(habit.calendarData.find(x => x.date === calendarData.date)) {
+            await Habit.findOneAndUpdate(
+                {
+                    _id: req.params.habitId,
+                    'calendarData.date': calendarData.date
+                },
+                {$set: {'calendarData.$.status': calendarData.status}},
+                {new: true}
+            )
+        }
+        else {
+            await habit.updateOne({$push:{calendarData}})
+        }
+
         // TODO days missed / days completed
 
-    } catch (err) {
+    } 
+    catch (err) {
         res.status(500).json(err)
     }
 })
