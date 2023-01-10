@@ -37,8 +37,10 @@ router.get('/due-habits/:userId/:dayOfWeek', async(req, res) => {
                 
                 const dayOfWeek = habit.daysToComplete[i].dayOfWeek === req.params.dayOfWeek
                 const toComplete = habit.daysToComplete[i].toComplete === true
-                const alreadyUpdated = habit.calendarData.find(x => x.date === 
-                    `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`)
+                const alreadyUpdated = habit.calendarData.find(x => (
+                    x.date === `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`)
+                    && x.status !== "No data" || undefined
+                )
                 
                     if(dayOfWeek && toComplete && !alreadyUpdated) {
                         dueHabits.push(habit)
@@ -124,14 +126,27 @@ router.put('/:habitId/calendar', async(req, res) => {
         const habit = await Habit.findById(req.params.habitId)
 
         if(habit.calendarData.find(x => x.date === calendarData.date)) {
-            await Habit.findOneAndUpdate(
-                {
-                    _id: req.params.habitId,
-                    'calendarData.date': calendarData.date
-                },
-                {$set: {'calendarData.$.status': calendarData.status}},
-                {new: true}
-            )
+            if(habit.calendarData.find(x => x.status === req.body.status)) {
+                await Habit.findOneAndUpdate(
+                    {
+                        _id: req.params.habitId,
+                        'calendarData.date': calendarData.date
+                    },
+                    {$set: {'calendarData.$.status': "No data"}},
+                    {new: true}
+                )
+            }
+
+            else {
+                await Habit.findOneAndUpdate(
+                    {
+                        _id: req.params.habitId,
+                        'calendarData.date': calendarData.date
+                    },
+                    {$set: {'calendarData.$.status': calendarData.status}},
+                    {new: true}
+                )
+            }
         }
         else {
             await habit.updateOne({$push:{calendarData}})

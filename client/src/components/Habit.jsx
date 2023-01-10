@@ -44,6 +44,7 @@ export default function Habit() {
     }
 
     const calendarButtonClick = async (e) => {
+        // TODO remove data
         try {
             await axios.put(`http://localhost:5000/server/habit/${habitId}/calendar`, {
                 date: `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`,
