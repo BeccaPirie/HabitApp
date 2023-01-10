@@ -24,7 +24,7 @@ export default function Rightbar() {
             }
         }
         fetchHabitsDue()
-    },[userId, dayOfWeek, habitsDue])
+    },[userId, dayOfWeek])
 
     const buttonClick = async (habitId, e) => {
         try {

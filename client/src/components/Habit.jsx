@@ -9,13 +9,13 @@ import TextareaAutosize from "react-autosize-textarea"
 
 export default function Habit() {
     const [habit, setHabit] = useState({})
+    const [isComplete, setIsComplete] = useState(habit.habitCompleted)
     const [date, setDate] = useState(new Date())
     const habitId = useParams().id
-
     const months = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-    ];
+    "July", "August", "September", "October", "November", "December"];
 
+    // set habit
     useEffect(() => {
         const fetchHabit = async () => {
             try {
@@ -26,14 +26,21 @@ export default function Habit() {
             }
         }
         fetchHabit()
-    }, [habit])
+    }, [habitId])
 
+    // set isComplete
+    useEffect(() => {
+        setIsComplete(habit.habitCompleted)
+    }, [habit, habit.habitCompleted])
+
+    // disable future dates on calendar
     const disableFutureDates = ({date, view}) => {
         if (view === "month") {
             return date > new Date()
         }
     }
 
+    // style calendar tiles based on habit data
     const tileClassName = ({date, view}) => {
         const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
 
@@ -43,10 +50,25 @@ export default function Habit() {
         }
     }
 
+    // handle calendar button click
     const calendarButtonClick = async (e) => {
+        const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+
+        const dataMatches = habit.calendarData.find(data => data.date === dateString && data.status === e.target.id)
+        const dataExists = habit.calendarData.find(data => data.date === dateString)
+        if(dataMatches) {
+            // set status to no data or pull from array
+        }
+        else if(dataExists) {
+            // update status with e.target.id
+        }
+        else {
+            // push new array element
+        }
+
         try {
             await axios.put(`http://localhost:5000/server/habit/${habitId}/calendar`, {
-                date: `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`,
+                date: dateString,
                 status: e.target.id
             })
         } catch (err) {
@@ -54,13 +76,25 @@ export default function Habit() {
         }
     }
 
+    // handle complete button click
+    const completeButtonClick = async () => {
+        try {
+            // const updatedHabit = {...habit, habitCompleted: !isComplete}
+            await axios.put(`http://localhost:5000/server/habit/complete/${habit._id}`, {complete:!isComplete})
+        } catch (err) {
+            console.error(err.response.data)
+        }
+        setIsComplete(!isComplete)
+    }
+
     return(
         <StyledHabit>
 
             <div className="habit-top">
                 <h2>{habit.name}</h2> 
-                <button>{habit.habitCompleted ?"Mark habit as incomplete" :
-                "Mark habit as complete"}</button>  
+                <button onClick={completeButtonClick}>
+                    {isComplete ? "Mark habit as incomplete" : "Mark habit as complete"}
+                </button>  
             </div>
 
             <StyledCalendar>

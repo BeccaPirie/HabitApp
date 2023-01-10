@@ -80,23 +80,25 @@ router.delete('/:id/delete', async(req, res) => {
     }
 })
 
-// update habit details
+// update habit
 router.put('/update/:id', async(req, res) => {
     try {
-        const habit = await Habit.findByIdAndUpdate(req.params.id, {$set: req.body})
+        await Habit.findByIdAndUpdate(req.params.id, {$set: req.body})
+        res.json("habit updated")
     } catch (err) {
         res.status(500).json(err)
     }
 })
 
 // mark habit as completed
-router.put('/:id/complete', async(req, res) => {
+router.put('/complete/:id', async(req, res) => {
     try {
         await Habit.findByIdAndUpdate(req.params.id, {
             $set: {
                 habitCompleted: req.body.complete
             }
         })
+        res.json("habit updated")
     } catch (err) {
         res.status(500).json(err)
     }
@@ -110,6 +112,7 @@ router.put('/:id/journal', async(req, res) => {
                 journal: req.body.journal
             }
         })
+        res.json("habit updated")
     } catch (err) {
         res.status(500).json(err)
     }
@@ -153,7 +156,7 @@ router.put('/:habitId/calendar', async(req, res) => {
         }
 
         // TODO days missed / days completed
-
+        res.json("calendar updated")
     } 
     catch (err) {
         res.status(500).json(err)
