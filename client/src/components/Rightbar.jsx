@@ -11,6 +11,8 @@ export default function Rightbar() {
         'default', {weekday: 'long'}
     )
 
+    const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+
     useEffect(() => {
         const fetchHabitsDue = async () => {
             try{
@@ -22,12 +24,12 @@ export default function Rightbar() {
             }
         }
         fetchHabitsDue()
-    },[userId, dayOfWeek])
+    },[userId, dayOfWeek, habitsDue])
 
     const buttonClick = async (habitId, e) => {
         try {
             await axios.put(`http://localhost:5000/server/habit/${habitId}/calendar`, {
-                date: `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`,
+                date: dateString,
                 status: e.target.id
             })
         } catch (err) {

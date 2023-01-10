@@ -34,8 +34,13 @@ router.get('/due-habits/:userId/:dayOfWeek', async(req, res) => {
         const dueHabits = []
         for (const habit of userHabits) {
             for(let i = 0; i < habit.daysToComplete.length; i++) {
-                if(habit.daysToComplete[i].dayOfWeek === req.params.dayOfWeek
-                    && habit.daysToComplete[i].toComplete === true) {
+                
+                const dayOfWeek = habit.daysToComplete[i].dayOfWeek === req.params.dayOfWeek
+                const toComplete = habit.daysToComplete[i].toComplete === true
+                const alreadyUpdated = habit.calendarData.find(x => x.date === 
+                    `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`)
+                
+                    if(dayOfWeek && toComplete && !alreadyUpdated) {
                         dueHabits.push(habit)
                 }
             }
@@ -77,7 +82,6 @@ router.delete('/:id/delete', async(req, res) => {
 router.put('/update/:id', async(req, res) => {
     try {
         const habit = await Habit.findByIdAndUpdate(req.params.id, {$set: req.body})
-        console.log(habit)
     } catch (err) {
         res.status(500).json(err)
     }
