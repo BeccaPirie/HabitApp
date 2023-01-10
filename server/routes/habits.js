@@ -126,7 +126,7 @@ router.put('/:habitId/calendar', async(req, res) => {
         const habit = await Habit.findById(req.params.habitId)
 
         if(habit.calendarData.find(x => x.date === calendarData.date)) {
-            if(habit.calendarData.find(x => x.status === req.body.status)) {
+            if(habit.calendarData.find(x => x.date === calendarData.date && x.status === req.body.status)) {
                 await Habit.findOneAndUpdate(
                     {
                         _id: req.params.habitId,
