@@ -16,12 +16,6 @@ export default function Habit() {
     "July", "August", "September", "October", "November", "December"
     ];
 
-    const disableFutureDates = ({date, view}) => {
-        if (view === "month") {
-            return date > new Date()
-        }
-    }
-
     useEffect(() => {
         const fetchHabit = async () => {
             try {
@@ -32,7 +26,22 @@ export default function Habit() {
             }
         }
         fetchHabit()
-    }, [habitId])
+    }, [habit])
+
+    const disableFutureDates = ({date, view}) => {
+        if (view === "month") {
+            return date > new Date()
+        }
+    }
+
+    const tileClassName = ({date, view}) => {
+        const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+
+        if(Object.keys(habit).length > 0 && view === "month") {
+            const dateData = habit.calendarData.find(data => data.date === dateString)
+            if(dateData !== undefined) return dateData.status
+        }
+    }
 
     const calendarButtonClick = async (e) => {
         try {
@@ -58,7 +67,8 @@ export default function Habit() {
                 <Calendar
                     onChange={setDate}
                     value={date}
-                    tileDisabled={disableFutureDates}/>
+                    tileDisabled={disableFutureDates}
+                    tileClassName={tileClassName}/>
             </StyledCalendar>
 
             <div className="calendar-btns">

@@ -118,4 +118,17 @@ export const StyledCalendar = styled.div`
   .react-calendar--selectRange .react-calendar__tile--hover {
     background-color: #e6e6e6;
   }
+
+  .Completed {
+    background-color: green;
+  }
+  
+  .Skipped {
+    background-color: blue;
+  }
+  
+  .Missed {
+    background-color: red;
+  }
+  
 `
