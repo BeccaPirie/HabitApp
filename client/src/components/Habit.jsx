@@ -14,12 +14,13 @@ export default function Habit() {
     const habitId = useParams().id
     const months = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
+    const userId = "63b0873e52ab88fb84175239"
 
     // set habit
     useEffect(() => {
         const fetchHabit = async () => {
             try {
-                const res =  await axios.get(`http://localhost:5000/server/habit/${habitId}`)            
+                const res =  await axios.get(`http://localhost:5000/server/habit/get-habit/${userId}/${habitId}`)            
                 setHabit(res.data)
             } catch (err) {
                 console.error(err.response.data)
@@ -53,26 +54,27 @@ export default function Habit() {
     // handle calendar button click
     const calendarButtonClick = async (e) => {
         const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-
         const dataMatches = habit.calendarData.find(data => data.date === dateString && data.status === e.target.id)
         const dataExists = habit.calendarData.find(data => data.date === dateString)
-        if(dataMatches) {
-            // set status to no data or pull from array
-        }
-        else if(dataExists) {
-            // update status with e.target.id
+        if(dataMatches || dataExists) {
+            try {
+                await axios.put(`http://localhost:5000/server/habit/${habitId}/update-calendar-data`, {
+                    date: dateString,
+                    status: dataMatches ? "No data" : e.target.id
+                })
+            } catch (err) {
+                console.error(err.response.data)
+            }
         }
         else {
-            // push new array element
-        }
-
-        try {
-            await axios.put(`http://localhost:5000/server/habit/${habitId}/calendar`, {
-                date: dateString,
-                status: e.target.id
-            })
-        } catch (err) {
-            console.error(err.response.data)
+            try {
+                await axios.put(`http://localhost:5000/server/habit/${habitId}/add-calendar-data`, {
+                    date: dateString,
+                    status: e.target.id
+                })
+            } catch (err) {
+                console.error(err.response.data)
+            }
         }
     }
 

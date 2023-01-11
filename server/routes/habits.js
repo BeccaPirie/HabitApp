@@ -5,9 +5,13 @@ import User from '../models/User.js'
 const router = express.Router()
 
 // get habit
-router.get('/:id', async(req, res) => {
+router.get('/get-habit/:userId/:habitId', async(req, res) => {
     try {
-        const habit = await Habit.findOne({_id:req.params.id})
+        const user = await User.findById(req.params.userId)
+        const habit = await Habit.findOne({
+            _id: req.params.habitId,
+            userId: user._id
+        })
         res.json(habit)
     } catch (err) {
         res.status(500).send(err)
@@ -118,47 +122,33 @@ router.put('/:id/journal', async(req, res) => {
     }
 })
 
-// update calendar
-router.put('/:habitId/calendar', async(req, res) => {
+// update calendar data
+router.put('/:id/update-calendar-data', async (req, res) => {
     try {
-        const calendarData = {
-            date: req.body.date,
-            status: req.body.status
-        }
+        await Habit.findOneAndUpdate({
+            _id: req.params.id,
+            'calendarData.date': req.body.date
+        },
+        {$set: {'calendarData.$.status': req.body.status}},
+        {new: true})
+        res.json("Status has been updated")
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
 
-        const habit = await Habit.findById(req.params.habitId)
-
-        if(habit.calendarData.find(x => x.date === calendarData.date)) {
-            if(habit.calendarData.find(x => x.date === calendarData.date && x.status === req.body.status)) {
-                await Habit.findOneAndUpdate(
-                    {
-                        _id: req.params.habitId,
-                        'calendarData.date': calendarData.date
-                    },
-                    {$set: {'calendarData.$.status': "No data"}},
-                    {new: true}
-                )
+// add calendar data
+router.put('/:id/add-calendar-data', async (req, res) => {
+    try {
+        const habit = await Habit.findById(req.params.id)
+        await habit.updateOne({$push:{
+            calendarData: {
+                date: req.body.date,
+                status: req.body.status 
             }
-
-            else {
-                await Habit.findOneAndUpdate(
-                    {
-                        _id: req.params.habitId,
-                        'calendarData.date': calendarData.date
-                    },
-                    {$set: {'calendarData.$.status': calendarData.status}},
-                    {new: true}
-                )
-            }
-        }
-        else {
-            await habit.updateOne({$push:{calendarData}})
-        }
-
-        // TODO days missed / days completed
-        res.json("calendar updated")
-    } 
-    catch (err) {
+            }})
+        res.json("Data has been added")
+    } catch (err) {
         res.status(500).json(err)
     }
 })

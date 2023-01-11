@@ -20,7 +20,7 @@ export default function HabitList() {
             }
         }
         fetchUserHabits()
-    },[userId, userHabits])
+    },[userId])
 
     return(
         <StyledHabitList>
