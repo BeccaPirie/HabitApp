@@ -137,6 +137,20 @@ router.put('/:id/update-calendar-data', async (req, res) => {
     }
 })
 
+// remove calendar data
+router.put('/:id/remove-calendar-data', async(req, res) => {
+    try {
+        await Habit.findOneAndUpdate({
+            _id: req.params.id,
+            'calendarData.date': req.body.date
+        },
+        {$pull: {calendarData: {date: req.body.date}}}),
+        res.json("Data has been removed")
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
 // add calendar data
 router.put('/:id/add-calendar-data', async (req, res) => {
     try {

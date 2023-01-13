@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
 import Calendar from "react-calendar"
@@ -6,12 +6,14 @@ import { StyledCalendar } from "./styles/Calendar.styled"
 import { useParams } from "react-router-dom"
 import { StyledHabit } from "./styles/Habit.styled"
 import TextareaAutosize from "react-autosize-textarea"
+import { HabitContext } from "../context/habit/HabitContext"
 
 export default function Habit() {
     const [habit, setHabit] = useState({})
     const [isComplete, setIsComplete] = useState(habit.habitCompleted)
     const [date, setDate] = useState(new Date())
     const habitId = useParams().id
+    const { userHabits, dispatch } = useContext(HabitContext)
     const months = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
     const userId = "63b0873e52ab88fb84175239"
@@ -27,7 +29,7 @@ export default function Habit() {
             }
         }
         fetchHabit()
-    }, [habitId])
+    }, [habitId, userHabits])
 
     // set isComplete
     useEffect(() => {
@@ -56,12 +58,25 @@ export default function Habit() {
         const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
         const dataMatches = habit.calendarData.find(data => data.date === dateString && data.status === e.target.id)
         const dataExists = habit.calendarData.find(data => data.date === dateString)
-        if(dataMatches || dataExists) {
+        if(dataMatches) {
+            try {
+                await axios.put(`http://localhost:5000/server/habit/${habitId}/remove-calendar-data`, {
+                    date: dateString,
+                })
+                dispatch({ type: 'REMOVE_FROM_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
+
+            } catch (err) {
+                console.error(err.response.data)
+            }
+        }
+        else if(dataExists) {
             try {
                 await axios.put(`http://localhost:5000/server/habit/${habitId}/update-calendar-data`, {
                     date: dateString,
-                    status: dataMatches ? "No data" : e.target.id
+                    status:  e.target.id
                 })
+                dispatch({ type: 'UPDATE_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
+
             } catch (err) {
                 console.error(err.response.data)
             }
@@ -72,6 +87,7 @@ export default function Habit() {
                     date: dateString,
                     status: e.target.id
                 })
+                dispatch({ type: 'ADD_TO_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
             } catch (err) {
                 console.error(err.response.data)
             }
