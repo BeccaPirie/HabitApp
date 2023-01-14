@@ -18,6 +18,37 @@ const HabitReducer = (state, action) => {
                 isFetching: false,
                 error: true
             }
+        case "ADD_HABIT":
+            return {
+                ...state,
+                userHabits: [...state.userHabits, action.payload]
+            }
+        case "UPDATE_HABIT":
+            return {
+                ...state,
+                userHabits: state.userHabits.map(habit => habit._id === action.payload._id ? 
+                    action.payload
+                : habit)    
+            }
+        case "DELETE_HABIT":
+            return {
+                ...state,
+                userHabits: state.userHabits.filter(habit => habit._id !== action.payload)
+            }
+        case "COMPLETE_HABIT":
+            return {
+                ...state,
+                userHabits: state.userHabits.map(habit => habit._id === action.payload.id ? {
+                    ...habit, habitCompleted: action.payload.complete
+                } : habit)
+            }
+        case "UPDATE_JOURNAL":
+            return {
+                ...state,
+                userHabits: state.userHabits.map(habit => habit._id === action.payload.id ? {
+                    ...habit, journal: action.payload.journal
+                }: habit)
+            }
         case "UPDATE_CALENDAR":
             return {
                 ...state,
@@ -39,7 +70,6 @@ const HabitReducer = (state, action) => {
                     }]
                 } : habit)
             }
-        // TODO FIX
         case "REMOVE_FROM_CALENDAR":
             return {
                 ...state,

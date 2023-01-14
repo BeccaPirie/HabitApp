@@ -13,10 +13,34 @@ export const FetchFail = () => ({
 })
 
 // add habit
-// edit habit
+export const AddHabit = (habit) => ({
+    type: "ADD_HABIT",
+    payload: habit
+})
+
+// update habit
+export const UpdateHabit = (habit) => ({
+    type: "UPDATE_HABIT",
+    payload: habit
+})
+
 // delete habit
+export const DeleteHabit = (habit) => ({
+    type: "DELETE_HABIT",
+    payload: habit
+})
+
 // mark as complete
+export const CompleteHabit = (habit) => ({
+    type: "COMPLETE_HABIT",
+    payload: habit
+})
+
 // update journal
+export const UpdateJournal = (habit) => ({
+    type: "UPDATE_JOURNAL",
+    payload: habit
+})
 
 // update calendar
 export const UpdateCalendar = ( habits ) => ({

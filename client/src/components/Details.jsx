@@ -1,17 +1,20 @@
 import axios from "axios"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useParams } from "react-router-dom"
 import { Form } from "./styles/Form.styled"
 import TextareaAutosize from "react-autosize-textarea"
+import { HabitContext } from "../context/habit/HabitContext"
 
 export default function Details() {
     const habitId = useParams().id
     const [habit, setHabit] = useState({})
+    const { dispatch } = useContext(HabitContext)
+    const userId = "63b0873e52ab88fb84175239"
 
     useEffect(() => {
         const fetchHabit = async() => {
             try {
-               const res = await axios.get(`http://localhost:5000/server/habit/${habitId}`)
+               const res = await axios.get(`http://localhost:5000/server/habit/get-habit/${userId}/${habitId}`)
                 setHabit(res.data) 
             } catch (err) {
             console.error(err.response.data)
@@ -25,6 +28,7 @@ export default function Details() {
 
         try {
             await axios.put(`http://localhost:5000/server/habit/update/${habit._id}`, habit)
+            dispatch({type: "UPDATE_HABIT", payload: habit})
         } catch (err) {
             console.error(err.response.data)
         }

@@ -109,14 +109,14 @@ router.put('/complete/:id', async(req, res) => {
 })
 
 // update journal
-router.put('/:id/journal', async(req, res) => {
+router.put('/journal/:id', async(req, res) => {
     try {
         await Habit.findByIdAndUpdate(req.params.id, {
             $set: {
                 journal: req.body.journal
             }
         })
-        res.json("habit updated")
+        res.json("journal updated")
     } catch (err) {
         res.status(500).json(err)
     }

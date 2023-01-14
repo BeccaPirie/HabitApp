@@ -11,6 +11,7 @@ import { HabitContext } from "../context/habit/HabitContext"
 export default function Habit() {
     const [habit, setHabit] = useState({})
     const [isComplete, setIsComplete] = useState(habit.habitCompleted)
+    const [journal, setJournal] = useState(habit.journal)
     const [date, setDate] = useState(new Date())
     const habitId = useParams().id
     const { userHabits, dispatch } = useContext(HabitContext)
@@ -35,6 +36,10 @@ export default function Habit() {
     useEffect(() => {
         setIsComplete(habit.habitCompleted)
     }, [habit, habit.habitCompleted])
+
+    useEffect(() => {
+        setJournal(habit.journal)
+    }, [habit, habit.journal])
 
     // disable future dates on calendar
     const disableFutureDates = ({date, view}) => {
@@ -97,10 +102,24 @@ export default function Habit() {
         try {
             // const updatedHabit = {...habit, habitCompleted: !isComplete}
             await axios.put(`http://localhost:5000/server/habit/complete/${habit._id}`, {complete:!isComplete})
+            dispatch({type: 'COMPLETE_HABIT', payload: {id: habit._id, complete: !isComplete}})
         } catch (err) {
             console.error(err.response.data)
         }
         setIsComplete(!isComplete)
+    }
+
+    // handle journal button click
+    const journalButtonClick = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.put(`http://localhost:5000/server/habit/journal/${habit._id}`, {
+                journal: journal
+            })
+            dispatch({type: 'UPDATE_JOURNAL', payload: {id:habit._id, journal: journal}})
+        } catch (err) {
+            console.error(err.response.data)
+        }
     }
 
     return(
@@ -127,14 +146,19 @@ export default function Habit() {
                 <button id="Completed" onClick={((e) => calendarButtonClick(e))}>Completed</button>
             </div>
 
-            <form>
+            <form onSubmit={(e)=> journalButtonClick(e)}>
                <label htmlFor="journal">
                     {`Journal entry for ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`}
                 </label>
                 <TextareaAutosize
                     id="journal"
                     rows={15}
-                /> 
+                    value={journal || ''}
+                    onChange={e => setJournal(e.target.value)}
+                />
+                <div>
+                    <button>Save</button>
+                </div>
             </form>
 
             {/* chart */}
