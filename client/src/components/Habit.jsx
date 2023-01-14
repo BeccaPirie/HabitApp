@@ -29,7 +29,7 @@ export default function Habit() {
             }
         }
         fetchHabit()
-    }, [habitId, userHabits])
+    }, [userId, habitId, userHabits])
 
     // set isComplete
     useEffect(() => {
@@ -64,7 +64,6 @@ export default function Habit() {
                     date: dateString,
                 })
                 dispatch({ type: 'REMOVE_FROM_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
-
             } catch (err) {
                 console.error(err.response.data)
             }
@@ -76,7 +75,6 @@ export default function Habit() {
                     status:  e.target.id
                 })
                 dispatch({ type: 'UPDATE_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
-
             } catch (err) {
                 console.error(err.response.data)
             }

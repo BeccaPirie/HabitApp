@@ -10,8 +10,6 @@ export default function Rightbar() {
     const dayOfWeek = date.toLocaleString('default', {weekday: 'long'})
     const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
 
-    console.log(userHabits)
-
     useEffect(() => {
         if(userHabits) {
             const dueHabits = []
