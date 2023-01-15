@@ -36,8 +36,7 @@ export default function Add() {
 
         try {
             const res = await axios.post("http://localhost:5000/server/habit/add", newHabit)
-            dispatch({type: "ADD_HABIT", payload: newHabit})
-            //TODO navigate to habit component
+            dispatch({type: "ADD_HABIT", payload: res.data})
             navigate(`/${res.data._id}`)
         } catch (err) {
             console.error(err.response.data)

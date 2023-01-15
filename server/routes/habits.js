@@ -59,13 +59,7 @@ router.get('/due-habits/:userId/:dayOfWeek', async(req, res) => {
 
 // add habit
 router.post('/add', async(req, res) => {
-    const habit = new Habit({
-        userId: req.body.userId,
-        name: req.body.name,
-        eventCues: req.body.eventCues,
-        preventingActions: req.body.preventingActions,
-        intentions: req.body.intentions
-    })
+    const habit = new Habit(req.body)
     try {
         const newHabit = await habit.save()
         res.json(newHabit)
