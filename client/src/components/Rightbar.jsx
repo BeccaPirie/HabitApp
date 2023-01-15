@@ -11,37 +11,20 @@ export default function Rightbar() {
     const dayOfWeek = date.toLocaleString('default', {weekday: 'long'})
     const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
 
+    // get habits due
     useEffect(() => {
-        if(userHabits) {
-            const dueHabits = []
-            for (const habit of userHabits) {
-                if (habit.habitCompleted) continue
-                for(let i = 0; i < habit.daysToComplete.length; i++) {
-                    if(habit.daysToComplete[i].dayOfWeek !== dayOfWeek) continue
-                    if(habit.daysToComplete[i].toComplete !== true) continue
-                    const date = habit.calendarData.find(x => x.date === dateString)
-                        if(!date) {
-                            dueHabits.push(habit)
-                    }
-                }
-            }
-        setHabitsDue(dueHabits) 
+        if(userHabits) {            
+            const dueHabits = userHabits.filter(habit => {
+                const notComplete = !habit.habitCompleted
+                const toCompleteToday = habit.daysToComplete.find(day => day.dayOfWeek === dayOfWeek && day.toComplete)
+                const data = habit.calendarData.find(data => data.date === dateString)
+                return notComplete && toCompleteToday && !data
+            })
+            setHabitsDue(dueHabits)
         }
     }, [dayOfWeek, dateString, userHabits])
 
-    // useEffect(() => {
-    //     const fetchHabitsDue = async () => {
-    //         try{
-    //             const res = await axios.get(`http://localhost:5000/server/habit/due-habits/${userId}/${dayOfWeek}`)
-    //             setHabitsDue(res.data)
-    //         }
-    //         catch(err) {
-    //             console.error(err.response.data)
-    //         }
-    //     }
-    //     fetchHabitsDue()
-    // },[userId, dayOfWeek])
-
+    // add data for current day
     const buttonClick = async (habitId, e) => {
         try {
             await axios.put(`http://localhost:5000/server/habit/${habitId}/add-calendar-data`, {

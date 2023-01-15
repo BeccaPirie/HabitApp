@@ -29,34 +29,6 @@ router.get('/get-habits/:userId', async(req, res) => {
     }
 })
 
-// get habits due on current day
-router.get('/due-habits/:userId/:dayOfWeek', async(req, res) => {
-    try {
-        const user = await User.findById(req.params.userId)
-        const userHabits = await Habit.find({userId:user._id})
-
-        const dueHabits = []
-        for (const habit of userHabits) {
-            for(let i = 0; i < habit.daysToComplete.length; i++) {
-                
-                const dayOfWeek = habit.daysToComplete[i].dayOfWeek === req.params.dayOfWeek
-                const toComplete = habit.daysToComplete[i].toComplete === true
-                const alreadyUpdated = habit.calendarData.find(x => (
-                    x.date === `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`)
-                    && x.status !== "No data" || undefined
-                )
-                
-                    if(dayOfWeek && toComplete && !alreadyUpdated) {
-                        dueHabits.push(habit)
-                }
-            }
-        }
-        res.json(dueHabits)
-    } catch (err) {
-        res.status(500).json(err)
-    }
-})
-
 // add habit
 router.post('/add', async(req, res) => {
     const habit = new Habit(req.body)
