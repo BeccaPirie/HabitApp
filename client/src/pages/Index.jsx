@@ -2,7 +2,6 @@ import Rightbar from "../components/Rightbar"
 import { PageContainer } from "../components/styles/PageContainer.styled"
 import { Outlet } from 'react-router-dom'
 import { MainContainer } from "../components/styles/MainContainer.styled"
-// import Navbar from "../components/Navbar"
 import HabitList from "../components/HabitList"
 import { useEffect, useContext } from "react"
 import axios from "axios"
@@ -26,24 +25,15 @@ export default function Index({lg}) {
         fetchUserHabits()
     },[userId, dispatch])
 
-    if(lg) {
-        return(
-            <>
-                <PageContainer>
-                    <HabitList />
-                    {/* <Navbar /> */}
-                    <MainContainer>
-                        <Outlet />
-                    </MainContainer>
-                    <Rightbar />
-                </PageContainer>
-            </>
-        )}
-    else {
-        return(
-            <>
-                <Outlet />
-            </>
-        )
-    }
+    return(
+        <>
+            <PageContainer> 
+                {lg && <HabitList />}
+                <MainContainer>
+                    <Outlet />
+                </MainContainer>
+                {lg && <Rightbar />}
+            </PageContainer>
+        </>
+    )
 }
