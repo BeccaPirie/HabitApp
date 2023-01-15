@@ -76,9 +76,10 @@ router.post('/add', async(req, res) => {
 })
 
 // delete habit
-router.delete('/:id/delete', async(req, res) => {
+router.delete('/delete/:id', async(req, res) => {
     try {
         await Habit.findByIdAndDelete(req.params.id)
+        res.json("habit deleted")
     } catch (err) {
         res.status(500).json(err)
     }

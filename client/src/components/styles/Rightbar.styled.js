@@ -5,8 +5,14 @@ export const StyledRightbar = styled.div`
     display: flex;    
 }
 
-.name {
+.item:hover {
+    background-color: rgb(248, 248, 248);
+}
+
+a {
     flex: 6;
+    color: black;
+    text-decoration: none;
 }
 
 .btn-div {

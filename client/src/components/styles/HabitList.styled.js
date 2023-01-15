@@ -25,6 +25,11 @@ export const StyledHabitList = styled.div`
         background-color: rgb(248, 248, 248);
     }
 
+    .habitListItem-true {
+        background-color: rgb(248, 248, 248);
+        text-decoration: line-through;
+    }
+
     a {
         text-decoration: none;
         color: black;

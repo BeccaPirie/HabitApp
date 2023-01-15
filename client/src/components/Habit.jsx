@@ -15,8 +15,8 @@ export default function Habit() {
     const [date, setDate] = useState(new Date())
     const habitId = useParams().id
     const { userHabits, dispatch } = useContext(HabitContext)
-    const months = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
+    // const months = ["January", "February", "March", "April", "May", "June",
+    // "July", "August", "September", "October", "November", "December"];
     const userId = "63b0873e52ab88fb84175239"
 
     // set habit
@@ -37,6 +37,7 @@ export default function Habit() {
         setIsComplete(habit.habitCompleted)
     }, [habit, habit.habitCompleted])
 
+    // set journal
     useEffect(() => {
         setJournal(habit.journal)
     }, [habit, habit.journal])
@@ -116,7 +117,7 @@ export default function Habit() {
             await axios.put(`http://localhost:5000/server/habit/journal/${habit._id}`, {
                 journal: journal
             })
-            dispatch({type: 'UPDATE_JOURNAL', payload: {id:habit._id, journal: journal}})
+            dispatch({type: 'UPDATE_JOURNAL', payload: {id: habit._id, journal: journal}})
         } catch (err) {
             console.error(err.response.data)
         }
@@ -148,7 +149,8 @@ export default function Habit() {
 
             <form onSubmit={(e)=> journalButtonClick(e)}>
                <label htmlFor="journal">
-                    {`Journal entry for ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`}
+                    {/* {`Journal entry for ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`} */}
+                    Journal notes
                 </label>
                 <TextareaAutosize
                     id="journal"

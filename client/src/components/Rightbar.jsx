@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react"
 import axios from "axios"
 import { StyledRightbar } from "./styles/Rightbar.styled"
 import { HabitContext } from "../context/habit/HabitContext"
+import { Link } from "react-router-dom"
 
 export default function Rightbar() {
     const [habitsDue, setHabitsDue] = useState([])
@@ -14,7 +15,7 @@ export default function Rightbar() {
         if(userHabits) {
             const dueHabits = []
             for (const habit of userHabits) {
-                if (habit.toComplete) continue
+                if (habit.habitCompleted) continue
                 for(let i = 0; i < habit.daysToComplete.length; i++) {
                     if(habit.daysToComplete[i].dayOfWeek !== dayOfWeek) continue
                     if(habit.daysToComplete[i].toComplete !== true) continue
@@ -60,9 +61,9 @@ export default function Rightbar() {
                 {habitsDue ?
                  habitsDue.map((habit) => (
                     <div className="item" key={habit._id}>
-                        <span className="name">
-                            {habit.name}
-                        </span>
+                        <Link to={`/${habit._id}`}>
+                            <span className="name">{habit.name}</span>
+                        </Link>
                         <div className="btn-div">
                             <button id="Completed" onClick={((e) => buttonClick(habit._id, e))}>yes</button>
                             <button id="Skipped" onClick={((e) => buttonClick(habit._id, e))}>skip</button>

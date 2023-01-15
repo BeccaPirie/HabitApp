@@ -1,8 +1,10 @@
-import { useRef, useContext } from "react"
+import { useRef, useContext, useState } from "react"
 import axios from "axios"
 import { Form } from "./styles/Form.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
+import { useNavigate } from "react-router-dom"
+import { checkboxes } from "../checkboxes"
 
 export default function Add() {
     const userId = '63b0873e52ab88fb84175239'
@@ -11,6 +13,8 @@ export default function Add() {
     const actions = useRef()
     const intentions = useRef()
     const { dispatch } = useContext(HabitContext)
+    const navigate = useNavigate()
+    const [daysToComplete, setDaysToComplete] = useState(checkboxes)
 
     const submitFunction = async(e) => {
         e.preventDefault()
@@ -19,7 +23,7 @@ export default function Add() {
             userId: userId,
             name: name.current.value,
             eventCues: cue.current.value,
-            daysToComplete: [],
+            daysToComplete: daysToComplete,
             calendarData: [],
             notificationFrequency: 1,
             daysCompleted: 0,
@@ -31,45 +35,76 @@ export default function Add() {
         }
 
         try {
-            await axios.post("http://localhost:5000/server/habit/add", newHabit)
+            const res = await axios.post("http://localhost:5000/server/habit/add", newHabit)
             dispatch({type: "ADD_HABIT", payload: newHabit})
+            //TODO navigate to habit component
+            navigate(`/${res.data._id}`)
         } catch (err) {
             console.error(err.response.data)
         }
     }
+
+    const onChangeFunction = (dayOfWeek) => {
+        const updateToComplete = checkboxes.map((day) => 
+            day.dayOfWeek === dayOfWeek ? {...day, toComplete: !day.toComplete} : {...day, toComplete: day.toComplete}
+        )
+        console.log(updateToComplete)
+        setDaysToComplete(updateToComplete)
+    }
+
     return(
-            <Form onSubmit={submitFunction}>
-                <label htmlFor="habitName">Habit Name</label>
-                <input
-                    id="habitName"
-                    type="text"
-                    ref={name}
-                    required />
+        <Form onSubmit={submitFunction}>
+            <label htmlFor="habitName">Habit Name</label>
+            <input
+                id="habitName"
+                type="text"
+                ref={name}
+                required />
 
-                <label htmlFor="eventCues">Event-based cue</label>
-                <TextareaAutosize
-                    id="eventCues"
-                    rows={5}
-                    ref={cue}
-                    required />
+            <label htmlFor="eventCues">Event-based cue</label>
+            <TextareaAutosize
+                id="eventCues"
+                rows={5}
+                ref={cue}
+                required />
+                
+            <p>Select days of the week to complete the habit</p>
+            <ul>
+                {daysToComplete.map(({dayOfWeek, toComplete}) => {
+                    return(
+                        <li key={dayOfWeek}>
+                            <input 
+                                type="checkbox"
+                                className="formCheckbox"
+                                id={dayOfWeek}
+                                name={dayOfWeek}
+                                value={dayOfWeek}
+                                checked={toComplete}
+                                onChange={() => onChangeFunction(dayOfWeek)}
+                            />
+                            <label htmlFor={dayOfWeek}>{dayOfWeek}</label>
+                        </li>
+                    )
+                })}
+            </ul>
 
-                <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
-                <TextareaAutosize
-                    id="preventingActions"
-                    rows={10}
-                    ref={actions}
-                    required />
+            <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
+            <TextareaAutosize
+                id="preventingActions"
+                rows={10}
+                ref={actions}
+                required />
 
-                <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
-                <TextareaAutosize
-                    id="intention"
-                    rows={10}
-                    ref={intentions}
-                    required />
+            <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
+            <TextareaAutosize
+                id="intention"
+                rows={10}
+                ref={intentions}
+                required />
 
-                <div>
-                    <button>Add habit</button>
-                </div>
-            </Form>
+            <div>
+                <button>Add habit</button>
+            </div>
+        </Form>
     )
 }

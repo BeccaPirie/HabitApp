@@ -4,19 +4,22 @@ export const Form = styled.form`
 margin: 30px auto;
 padding: 20px;
 
-label {
+label:not(li label) {
     display: block;
 }
 
 input, textarea {
-    width: 100%;
-
     :focus {
         outline: none;
     }
 }
 
-input {
+textarea {
+    width: 95%;
+}
+
+input:not(li input) {
+    width: 100%;
     padding: 5px 0;
     border: none;
 	border-bottom:3px solid #000;
@@ -29,5 +32,14 @@ textarea {
     border-radius:12px;
 	-webkit-border-radius:12px;
     resize: none;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    margin-left: -30px;
+    padding: 8px;
 }
 `

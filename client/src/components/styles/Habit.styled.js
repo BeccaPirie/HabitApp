@@ -47,8 +47,6 @@ label {
 }
 
 .details-btn {
-    // border: none;
-    // background-color: transparent;
     float: right;
 
     :hover {

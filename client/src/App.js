@@ -13,7 +13,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Index lg={lg}/>}>
-          <Route path='' element={<NoSelection />}></Route>
+          <Route path='' element={<NoSelection lg={lg}/>}></Route>
           <Route path=':id' element={<Habit />}></Route>
           <Route path='add' element={<Add />}></Route>
           <Route path=':id/Details' element={<Details />}></Route>
