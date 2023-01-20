@@ -3,8 +3,6 @@ import { useContext, useEffect, useState } from "react"
 import { StyledHabitList } from "./styles/HabitList.styled"
 import { HabitContext } from "../context/habit/HabitContext"
 
-// TODO handle different viewport sizes
-
 export default function HabitList() {
     const { userHabits } = useContext(HabitContext)
     const [sortedHabits, setSortedHabits] = useState([])
@@ -12,8 +10,8 @@ export default function HabitList() {
     // sort habits
     useEffect(() => {
         if(userHabits) {
-        const uncompleted = userHabits.filter(habit => habit.habitCompleted === false)
-        const completed = userHabits.filter(habit => habit.habitCompleted === true)
+        const uncompleted = userHabits.filter(habit => !habit.habitCompleted)
+        const completed = userHabits.filter(habit => habit.habitCompleted)
         setSortedHabits(uncompleted.concat(completed))
         }
     }, [userHabits])

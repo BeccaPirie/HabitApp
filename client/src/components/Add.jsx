@@ -47,7 +47,6 @@ export default function Add() {
         const updateToComplete = checkboxes.map((day) => 
             day.dayOfWeek === dayOfWeek ? {...day, toComplete: !day.toComplete} : {...day, toComplete: day.toComplete}
         )
-        console.log(updateToComplete)
         setDaysToComplete(updateToComplete)
     }
 

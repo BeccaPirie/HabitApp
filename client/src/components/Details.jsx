@@ -52,7 +52,6 @@ export default function Details() {
         const updateToComplete = habit.daysToComplete.map((day) => 
             day.dayOfWeek === dayOfWeek ? {...day, toComplete: !day.toComplete} : {...day, toComplete: day.toComplete}
         )
-        console.log(updateToComplete)
         setHabit({...habit, daysToComplete: updateToComplete})
     }
 
