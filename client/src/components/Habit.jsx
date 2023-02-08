@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom"
 import { StyledHabit } from "./styles/Habit.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
+import Chart from "./Chart"
 
 export default function Habit() {
     const [habit, setHabit] = useState({})
@@ -15,8 +16,6 @@ export default function Habit() {
     const [date, setDate] = useState(new Date())
     const habitId = useParams().id
     const { userHabits, dispatch } = useContext(HabitContext)
-    // const months = ["January", "February", "March", "April", "May", "June",
-    // "July", "August", "September", "October", "November", "December"];
     const userId = "63b0873e52ab88fb84175239"
 
     // set habit
@@ -149,7 +148,6 @@ export default function Habit() {
 
             <form onSubmit={(e)=> journalButtonClick(e)}>
                <label htmlFor="journal">
-                    {/* {`Journal entry for ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`} */}
                     Journal notes
                 </label>
                 <TextareaAutosize
@@ -163,7 +161,7 @@ export default function Habit() {
                 </div>
             </form>
 
-            {/* chart */}
+            <Chart data={habit.calendarData}/>
             
             <Link to={`/${habitId}/details`}>
                <button className="details-btn">Details</button> 
