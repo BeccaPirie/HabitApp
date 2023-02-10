@@ -12,6 +12,7 @@ export default function Chart({data}) {
     const [view, setView] = useState("week")
     const [chartData, setChartData] = useState([])
     const [xAxis, setXAxis] = useState([])
+    const [yAxisMax, setYAxisMax] = useState()
 
     // chart options
     const option = {
@@ -22,7 +23,7 @@ export default function Chart({data}) {
             source: chartData
         },
         xAxis: {type: 'category', data: xAxis},
-        yAxis: {type: 'value', min: 0, max: 7},
+        yAxis: {type: 'value', min: 0, max: yAxisMax},
         series: [{type: 'bar'}, {type: 'bar'}, {type: 'bar'}]
     }
 
@@ -40,25 +41,28 @@ export default function Chart({data}) {
             return dates
         }
 
-        // set x axis to first day of week
+        // set x axis to first day of week and max y axis to 7
         if(view === 'week') {
-          weeks.forEach(week => {
-            const dates = getWeekRange(week)
-            setXAxis(currentDates => [dates[0], ...currentDates] )
+            weeks.forEach(week => {
+                const dates = getWeekRange(week)
+                setXAxis(currentDates => [dates[0], ...currentDates] )
             })
+          setYAxisMax(7)
         }
-        // set x axis to month name
+        // set x axis to month name and max y axis to 31
         else if(view === 'month') {
             months.forEach(month => {
                 const monthName = moment().month(month + 1).format('MMM')
                 setXAxis(currentMonths => [monthName, ...currentMonths])
             })
+            setYAxisMax(31)
         }
         else if(view === 'year') {
             year.forEach(month => {
                 const monthName = moment().month(month + 1).format('MMM')
                 setXAxis(currentMonths => [monthName, ...currentMonths])
             })
+            setYAxisMax(31)
         }
 
     }, [view])
@@ -86,7 +90,6 @@ export default function Chart({data}) {
         
         // set data label
         const setLabel = (label) => {
-            console.log(label)
             if(view === 'week') return label
             else if(view === 'month' || view === 'year') {
                 return moment(label, 'DD/MM/YYYY').format('MMM')
