@@ -5,6 +5,8 @@ import _ from "lodash"
 import { useState, useEffect } from "react"
 
 const weeks = [0, -1, -2, -3]
+const months = [0, -1, -2, -3, -4, -5]
+const year = [0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11]
 
 export default function Chart({data}) {
     const [view, setView] = useState("week")
@@ -31,19 +33,35 @@ export default function Chart({data}) {
         // get dates for past four weeks
         const getWeekRange = (week) => {
             const weekStart = moment().add(week, 'weeks').startOf('week')
-            const days = []
+            const dates = []
             for (let i = 0; i < 7; i++) {
-                days.push(weekStart.clone().add(i, 'day').format('DD/MM/YY'))
+                dates.push(weekStart.clone().add(i, 'day').format('DD/MM/YY'))
             }
-            return days
+            return dates
         }
 
-        // use the start date of each week for x axis
-        weeks.forEach(week => {
+        // set x axis to first day of week
+        if(view === 'week') {
+          weeks.forEach(week => {
             const dates = getWeekRange(week)
             setXAxis(currentDates => [dates[0], ...currentDates] )
-        })
-    }, [])
+            })
+        }
+        // set x axis to month name
+        else if(view === 'month') {
+            months.forEach(month => {
+                const monthName = moment().month(month + 1).format('MMM')
+                setXAxis(currentMonths => [monthName, ...currentMonths])
+            })
+        }
+        else if(view === 'year') {
+            year.forEach(month => {
+                const monthName = moment().month(month + 1).format('MMM')
+                setXAxis(currentMonths => [monthName, ...currentMonths])
+            })
+        }
+
+    }, [view])
 
     // set chart data
     useEffect(() => {
@@ -64,11 +82,26 @@ export default function Chart({data}) {
                 date: reformatDate(date),
                 ...data
             }))
-        }       
+        }
+        
+        // set data label
+        const setLabel = (label) => {
+            console.log(label)
+            if(view === 'week') return label
+            else if(view === 'month' || view === 'year') {
+                return moment(label, 'DD/MM/YYYY').format('MMM')
+            }
+        }
 
-        // group calendar data by week
-        const sort = _.groupBy(reformatData, (data) => moment(data.date, 'YYYY-MM-DD').startOf(view).format('DD/MM/YY')) 
-
+        // group calendar data
+        let sort
+        if(view === 'week') {
+            sort = _.groupBy(reformatData, (data) => moment(data.date, 'YYYY-MM-DD').startOf('week').format('DD/MM/YY'))
+        }
+        else if(view === 'month' || view === 'year') {
+            sort = _.groupBy(reformatData, (data) => moment(data.date, 'YYYY-MM-DD').startOf('month').format('DD/MM/YY'))            
+        }
+        
         // count the occurence of each status value and add to chart data
         Object.entries(sort).forEach(([label, value]) => {
             if(moment(label, 'DD/MM/YY').isBefore(moment(xAxis[0], 'DD/MM/YY'))) return
@@ -79,21 +112,22 @@ export default function Chart({data}) {
             }, {})
 
             const chartData = {
-                date: label,
+                date: setLabel(label),
                 Completed: chartValues.Completed || 0,
                 Skipped: chartValues.Skipped || 0,
                 Missed: chartValues.Missed || 0
             }
-            setChartData(currentData => [...currentData, chartData])    
+            setChartData(currentData => [...currentData, chartData])
         })
+
     }, [data, view, xAxis])
 
     return(
         <StyledChart>
             <ReactEcharts option={option} />
             <button onClick={() => setView('week')}>Past 4 Weeks</button>
-            <button>Past 6 Months</button>
-            <button>Past Year</button>
+            <button onClick={() => setView('month')}>Past 6 Months</button>
+            <button onClick={() => setView('year')}>Past Year</button>
         </StyledChart>
     )
 }
