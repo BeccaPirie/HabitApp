@@ -5,9 +5,12 @@ import Details from './components/Details'
 import Add from './components/Add'
 import Habit from './components/Habit'
 import NoSelection from './components/NoSelection'
+import { requestNotificationPermission } from './firebaseAdmin'
 
 export default function App() {
-  const lg = useMediaQuery('(min-width:660px)');
+  const lg = useMediaQuery('(min-width:660px)')
+
+  requestNotificationPermission()
 
   return (
     <BrowserRouter>
