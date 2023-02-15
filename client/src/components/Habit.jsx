@@ -8,6 +8,7 @@ import { StyledHabit } from "./styles/Habit.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
 import Chart from "./Chart"
+import notificationSettings from "../notifications.js"
 
 export default function Habit() {
     const [habit, setHabit] = useState({})
@@ -95,6 +96,9 @@ export default function Habit() {
                 console.error(err.response.data)
             }
         }
+
+        // TODO check if notification frequency needs to be updated
+        notificationSettings(habit)
     }
 
     // handle complete button click
