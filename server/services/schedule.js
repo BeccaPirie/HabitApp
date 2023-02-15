@@ -1,6 +1,5 @@
 import scheduleLib from "node-schedule"
-// import firebaseAdmin from "../firebaseAdmin.js"
-import {messaging} from '../firebaseAdmin.js'
+import {messaging} from './firebaseAdmin.js'
 import Notification from "../models/Notification.js"
 import User from "../models/User.js"
 

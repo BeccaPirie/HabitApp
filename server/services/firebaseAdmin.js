@@ -1,5 +1,3 @@
-// code from https://izaanjahangir.medium.com/setting-schedule-push-notification-using-node-js-and-mongodb-95f73c00fc2e
-
 import admin from 'firebase-admin'
 import serviceAccount from './service-account.js'
 
