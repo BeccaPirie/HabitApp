@@ -10,7 +10,8 @@ router.post('/set-notification/:userId', async(req, res) => {
             message: req.body.message,
             days: req.body.days,
             time: req.body.time,
-            userId: req.params.userId
+            userId: req.params.userId,
+            tokens: []
         }
         const notification = await schedule.createSchedule(notificationData)
         res.json(notification)

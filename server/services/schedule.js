@@ -1,5 +1,6 @@
 import scheduleLib from "node-schedule"
-import firebaseAdmin from "../firebaseAdmin.js"
+// import firebaseAdmin from "../firebaseAdmin.js"
+import {messaging} from '../firebaseAdmin.js'
 import Notification from "../models/Notification.js"
 import User from "../models/User.js"
 
@@ -25,25 +26,16 @@ schedule.createSchedule = async function (data) {
         scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () =>
         {
             const user = await User.find(data.userId)
-            // const chunks = _.chunk(users, 500)
+            const tokens = []
+            // TODO check if there is a token for user
 
-            // const promises = chunks.map((u) => {
-            // const tokens = []
-            // u.forEach((item) => {
-            //     if (item.token) {
-            //         tokens.push(item.token)
-            //     }
-            // })
-
-            // const payload = {
-            //     tokens,
-            //     title: data.title,
-            //     body: data.body,
-            // };
-            return firebaseAdmin.sendMulticastNotification(payload);
+            const payload = {
+                tokens,
+                title: data.title,
+                body: data.body,
+            };
+            return messaging.sendMulticast(payload);
         })
-            // await Promise.all(promises)
-        // })
     } catch (e) {
             return res.status(500).send(err)
     }

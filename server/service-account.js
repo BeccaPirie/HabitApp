@@ -4,7 +4,7 @@ dotenv.config()
 const serviceAccount = {
   "type": "service_account",
   "project_id": "habit-app-8c594",
-  "private_key_id": "2c85fb8fd859f11449c9e144b130e2040bb015fe",
+  "private_key_id": process.env.PRIVATE_KEY_ID,
   "private_key": process.env.PRIVATE_KEY,
   "client_email": "firebase-adminsdk-onr3d@habit-app-8c594.iam.gserviceaccount.com",
   "client_id": "109711243227796054665",
