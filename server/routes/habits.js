@@ -1,6 +1,7 @@
 import express from 'express'
 import Habit from '../models/Habit.js'
 import User from '../models/User.js'
+import protect from '../middleware/auth.js'
 
 const router = express.Router()
 

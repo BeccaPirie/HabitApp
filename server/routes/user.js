@@ -1,7 +1,7 @@
 import express from 'express'
-import Habit from '../models/Habit.js'
 import User from '../models/User.js'
 import bcrypt from 'bcrypt'
+import protect from '../middleware/auth.js'
 
 const router = express.Router()
 
@@ -63,35 +63,13 @@ router.delete('/:id', async(req, res) => {
     }
 })
 
-// get users habits
-// router.get('/get-habits/:id', async(req, res) => {
-//     try {
-//         // use ids stored in array to find habits
-//         const user = await User.findById(req.params.id)
-//         const habits = await Promise.all(
-//             user.habits.map((habitId) => {
-//                 return Habit.findOne({id:habitId})
-//             })
-//         )
-//         res.json(habits)
-//     } catch (err) {
-//         res.status(500).json(err)
-//     }
-// })
-
-// add habit to users list
-// router.put('/add-habit/:habitId', async (req, res) => {
-//     try {
-//         // push habit id to array
-//         await User.findByIdAndUpdate(req.body.userId, {
-//             $push:{
-//                 habits: req.params.habitId
-//             }
-//         })
-//         res.json(`habit ${req.params.habitId} added to user ${req.body.userId}`)
-//     } catch (err) {
-//         res.status(500).json(err)
-//     }
-// })
+router.get('/', protect, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        res.json(user)
+    } catch (error) {
+        res.status(500).json(err)
+    }
+})
 
 export default router
