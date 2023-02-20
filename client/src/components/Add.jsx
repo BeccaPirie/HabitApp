@@ -5,9 +5,9 @@ import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
 import { useNavigate } from "react-router-dom"
 import { checkboxes } from "../checkboxes"
+import { UserContext } from "../context/user/UserContext"
 
 export default function Add() {
-    const userId = '63b0873e52ab88fb84175239'
     const name = useRef()
     const cue = useRef()
     const actions = useRef()
@@ -15,12 +15,13 @@ export default function Add() {
     const { dispatch } = useContext(HabitContext)
     const navigate = useNavigate()
     const [daysToComplete, setDaysToComplete] = useState(checkboxes)
+    const { user } = useContext(UserContext)
 
     const submitFunction = async(e) => {
         e.preventDefault()
 
         const newHabit = {
-            userId: userId,
+            userId: user._id,
             name: name.current.value,
             eventCues: cue.current.value,
             daysToComplete: daysToComplete,

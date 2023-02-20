@@ -9,6 +9,7 @@ import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
 import Chart from "./Chart"
 import notificationSettings from "../notifications.js"
+import { UserContext } from '../context/user/UserContext'
 
 export default function Habit() {
     const [habit, setHabit] = useState({})
@@ -17,20 +18,22 @@ export default function Habit() {
     const [date, setDate] = useState(new Date())
     const habitId = useParams().id
     const { userHabits, dispatch } = useContext(HabitContext)
-    const userId = "63b0873e52ab88fb84175239"
+    const { user } = useContext(UserContext)
 
     // set habit
     useEffect(() => {
         const fetchHabit = async () => {
             try {
-                const res =  await axios.get(`http://localhost:5000/server/habit/get-habit/${userId}/${habitId}`)            
+                const res =  await axios.get(`http://localhost:5000/server/habit/get-habit/${user._id}/${habitId}`, {
+                    headers: {authorization:'Bearer ' + user.token}
+                })
                 setHabit(res.data)
             } catch (err) {
                 console.error(err.response.data)
             }
         }
         fetchHabit()
-    }, [userId, habitId, userHabits])
+    }, [user._id, habitId, userHabits])
 
     // set isComplete
     useEffect(() => {

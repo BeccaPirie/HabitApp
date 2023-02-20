@@ -6,16 +6,17 @@ import HabitList from "../components/HabitList"
 import { useEffect, useContext } from "react"
 import axios from "axios"
 import { HabitContext } from "../context/habit/HabitContext"
+import { UserContext } from "../context/user/UserContext"
 
 export default function Index({lg}) {
-    const userId = "63b0873e52ab88fb84175239"
     const { dispatch } = useContext(HabitContext)
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
         const fetchUserHabits = async () => {
             dispatch({ type: "FETCH_START"})
             try{
-                const res = await axios.get(`http://localhost:5000/server/habit/get-habits/${userId}`)
+                const res = await axios.get(`http://localhost:5000/server/habit/get-habits/${user._id}`)
                 dispatch({type:"FETCH_HABITS", payload:res.data})
             }
             catch(err) {
@@ -23,7 +24,7 @@ export default function Index({lg}) {
             }
         }
         fetchUserHabits()
-    },[userId, dispatch])
+    },[user._id, dispatch])
 
     return(
         <>

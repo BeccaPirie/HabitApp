@@ -1,8 +1,8 @@
-import { createContext, useReducer } from 'react'
+import { createContext, useReducer, useEffect } from 'react'
 import UserReducer from './UserReducer'
 
 const INITIAL_STATE = {
-    user: null,
+    user: JSON.parse(localStorage.getItem('HabitAppUser')) || null,
     isFetching: false,
     error: false
 }
@@ -11,6 +11,10 @@ export const UserContext = createContext(INITIAL_STATE)
 
 export const UserContextProvider = ({children}) => {
     const [state, dispatch] = useReducer(UserReducer, INITIAL_STATE)
+
+    useEffect(() => {
+        localStorage.setItem('HabitAppUser', JSON.stringify(state.user))
+    }, [state.user])
 
     return(
         <UserContext.Provider

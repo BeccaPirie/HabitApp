@@ -1,11 +1,12 @@
 import express from 'express'
 import bcrypt from 'bcrypt'
 import User from '../models/User.js'
-import generateToken from '../services/jwt-token.js'
+import { generateToken, generateRefreshToken } from '../services/jwt-token.js'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const router = express.Router()
-
-router.get('/', async(req, res) => {res.send("auth route")})
+let refreshTokensArr = []
 
 // register
 router.post('/signup', async(req, res) => {
@@ -28,7 +29,17 @@ router.post('/signup', async(req, res) => {
 
         // save user
         const user = await createUser.save()
-        res.json({user: user, token: generateToken(user._id)})
+        const token = generateToken(user._id)
+        const refreshToken = generateRefreshToken(user._id)
+        refreshTokensArr.push(refreshToken)
+
+        res.json({
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            token: token,
+            refreshToken: refreshToken
+        })
     } catch (err) {
         res.status(500).json(err)
     }
@@ -38,17 +49,55 @@ router.post('/signup', async(req, res) => {
 router.post('/login', async(req, res) => {
     try {
         // find user
-        const loginUser = await User.findOne({username: req.body.username})
-        if(!loginUser) res.status(404).json("User not found")
+        const loginUser = await User.findOne({email: req.body.email})
+        if(!loginUser) return res.status(404).json("User not found")
 
         // check password
-        const loginPassword = await bcrypt.compare(loginUser.password, req.body.password)
-        if(!loginPassword) res.status(400).json("Incorrect password")
+        const isValid = await bcrypt.compare(req.body.password, loginUser.password)
+        if(!isValid) return res.status(400).json("Incorrect password")
 
-        res.json({user: loginUser, token: generateToken(loginUser._id)})
+        const token = generateToken(loginUser._id)
+        console.log(token)
+        const refreshToken = generateRefreshToken(loginUser._id)
+        refreshTokensArr.push(refreshToken)
+
+        res.json({
+            _id: loginUser._id,
+            username: loginUser.username,
+            email: loginUser.email,
+            token,
+            refreshToken
+        })
     } catch (err) {
         res.status(500).json(err)
     }
+})
+
+// create refresh token
+router.post('/refresh-token', (req, res) => {
+    // get token
+    const refreshToken = req.body.token
+    // send error if token doesn't exist or is not valid
+    if (!refreshToken) {
+        res.status(401).json("Not authenticated")
+    }
+    if(!refreshTokensArr.includes(refreshToken)) {
+        return res.status(403).json("Token not valid")
+    }
+    jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, user) => {
+        err && console.log(err);
+        refreshTokensArr = refreshTokensArr.filter((token) => token !== refreshToken);
+
+        const newAccessToken = generateToken(user._id);
+        const newRefreshToken = generateRefreshToken(user._id);
+
+        refreshTokensArr.push(newRefreshToken);
+
+        res.status(200).json({
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+        });
+    })
 })
 
 export default router

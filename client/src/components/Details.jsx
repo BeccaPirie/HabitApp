@@ -5,27 +5,28 @@ import { Form } from "./styles/Form.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
 import { Alert } from "./styles/Alert.styled"
+import { UserContext } from "../context/user/UserContext"
 
 export default function Details() {
     const habitId = useParams().id
     const [habit, setHabit] = useState({})
     const [showAlert, setShowAlert] = useState(false)
     const { dispatch } = useContext(HabitContext)
-    const userId = "63b0873e52ab88fb84175239"
     const navigate = useNavigate()
+    const { user } = useContext(UserContext)
 
     // get habit
     useEffect(() => {
         const fetchHabit = async() => {
             try {
-               const res = await axios.get(`http://localhost:5000/server/habit/get-habit/${userId}/${habitId}`)
+               const res = await axios.get(`http://localhost:5000/server/habit/get-habit/${user._id}/${habitId}`)
                 setHabit(res.data)
             } catch (err) {
-            console.error(err.response.data)
+                console.error(err.response.data)
             } 
         }
         fetchHabit()
-    }, [habitId])
+    }, [user._id, habitId])
 
     // form submit
     const onSubmitClick = async(e) => {

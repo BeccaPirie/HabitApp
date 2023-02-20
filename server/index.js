@@ -7,6 +7,7 @@ async function main() {
     const port = process.env.PORT || 3000
 
     try {
+        mongoose.set("strictQuery", false)
         mongoose.connect(process.env.DATABASE_URI,
             {useNewUrlParser: true, useUnifiedTopology: true})
         app.listen(port, ()=> {

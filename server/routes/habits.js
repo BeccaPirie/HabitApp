@@ -6,7 +6,7 @@ import protect from '../middleware/auth.js'
 const router = express.Router()
 
 // get habit
-router.get('/get-habit/:userId/:habitId', async(req, res) => {
+router.get('/get-habit/:userId/:habitId', protect, async(req, res) => {
     try {
         const user = await User.findById(req.params.userId)
         const habit = await Habit.findOne({
