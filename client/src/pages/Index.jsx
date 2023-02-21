@@ -4,19 +4,21 @@ import { Outlet } from 'react-router-dom'
 import { MainContainer } from "../components/styles/MainContainer.styled"
 import HabitList from "../components/HabitList"
 import { useEffect, useContext } from "react"
-import axios from "axios"
 import { HabitContext } from "../context/habit/HabitContext"
 import { UserContext } from "../context/user/UserContext"
 
-export default function Index({lg}) {
+export default function Index({lg, axiosJWT}) {
     const { dispatch } = useContext(HabitContext)
     const { user } = useContext(UserContext)
 
+    // fetch users habits
     useEffect(() => {
         const fetchUserHabits = async () => {
             dispatch({ type: "FETCH_START"})
             try{
-                const res = await axios.get(`http://localhost:5000/server/habit/get-habits/${user._id}`)
+                const res = await axiosJWT.get(`http://localhost:5000/server/habit/get-habits`, {
+                    headers: {authorization:'Bearer ' + user.token}
+                })
                 dispatch({type:"FETCH_HABITS", payload:res.data})
             }
             catch(err) {
@@ -24,7 +26,7 @@ export default function Index({lg}) {
             }
         }
         fetchUserHabits()
-    },[user._id, dispatch])
+    },[user._id, dispatch, user.token])
 
     return(
         <>

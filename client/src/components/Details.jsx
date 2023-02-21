@@ -7,7 +7,7 @@ import { HabitContext } from "../context/habit/HabitContext"
 import { Alert } from "./styles/Alert.styled"
 import { UserContext } from "../context/user/UserContext"
 
-export default function Details() {
+export default function Details({axiosJWT}) {
     const habitId = useParams().id
     const [habit, setHabit] = useState({})
     const [showAlert, setShowAlert] = useState(false)
@@ -19,8 +19,11 @@ export default function Details() {
     useEffect(() => {
         const fetchHabit = async() => {
             try {
-               const res = await axios.get(`http://localhost:5000/server/habit/get-habit/${user._id}/${habitId}`)
-                setHabit(res.data)
+               const res = await axiosJWT.get(`http://localhost:5000/server/habit/get-habit/${habitId}`, {
+                headers: {authorization:'Bearer ' + user.token}
+            })
+               console.log(res.data) 
+               setHabit(res.data)
             } catch (err) {
                 console.error(err.response.data)
             } 
@@ -33,7 +36,10 @@ export default function Details() {
         e.preventDefault()
 
         try {
-            await axios.put(`http://localhost:5000/server/habit/update/${habit._id}`, habit)
+            await axiosJWT.put(`http://localhost:5000/server/habit/update/${habit._id}`, {
+                headers: {authorization:'Bearer ' + user.token},
+                body: habit
+            })
             dispatch({type: "UPDATE_HABIT", payload: habit})
             alert()
         } catch (err) {
@@ -57,7 +63,7 @@ export default function Details() {
     }
 
     const deleteHabit = async() => {
-        await axios.delete(`http://localhost:5000/server/habit/delete/${habitId}`, habitId)
+        await axiosJWT.delete(`http://localhost:5000/server/habit/delete/${habitId}`, habitId)
         dispatch({type: "DELETE_HABIT", payload: habitId})
         navigate('/')
     }

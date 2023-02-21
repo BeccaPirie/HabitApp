@@ -22,7 +22,7 @@ export default function Signup() {
                 confirmPassword: confirmPassword.current.value
             }
             try {
-                const res = await axios.post("http://localhost:5000/server/auth/signup", user)
+                await axios.post("http://localhost:5000/server/auth/signup", user)
                 navigate('/login')
             } catch(err) {
                 console.error(err.response.data)

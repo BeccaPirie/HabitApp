@@ -20,6 +20,16 @@ const UserReducer = (state, action) => {
                 isFetching: false,
                 error: action.payload
             }
+
+            case "UPDATE_TOKENS":
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    token: action.payload.accessToken,
+                    refreshToken: action.payload.refreshToken
+                }
+            }
         default:
             return state
     }

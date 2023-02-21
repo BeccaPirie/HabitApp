@@ -12,5 +12,10 @@ export const LoginFail = (err) => ({
     payload: err,
 })
 
+export const updateTokens = (user) => ({
+    type: "UPDATE_TOKENS",
+    payload: user,
+})
+
 // update account
 // delete account

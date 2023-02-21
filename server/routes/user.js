@@ -5,24 +5,15 @@ import protect from '../middleware/auth.js'
 
 const router = express.Router()
 
-// update user
-router.put('/:id', async(req, res) => {
-    // only update own account
-    if(req.body.id == req.params.id) {
-       try {
-        await User.findByIdAndUpdate(req.params.id, {
-            $set: {
-                username: req.body.username,
-                email: req.body.email
-            }
-        })
-        } catch (err) {
-            res.status(500).json(err)
-        } 
-    } else {
-        res.status(403).json("You can only update your own account")
-    }
-})
+// get user
+// router.get('/', async (req, res) => {
+//     try {
+//         const user = await User.findById(req.user.id)
+//         res.json(user)
+//     } catch (error) {
+//         res.status(500).json(err)
+//     }
+// })
 
 // update password
 router.put('/:id/update-password', async(req, res) => {
@@ -50,8 +41,26 @@ router.put('/:id/update-password', async(req, res) => {
         }
     } else {
         res.status(403).json("You can only update your own account")
+    } 
+})
+
+// update user
+router.put('/:id', async(req, res) => {
+    // only update own account
+    if(req.body.id == req.params.id) {
+       try {
+        await User.findByIdAndUpdate(req.params.id, {
+            $set: {
+                username: req.body.username,
+                email: req.body.email
+            }
+        })
+        } catch (err) {
+            res.status(500).json(err)
+        } 
+    } else {
+        res.status(403).json("You can only update your own account")
     }
-    
 })
 
 // delete user
@@ -59,15 +68,6 @@ router.delete('/:id', async(req, res) => {
     try {
         await User.findByIdAndDelete(req.params.id)
     } catch (err) {
-        res.status(500).json(err)
-    }
-})
-
-router.get('/', protect, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id)
-        res.json(user)
-    } catch (error) {
         res.status(500).json(err)
     }
 })

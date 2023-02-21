@@ -1,5 +1,4 @@
 import { useRef, useContext, useState } from "react"
-import axios from "axios"
 import { Form } from "./styles/Form.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
@@ -7,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { checkboxes } from "../checkboxes"
 import { UserContext } from "../context/user/UserContext"
 
-export default function Add() {
+export default function Add({axiosJWT}) {
     const name = useRef()
     const cue = useRef()
     const actions = useRef()
@@ -36,7 +35,7 @@ export default function Add() {
         }
 
         try {
-            const res = await axios.post("http://localhost:5000/server/habit/add", newHabit)
+            const res = await axiosJWT.post("http://localhost:5000/server/habit/add", newHabit)
             dispatch({type: "ADD_HABIT", payload: res.data})
             navigate(`/${res.data._id}`)
         } catch (err) {

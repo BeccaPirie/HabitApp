@@ -16,7 +16,6 @@ export default function Login() {
         dispatch({ type: "LOGIN_START" });
         try {
             const res = await axios.post("http://localhost:5000/server/auth/login", userCredentials)
-            console.log(JSON.stringify(res.data.refreshToken));
             dispatch({ type:"LOGIN_SUCCESS", payload: res.data });
         }
         catch(err) {

@@ -11,7 +11,7 @@ import Chart from "./Chart"
 import notificationSettings from "../notifications.js"
 import { UserContext } from '../context/user/UserContext'
 
-export default function Habit() {
+export default function Habit({axiosJWT}) {
     const [habit, setHabit] = useState({})
     const [isComplete, setIsComplete] = useState(habit.habitCompleted)
     const [journal, setJournal] = useState(habit.journal)
@@ -24,7 +24,7 @@ export default function Habit() {
     useEffect(() => {
         const fetchHabit = async () => {
             try {
-                const res =  await axios.get(`http://localhost:5000/server/habit/get-habit/${user._id}/${habitId}`, {
+                const res =  await axiosJWT.get(`http://localhost:5000/server/habit/get-habit/${habitId}`, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 setHabit(res.data)
@@ -33,7 +33,7 @@ export default function Habit() {
             }
         }
         fetchHabit()
-    }, [user._id, habitId, userHabits])
+    }, [user._id, habitId, userHabits, user.token])
 
     // set isComplete
     useEffect(() => {
@@ -69,7 +69,7 @@ export default function Habit() {
         const dataExists = habit.calendarData.find(data => data.date === dateString)
         if(dataMatches) {
             try {
-                await axios.put(`http://localhost:5000/server/habit/${habitId}/remove-calendar-data`, {
+                await axiosJWT.put(`http://localhost:5000/server/habit/${habitId}/remove-calendar-data`, {
                     date: dateString,
                 })
                 dispatch({ type: 'REMOVE_FROM_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
@@ -79,7 +79,7 @@ export default function Habit() {
         }
         else if(dataExists) {
             try {
-                await axios.put(`http://localhost:5000/server/habit/${habitId}/update-calendar-data`, {
+                await axiosJWT.put(`http://localhost:5000/server/habit/${habitId}/update-calendar-data`, {
                     date: dateString,
                     status:  e.target.id
                 })
@@ -90,7 +90,7 @@ export default function Habit() {
         }
         else {
             try {
-                await axios.put(`http://localhost:5000/server/habit/${habitId}/add-calendar-data`, {
+                await axiosJWT.put(`http://localhost:5000/server/habit/${habitId}/add-calendar-data`, {
                     date: dateString,
                     status: e.target.id
                 })
@@ -108,7 +108,7 @@ export default function Habit() {
     const completeButtonClick = async () => {
         try {
             // const updatedHabit = {...habit, habitCompleted: !isComplete}
-            await axios.put(`http://localhost:5000/server/habit/complete/${habit._id}`, {complete:!isComplete})
+            await axiosJWT.put(`http://localhost:5000/server/habit/complete/${habit._id}`, {complete:!isComplete})
             dispatch({type: 'COMPLETE_HABIT', payload: {id: habit._id, complete: !isComplete}})
         } catch (err) {
             console.error(err.response.data)
@@ -120,7 +120,7 @@ export default function Habit() {
     const journalButtonClick = async (e) => {
         e.preventDefault()
         try {
-            await axios.put(`http://localhost:5000/server/habit/journal/${habit._id}`, {
+            await axiosJWT.put(`http://localhost:5000/server/habit/journal/${habit._id}`, {
                 journal: journal
             })
             dispatch({type: 'UPDATE_JOURNAL', payload: {id: habit._id, journal: journal}})

@@ -6,9 +6,9 @@ import protect from '../middleware/auth.js'
 const router = express.Router()
 
 // get habit
-router.get('/get-habit/:userId/:habitId', protect, async(req, res) => {
+router.get('/get-habit/:habitId', protect, async(req, res) => {
     try {
-        const user = await User.findById(req.params.userId)
+        const user = await User.findById(req.user._id)
         const habit = await Habit.findOne({
             _id: req.params.habitId,
             userId: user._id
@@ -20,9 +20,9 @@ router.get('/get-habit/:userId/:habitId', protect, async(req, res) => {
 })
 
 // get users habits
-router.get('/get-habits/:userId', async(req, res) => {
+router.get('/get-habits', protect, async(req, res) => {
     try {
-        const user = await User.findById(req.params.userId)
+        const user = await User.findById(req.user._id)
         const habits = await Habit.find({userId:user._id})
         res.json(habits)
     } catch (err) {
