@@ -29,14 +29,12 @@ export default function Index({lg, axiosJWT}) {
     },[user._id, dispatch, user.token])
 
     return(
-        <>
-            <PageContainer> 
-                {lg && <HabitList />}
-                <MainContainer>
-                    <Outlet />
-                </MainContainer>
-                {lg && <Rightbar />}
-            </PageContainer>
-        </>
+        <PageContainer> 
+            {lg && <HabitList />}
+            <MainContainer>
+                <Outlet />
+            </MainContainer>
+            {lg && <Rightbar />}
+        </PageContainer>
     )
 }

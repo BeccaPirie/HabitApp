@@ -1,6 +1,11 @@
 import { useRef } from 'react'
 import axios from 'axios'
 import{ useNavigate } from 'react-router-dom'
+import { PageContainer } from '../components/styles/PageContainer.styled'
+import { LoginStyled } from '../components/styles/Login.styled'
+import LoginPageImage from '../images/healthy-habits.avif'
+import { ImageStyled } from '../components/styles/Image.styled'
+import { Link } from "react-router-dom"
 
 export default function Signup() {
     const username = useRef()
@@ -31,39 +36,48 @@ export default function Signup() {
     }
 
     return(
-        <div>
-            <form onSubmit={handleSubmit}>
-                <h3>Habit App</h3>
-                <input
-                    required
-                    placeholder="Username"
-                    className="loginInput"
-                    ref={username}
-                />
-                <input
-                    type="email"
-                    required
-                    placeholder="Email"
-                    className="loginInput"
-                    ref={email}
-                />
-                <input
-                    type="password"
-                    required
-                    minLength="6"
-                    placeholder="Password"
-                    className="loginInput"
-                    ref={password}
-                />
-                <input
-                    type="password"
-                    required
-                    placeholder="Confirm Password"
-                    className="loginInput"
-                    ref={confirmPassword}
-                />
-                <button>Sign up</button>
-            </form>
-        </div>
+        <PageContainer>
+            <ImageStyled src={LoginPageImage} />
+
+            <LoginStyled>
+                <form onSubmit={handleSubmit}>
+                    <h3>Habit App</h3>
+                    <input
+                        required
+                        placeholder="Username"
+                        className="loginInput"
+                        ref={username}
+                    />
+                    <input
+                        type="email"
+                        required
+                        placeholder="Email"
+                        className="loginInput"
+                        ref={email}
+                    />
+                    <input
+                        type="password"
+                        required
+                        minLength="6"
+                        placeholder="Password"
+                        className="loginInput"
+                        ref={password}
+                    />
+                    <input
+                        type="password"
+                        required
+                        placeholder="Confirm Password"
+                        className="loginInput"
+                        ref={confirmPassword}
+                    />
+                    <button>Sign up</button>
+
+                    <div>
+                       <span>Already have an account? </span>
+                        <Link to={'/login'}><span>Login</span></Link> 
+                    </div>
+                </form>
+            </LoginStyled>
+        </PageContainer>
     )
 }
