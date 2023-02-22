@@ -5,6 +5,7 @@ export const StyledHabitList = styled.div`
     min-height: 100vh;
     padding: 0;
     margin: 0;
+    background-color: #f9f9f9;
 
     .list-header {
         margin-left: 20px;
@@ -36,7 +37,7 @@ export const StyledHabitList = styled.div`
     }
 
     .addBtn {
-        background-color: lightblue;
+        background-color: #d1ed8a;
         width: 50px;
         height: 50px;
         border-radius: 50%;

@@ -18,12 +18,25 @@ margin: auto;
 }
 
 .calendar-btns {
+    margin-top: 20px;
     margin-bottom: 30px;
     text-align: center;
 
     button {
         display: inline-block;
-        margin: 20px;
+        margin: 8px;
+    }
+
+    #Completed {
+        background-color: #d4f08c;
+    }
+    
+    #Skipped {
+        background-color: #78cbe4;
+    }
+    
+    #Missed {
+        background-color: #f08ca2;
     }
 }
 
@@ -42,7 +55,7 @@ label {
     resize: none;
 
     :focus {
-        outline: none;
+        outline: 3px solid #d4f08c;
     }
 }
 

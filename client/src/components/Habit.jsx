@@ -10,6 +10,7 @@ import { HabitContext } from "../context/habit/HabitContext"
 import Chart from "./Chart"
 import notificationSettings from "../notifications.js"
 import { UserContext } from '../context/user/UserContext'
+import { ButtonStyled } from "./styles/Button.styled"
 
 export default function Habit({axiosJWT}) {
     const [habit, setHabit] = useState({})
@@ -101,7 +102,7 @@ export default function Habit({axiosJWT}) {
         }
 
         // TODO check if notification frequency needs to be updated
-        notificationSettings(habit)
+        // notificationSettings(habit)
     }
 
     // handle complete button click
@@ -134,9 +135,9 @@ export default function Habit({axiosJWT}) {
 
             <div className="habit-top">
                 <h2>{habit.name}</h2> 
-                <button onClick={completeButtonClick}>
+                <ButtonStyled onClick={completeButtonClick}>
                     {isComplete ? "Mark habit as incomplete" : "Mark habit as complete"}
-                </button>  
+                </ButtonStyled>  
             </div>
 
             <StyledCalendar>
@@ -148,9 +149,9 @@ export default function Habit({axiosJWT}) {
             </StyledCalendar>
 
             <div className="calendar-btns">
-                <button id="Missed" onClick={((e) => calendarButtonClick(e))}>Missed</button>
-                <button id="Skipped" onClick={((e) => calendarButtonClick(e))}>Skipped</button>
-                <button id="Completed" onClick={((e) => calendarButtonClick(e))}>Completed</button>
+                <ButtonStyled id="Missed" onClick={((e) => calendarButtonClick(e))}>Missed</ButtonStyled>
+                <ButtonStyled id="Skipped" onClick={((e) => calendarButtonClick(e))}>Skipped</ButtonStyled>
+                <ButtonStyled id="Completed" onClick={((e) => calendarButtonClick(e))}>Completed</ButtonStyled>
             </div>
 
             <form onSubmit={(e)=> journalButtonClick(e)}>
@@ -164,14 +165,14 @@ export default function Habit({axiosJWT}) {
                     onChange={e => setJournal(e.target.value)}
                 />
                 <div>
-                    <button>Save</button>
+                    <ButtonStyled>Save</ButtonStyled>
                 </div>
             </form>
 
             <Chart data={habit.calendarData}/>
             
             <Link to={`/${habitId}/details`}>
-               <button className="details-btn">Details</button> 
+               <ButtonStyled className="details-btn">Details</ButtonStyled> 
             </Link>
             
         </StyledHabit>

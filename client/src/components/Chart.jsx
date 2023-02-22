@@ -3,6 +3,7 @@ import { StyledChart } from "./styles/Chart.styled"
 import moment from "moment"
 import _ from "lodash"
 import { useState, useEffect } from "react"
+import { ButtonStyled } from "./styles/Button.styled"
 
 const weeks = [0, -1, -2, -3]
 const months = [0, -1, -2, -3, -4, -5]
@@ -24,7 +25,18 @@ export default function Chart({data}) {
         },
         xAxis: {type: 'category', data: xAxis},
         yAxis: {type: 'value', min: 0, max: yAxisMax},
-        series: [{type: 'bar'}, {type: 'bar'}, {type: 'bar'}]
+        series: [{
+            type: 'bar',
+            itemStyle: {color: '#d4f08c'}
+        },
+        {
+            type: 'bar',
+            itemStyle: {color: '#78cbe4'}
+        },
+        {
+            type: 'bar',
+            itemStyle: {color: '#f08ca2'}
+        }]
     }
 
     // set x axis
@@ -128,9 +140,9 @@ export default function Chart({data}) {
     return(
         <StyledChart>
             <ReactEcharts option={option} />
-            <button onClick={() => setView('week')}>Past 4 Weeks</button>
-            <button onClick={() => setView('month')}>Past 6 Months</button>
-            <button onClick={() => setView('year')}>Past Year</button>
+            <ButtonStyled onClick={() => setView('week')}>Past 4 Weeks</ButtonStyled>
+            <ButtonStyled onClick={() => setView('month')}>Past 6 Months</ButtonStyled>
+            <ButtonStyled onClick={() => setView('year')}>Past Year</ButtonStyled>
         </StyledChart>
     )
 }

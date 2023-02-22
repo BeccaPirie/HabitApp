@@ -6,6 +6,7 @@ import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
 import { Alert } from "./styles/Alert.styled"
 import { UserContext } from "../context/user/UserContext"
+import { ButtonStyled } from "./styles/Button.styled"
 
 export default function Details({axiosJWT}) {
     const habitId = useParams().id
@@ -125,10 +126,10 @@ export default function Details({axiosJWT}) {
                     required />
 
                 <div>
-                    <button>Save</button>
+                    <ButtonStyled>Save</ButtonStyled>
                 </div>              
             </Form>
-            <button style={{float:"right"}} onClick={deleteHabit}>Delete Habit</button>
+            <ButtonStyled style={{float:"right"}} onClick={deleteHabit}>Delete Habit</ButtonStyled>
         </> 
     )
 }

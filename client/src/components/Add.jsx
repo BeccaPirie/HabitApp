@@ -5,6 +5,7 @@ import { HabitContext } from "../context/habit/HabitContext"
 import { useNavigate } from "react-router-dom"
 import { checkboxes } from "../checkboxes"
 import { UserContext } from "../context/user/UserContext"
+import { ButtonStyled } from "./styles/Button.styled"
 
 export default function Add({axiosJWT}) {
     const name = useRef()
@@ -101,7 +102,7 @@ export default function Add({axiosJWT}) {
                 required />
 
             <div>
-                <button>Add habit</button>
+                <ButtonStyled>Add habit</ButtonStyled>
             </div>
         </Form>
     )

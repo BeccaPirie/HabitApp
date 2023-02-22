@@ -2,12 +2,15 @@ import styled from "styled-components"
 
 export const StyledCalendar = styled.div`
 .react-calendar {
-    // width: 350px;
     max-width: 100%;
+    margin: auto;
     background: white;
     border: 1px solid #a0a096;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.125em;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   }
   .react-calendar--doubleView {
     width: 700px;
@@ -48,6 +51,9 @@ export const StyledCalendar = styled.div`
   .react-calendar__navigation button:disabled {
     background-color: #f0f0f0;
   }
+  abbr[title] {
+    text-decoration: none;
+   }
   .react-calendar__navigation button:enabled:hover,
   .react-calendar__navigation button:enabled:focus {
     background-color: #e6e6e6;
@@ -69,7 +75,8 @@ export const StyledCalendar = styled.div`
     font-weight: bold;
   }
   .react-calendar__month-view__days__day--weekend {
-    color: #d10000;
+    // color: #d10000;
+    // color: #638a04;
   }
   .react-calendar__month-view__days__day--neighboringMonth {
     color: #757575;
@@ -85,6 +92,7 @@ export const StyledCalendar = styled.div`
     background: none;
     text-align: center;
     line-height: 16px;
+    // border-radius: 10px;
   }
   .react-calendar__tile:disabled {
     background-color: #f0f0f0;
@@ -120,15 +128,20 @@ export const StyledCalendar = styled.div`
   }
 
   .Completed {
-    background-color: green;
+    background-color: #d4f08c;
   }
   
   .Skipped {
-    background-color: blue;
+    background-color: #78cbe4;
   }
   
   .Missed {
-    background-color: red;
+    background-color: #f08ca2;
   }
-  
+
+  @media (min-width: 768px) {
+    .react-calendar {
+      max-width: 550px;
+    }
+  }
 `

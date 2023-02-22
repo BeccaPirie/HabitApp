@@ -1,6 +1,18 @@
 import styled from "styled-components"
 
 export const StyledRightbar = styled.div`
+background-color: #e8ffaf;
+// background-color: #fff;
+height: fit-content;
+min-height: 25vh;
+width: 200px;
+padding: 20px;
+border-radius: 40px;
+position: -webkit-sticky;
+position: sticky;
+top: 20px;
+right: 10px;
+
 .item {
     display: flex;    
 }
@@ -19,15 +31,7 @@ a {
     flex: 6;
 }
 
-@media (min-width: 660px) {
-    width: 200px;
-    height: 100vh;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-}
-
-@media (min-width: 992px) {
+@media (min-width: 972px) {
     width: 260px;
 }
 `
