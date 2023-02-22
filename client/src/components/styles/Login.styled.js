@@ -51,7 +51,7 @@ button {
 }
 
 @media (min-width: 915px) {
-    width: 50vw;
+    width: 45vw;
     border-top-left-radius: 90px;
 }
 `
