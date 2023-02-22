@@ -7,7 +7,6 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const router = express.Router()
-let refreshTokensArr = []
 
 // register
 router.post('/signup', async(req, res) => {
@@ -25,14 +24,19 @@ router.post('/signup', async(req, res) => {
         const createUser = new User({
             username: req.body.username,
             email: req.body.email,
-            password: hashedPassword
+            password: hashedPassword,
         })
 
         // save user
         const user = await createUser.save()
         const token = generateToken(user._id)
         const refreshToken = generateRefreshToken(user._id)
-        refreshTokensArr.push(refreshToken)
+        await user.updateOne({
+            $set: {
+                token: token,
+                refreshToken: refreshToken
+            }
+        })
 
         res.json({
             _id: user._id,
@@ -60,14 +64,20 @@ router.post('/login', async(req, res) => {
         // generate new tokens
         const token = await generateToken(loginUser._id)
         const refreshToken = await generateRefreshToken(loginUser._id)
-        refreshTokensArr.push(refreshToken)
+
+        await loginUser.updateOne({
+            $set: {
+                token: token,
+                refreshToken: refreshToken
+            }
+        })
 
         res.json({
             _id: loginUser._id,
             username: loginUser.username,
             email: loginUser.email,
-            token,
-            refreshToken
+            token: token,
+            refreshToken: refreshToken
         })
     } catch (err) {
         res.status(500).json(err)
@@ -75,28 +85,35 @@ router.post('/login', async(req, res) => {
 })
 
 // create refresh token
-router.post('/refresh-token', (req, res) => {
+router.post('/refresh-token', async(req, res) => {
+    // get user
+    const user = await User.findById(req.body.id)
     // get token
     const refreshToken = req.body.token
     
     // send error if token doesn't exist or is not valid
     if (!refreshToken) res.status(401).json("Not authenticated")
-    if(!refreshTokensArr.includes(refreshToken)) return res.status(403).json("Token not valid")
+    if(refreshToken !== user.refreshToken) return res.status(403).json("Token not valid")
 
     // verify and create new tokens
     jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, async(err, decoded) => {
         if(err) {
             console.error(err)
         }
-        refreshTokensArr = refreshTokensArr.filter((token) => token !== refreshToken)
         const newAccessToken = await generateToken(decoded.id)
         const newRefreshToken = await generateRefreshToken(decoded.id)
-        refreshTokensArr.push(newRefreshToken)
+
+        await User.findByIdAndUpdate(decoded.id, {
+            $set: {
+                token: newAccessToken,
+                refreshToken: newRefreshToken
+            }
+        })
 
         res.status(200).json({
         accessToken: newAccessToken,
-        refreshToken: newRefreshToken,
-        });
+        refreshToken: newRefreshToken
+        })
     })
 })
 

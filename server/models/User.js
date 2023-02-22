@@ -25,6 +25,16 @@ const UserSchema = new mongoose.Schema({
         required: true,
         min:6
     },
+
+    token:{
+        type:String,
+        default: ''
+    },
+
+    refreshToken:{
+        type:String,
+        default: ''
+    }
     
     // list of habit ids
     // habits:{

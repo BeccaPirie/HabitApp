@@ -20,9 +20,8 @@ export default function Details({axiosJWT}) {
         const fetchHabit = async() => {
             try {
                const res = await axiosJWT.get(`http://localhost:5000/server/habit/get-habit/${habitId}`, {
-                headers: {authorization:'Bearer ' + user.token}
-            })
-               console.log(res.data) 
+                    headers: {authorization:'Bearer ' + user.token}
+                })
                setHabit(res.data)
             } catch (err) {
                 console.error(err.response.data)

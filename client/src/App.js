@@ -22,7 +22,7 @@ export default function App() {
   // refresh token when token has expired
     const refreshToken = async () => {
         try {
-            const res = await axios.post('http://localhost:5000/server/auth/refresh-token', {token: user.refreshToken})
+            const res = await axios.post('http://localhost:5000/server/auth/refresh-token', {token: user.refreshToken, id: user._id})
             dispatch({type:"UPDATE_TOKENS", payload: res.data})
             return res.data
         } catch (err) {
