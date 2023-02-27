@@ -3,6 +3,7 @@ import axios from "axios"
 import { StyledRightbar } from "./styles/Rightbar.styled"
 import { HabitContext } from "../context/habit/HabitContext"
 import { Link } from "react-router-dom"
+import { UserContext } from "../context/user/UserContext"
 
 export default function Rightbar() {
     const [habitsDue, setHabitsDue] = useState([])
@@ -10,6 +11,7 @@ export default function Rightbar() {
     const date = new Date()
     const dayOfWeek = date.toLocaleString('default', {weekday: 'long'})
     const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+    const { user } = useContext(UserContext)
 
     // get habits due
     useEffect(() => {
@@ -30,6 +32,8 @@ export default function Rightbar() {
             await axios.put(`http://localhost:5000/server/habit/${habitId}/add-calendar-data`, {
                 date: dateString,
                 status: e.target.id
+            }, {
+                headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({ type: 'ADD_TO_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
         } catch (err) {

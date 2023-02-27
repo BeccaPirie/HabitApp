@@ -2,7 +2,7 @@ import { createContext, useReducer } from 'react'
 import HabitReducer from './HabitReducer'
 
 const INITIAL_STATE = {
-    userHabits: null,
+    userHabits: [],
     isFetching: false,
     error: false
 }

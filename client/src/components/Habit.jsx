@@ -18,8 +18,10 @@ export default function Habit({axiosJWT}) {
     const [journal, setJournal] = useState(habit.journal)
     const [date, setDate] = useState(new Date())
     const habitId = useParams().id
-    const { userHabits, dispatch } = useContext(HabitContext)
+    const { userHabits, dispatch } = useContext(HabitContext) || []
     const { user } = useContext(UserContext)
+
+    console.log(userHabits)
 
     // set habit
     useEffect(() => {
@@ -72,6 +74,8 @@ export default function Habit({axiosJWT}) {
             try {
                 await axiosJWT.put(`http://localhost:5000/server/habit/${habitId}/remove-calendar-data`, {
                     date: dateString,
+                }, {
+                    headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'REMOVE_FROM_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
             } catch (err) {
@@ -83,6 +87,8 @@ export default function Habit({axiosJWT}) {
                 await axiosJWT.put(`http://localhost:5000/server/habit/${habitId}/update-calendar-data`, {
                     date: dateString,
                     status:  e.target.id
+                }, {
+                    headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'UPDATE_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
             } catch (err) {
@@ -94,6 +100,8 @@ export default function Habit({axiosJWT}) {
                 await axiosJWT.put(`http://localhost:5000/server/habit/${habitId}/add-calendar-data`, {
                     date: dateString,
                     status: e.target.id
+                }, {
+                    headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'ADD_TO_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
             } catch (err) {
@@ -109,7 +117,11 @@ export default function Habit({axiosJWT}) {
     const completeButtonClick = async () => {
         try {
             // const updatedHabit = {...habit, habitCompleted: !isComplete}
-            await axiosJWT.put(`http://localhost:5000/server/habit/complete/${habit._id}`, {complete:!isComplete})
+            await axiosJWT.put(`http://localhost:5000/server/habit/complete/${habit._id}`, {
+                complete: !isComplete
+            }, {
+                headers: {authorization:'Bearer ' + user.token}
+            })
             dispatch({type: 'COMPLETE_HABIT', payload: {id: habit._id, complete: !isComplete}})
         } catch (err) {
             console.error(err.response.data)
@@ -123,6 +135,8 @@ export default function Habit({axiosJWT}) {
         try {
             await axiosJWT.put(`http://localhost:5000/server/habit/journal/${habit._id}`, {
                 journal: journal
+            }, {
+                headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: 'UPDATE_JOURNAL', payload: {id: habit._id, journal: journal}})
         } catch (err) {
@@ -165,7 +179,7 @@ export default function Habit({axiosJWT}) {
                     onChange={e => setJournal(e.target.value)}
                 />
                 <div>
-                    <ButtonStyled>Save</ButtonStyled>
+                    <ButtonStyled>Update journal</ButtonStyled>
                 </div>
             </form>
 

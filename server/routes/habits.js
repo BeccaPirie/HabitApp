@@ -31,7 +31,7 @@ router.get('/get-habits', protect, async(req, res) => {
 })
 
 // add habit
-router.post('/add', async(req, res) => {
+router.post('/add', protect, async(req, res) => {
     const habit = new Habit(req.body)
     try {
         const newHabit = await habit.save()
@@ -43,7 +43,7 @@ router.post('/add', async(req, res) => {
 })
 
 // delete habit
-router.delete('/delete/:id', async(req, res) => {
+router.delete('/delete/:id', protect, async(req, res) => {
     try {
         await Habit.findByIdAndDelete(req.params.id)
         res.json("habit deleted")
@@ -53,7 +53,7 @@ router.delete('/delete/:id', async(req, res) => {
 })
 
 // update habit
-router.put('/update/:id', async(req, res) => {
+router.put('/update/:id', protect, async(req, res) => {
     try {
         await Habit.findByIdAndUpdate(req.params.id, {$set: req.body})
         res.json("habit updated")
@@ -63,7 +63,7 @@ router.put('/update/:id', async(req, res) => {
 })
 
 // mark habit as completed
-router.put('/complete/:id', async(req, res) => {
+router.put('/complete/:id', protect, async(req, res) => {
     try {
         await Habit.findByIdAndUpdate(req.params.id, {
             $set: {
@@ -77,7 +77,7 @@ router.put('/complete/:id', async(req, res) => {
 })
 
 // update journal
-router.put('/journal/:id', async(req, res) => {
+router.put('/journal/:id', protect, async(req, res) => {
     try {
         await Habit.findByIdAndUpdate(req.params.id, {
             $set: {
@@ -91,7 +91,7 @@ router.put('/journal/:id', async(req, res) => {
 })
 
 // update calendar data
-router.put('/:id/update-calendar-data', async (req, res) => {
+router.put('/:id/update-calendar-data', protect, async (req, res) => {
     try {
         await Habit.findOneAndUpdate({
             _id: req.params.id,
@@ -106,7 +106,7 @@ router.put('/:id/update-calendar-data', async (req, res) => {
 })
 
 // remove calendar data
-router.put('/:id/remove-calendar-data', async(req, res) => {
+router.put('/:id/remove-calendar-data', protect, async(req, res) => {
     try {
         await Habit.findOneAndUpdate({
             _id: req.params.id,
@@ -120,7 +120,7 @@ router.put('/:id/remove-calendar-data', async(req, res) => {
 })
 
 // add calendar data
-router.put('/:id/add-calendar-data', async (req, res) => {
+router.put('/:id/add-calendar-data', protect, async (req, res) => {
     try {
         const habit = await Habit.findById(req.params.id)
         await habit.updateOne({$push:{
