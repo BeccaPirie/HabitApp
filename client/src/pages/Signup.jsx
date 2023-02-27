@@ -1,11 +1,10 @@
 import { useRef } from 'react'
 import axios from 'axios'
-import{ useNavigate } from 'react-router-dom'
+import{ useNavigate, Link } from 'react-router-dom'
 import { PageContainer } from '../components/styles/PageContainer.styled'
 import { LoginStyled } from '../components/styles/Login.styled'
 import LoginPageImage from '../images/healthy-habits.avif'
 import { ImageStyled } from '../components/styles/Image.styled'
-import { Link } from "react-router-dom"
 
 export default function Signup() {
     const username = useRef()

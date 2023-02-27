@@ -10,7 +10,7 @@ export const StyledCalendar = styled.div`
     line-height: 1.125em;
     border: none;
     border-radius: 8px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   }
   .react-calendar--doubleView {
     width: 700px;
@@ -128,7 +128,7 @@ export const StyledCalendar = styled.div`
   }
 
   .Completed {
-    background-color: #d4f08c;
+    background-color: #d1ed8a;
   }
   
   .Skipped {

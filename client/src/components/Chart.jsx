@@ -27,7 +27,7 @@ export default function Chart({data}) {
         yAxis: {type: 'value', min: 0, max: yAxisMax},
         series: [{
             type: 'bar',
-            itemStyle: {color: '#d4f08c'}
+            itemStyle: {color: '#d1ed8a'}
         },
         {
             type: 'bar',

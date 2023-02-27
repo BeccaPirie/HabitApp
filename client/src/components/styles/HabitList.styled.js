@@ -23,7 +23,7 @@ export const StyledHabitList = styled.div`
     }
 
     li:hover {
-        background-color: rgb(248, 248, 248);
+        background-color: #d1ed8a;
     }
 
     .habitListItem-true {

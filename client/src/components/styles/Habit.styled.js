@@ -28,7 +28,7 @@ margin: auto;
     }
 
     #Completed {
-        background-color: #d4f08c;
+        background-color: #d1ed8a;
     }
     
     #Skipped {
@@ -55,7 +55,7 @@ label {
     resize: none;
 
     :focus {
-        outline: 3px solid #d4f08c;
+        outline: 3px solid #d1ed8a;
     }
 }
 
