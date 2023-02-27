@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { Form } from "./styles/Form.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
@@ -7,6 +7,7 @@ import { checkboxes } from "../checkboxes"
 import { UserContext } from "../context/user/UserContext"
 import { ButtonStyled } from "./styles/Button.styled"
 import { Ideas } from "./styles/Ideas.styled"
+import axios from "axios"
 
 export default function Add({axiosJWT}) {
     const [habit, setHabit] = useState({})
@@ -15,15 +16,20 @@ export default function Add({axiosJWT}) {
     const [daysToComplete, setDaysToComplete] = useState(checkboxes)
     const { user } = useContext(UserContext)
     const [showIdeas, setShowIdeas] = useState(false)
+    const [ideas, setIdeas] = useState({})
 
-    const ideas = [
-        "journal",
-        "meditation",
-        "going to bed my midnight",
-        "eating 5 a day",
-        "working out"
-    ]
-
+    useEffect(() => {
+        const fetchIdeas = async () => {
+            try {
+                const res = await axios.get('http://localhost:5000/server/idea/')
+                setIdeas(res.data)
+            } catch (err) {
+                console.error(err.response.data)
+            }
+        }
+      fetchIdeas()
+    }, [])
+    
     const submitFunction = async(e) => {
         e.preventDefault()
 
@@ -60,8 +66,8 @@ export default function Add({axiosJWT}) {
         setDaysToComplete(updateToComplete)
     }
 
-    const handleIdeaClick = (idea) => {
-        setHabit({...habit, name: idea})
+    const handleIdeaClick = (name) => {
+        setHabit({...habit, name: name})
         setShowIdeas(false)
     }
 
@@ -86,19 +92,14 @@ export default function Add({axiosJWT}) {
                     </ButtonStyled>   
                 </div>
                 
-                {/* 
-                show when ideas button clicked  
-                when idea selected, close dropdown
-                */}
-
                 {showIdeas && <Ideas>
                     <ul>
                         {ideas.map((idea, index) => {
                             return <li
                                     key={index}
                                     className="ideaItem"
-                                    onClick={() => handleIdeaClick(idea)}>
-                                        {idea}
+                                    onClick={() => handleIdeaClick(idea.name)}>
+                                        {idea.name}
                                     </li>
                         })}
                     </ul>
