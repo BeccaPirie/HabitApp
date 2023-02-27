@@ -36,9 +36,8 @@ export default function Details({axiosJWT}) {
         e.preventDefault()
 
         try {
-            await axiosJWT.put(`http://localhost:5000/server/habit/update/${habit._id}`, {
-                headers: {authorization:'Bearer ' + user.token},
-                body: habit
+            await axiosJWT.put(`http://localhost:5000/server/habit/update/${habit._id}`, habit, {
+                headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: "UPDATE_HABIT", payload: habit})
             alert()
@@ -63,7 +62,9 @@ export default function Details({axiosJWT}) {
     }
 
     const deleteHabit = async() => {
-        await axiosJWT.delete(`http://localhost:5000/server/habit/delete/${habitId}`, habitId)
+        await axiosJWT.delete(`http://localhost:5000/server/habit/delete/${habitId}`, habitId, {
+            headers: {authorization:'Bearer ' + user.token}
+        })
         dispatch({type: "DELETE_HABIT", payload: habitId})
         navigate('/')
     }
@@ -130,6 +131,7 @@ export default function Details({axiosJWT}) {
                 </div>              
             </Form>
             <ButtonStyled style={{float:"right"}} onClick={deleteHabit}>Delete Habit</ButtonStyled>
+            <ButtonStyled>Back</ButtonStyled>
         </> 
     )
 }

@@ -1,4 +1,4 @@
-import { useRef, useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { Form } from "./styles/Form.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
@@ -6,37 +6,46 @@ import { useNavigate } from "react-router-dom"
 import { checkboxes } from "../checkboxes"
 import { UserContext } from "../context/user/UserContext"
 import { ButtonStyled } from "./styles/Button.styled"
+import { Ideas } from "./styles/Ideas.styled"
 
 export default function Add({axiosJWT}) {
-    const name = useRef()
-    const cue = useRef()
-    const actions = useRef()
-    const intentions = useRef()
+    const [habit, setHabit] = useState({})
     const { dispatch } = useContext(HabitContext)
     const navigate = useNavigate()
     const [daysToComplete, setDaysToComplete] = useState(checkboxes)
     const { user } = useContext(UserContext)
+    const [showIdeas, setShowIdeas] = useState(false)
+
+    const ideas = [
+        "journal",
+        "meditation",
+        "going to bed my midnight",
+        "eating 5 a day",
+        "working out"
+    ]
 
     const submitFunction = async(e) => {
         e.preventDefault()
 
         const newHabit = {
             userId: user._id,
-            name: name.current.value,
-            eventCues: cue.current.value,
+            name: habit.name,
+            eventCues: habit.eventCues,
             daysToComplete: daysToComplete,
             calendarData: [],
             notificationFrequency: 1,
             daysCompleted: 0,
             daysMissed: 0,
             journal: "",
-            preventingActions: actions.current.value,
-            intentions: intentions.current.value,
+            preventingActions: habit.preventingActions,
+            intentions: habit.intentions,
             habitCompleted: false
         }
 
         try {
-            const res = await axiosJWT.post("http://localhost:5000/server/habit/add", newHabit)
+            const res = await axiosJWT.post("http://localhost:5000/server/habit/add", newHabit, {
+                headers: {authorization:'Bearer ' + user.token}
+            })
             dispatch({type: "ADD_HABIT", payload: res.data})
             navigate(`/${res.data._id}`)
         } catch (err) {
@@ -51,59 +60,98 @@ export default function Add({axiosJWT}) {
         setDaysToComplete(updateToComplete)
     }
 
+    const handleIdeaClick = (idea) => {
+        setHabit({...habit, name: idea})
+        setShowIdeas(false)
+    }
+
     return(
-        <Form onSubmit={submitFunction}>
-            <label htmlFor="habitName">Habit Name</label>
-            <input
-                id="habitName"
-                type="text"
-                ref={name}
-                required />
-
-            <label htmlFor="eventCues">Event-based cue</label>
-            <TextareaAutosize
-                id="eventCues"
-                rows={5}
-                ref={cue}
-                required />
+        <>
+            <Form onSubmit={submitFunction}>
                 
-            <p>Select days of the week to complete the habit</p>
-            <ul>
-                {daysToComplete.map(({dayOfWeek, toComplete}) => {
-                    return(
-                        <li key={dayOfWeek}>
-                            <input 
-                                type="checkbox"
-                                className="formCheckbox"
-                                id={dayOfWeek}
-                                name={dayOfWeek}
-                                value={dayOfWeek}
-                                checked={toComplete}
-                                onChange={() => onChangeFunction(dayOfWeek)}
-                            />
-                            <label htmlFor={dayOfWeek}>{dayOfWeek}</label>
-                        </li>
-                    )
-                })}
-            </ul>
+                <label htmlFor="habitName">Habit Name</label>
+                <div className="nameContainer">
+                    <input
+                        id="habitName"
+                        type="text"
+                        value={habit.name || ''}
+                        onChange={(e) => setHabit({...habit, name: e.target.value})}
+                        required />
 
-            <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
-            <TextareaAutosize
-                id="preventingActions"
-                rows={10}
-                ref={actions}
-                required />
+                    <ButtonStyled
+                        type="button"
+                        onClick={() => setShowIdeas(!showIdeas)}
+                        className="ideasBtn">
+                            Ideas
+                    </ButtonStyled>   
+                </div>
+                
+                {/* 
+                show when ideas button clicked  
+                when idea selected, close dropdown
+                */}
 
-            <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
-            <TextareaAutosize
-                id="intention"
-                rows={10}
-                ref={intentions}
-                required />
+                {showIdeas && <Ideas>
+                    <ul>
+                        {ideas.map((idea, index) => {
+                            return <li
+                                    key={index}
+                                    className="ideaItem"
+                                    onClick={() => handleIdeaClick(idea)}>
+                                        {idea}
+                                    </li>
+                        })}
+                    </ul>
+                </Ideas>}
 
-            <div>
-                <ButtonStyled>Add habit</ButtonStyled>
-            </div>
-        </Form>
+                <label htmlFor="eventCues">Event-based cue</label>
+                <TextareaAutosize
+                    id="eventCues"
+                    rows={5}
+                    value={habit.eventCues || ''}
+                    onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
+                    required />
+                    
+                <p>Select days of the week to complete the habit</p>
+                <ul>
+                    {daysToComplete.map(({dayOfWeek, toComplete}) => {
+                        return(
+                            <li key={dayOfWeek}>
+                                <input 
+                                    type="checkbox"
+                                    className="formCheckbox"
+                                    id={dayOfWeek}
+                                    name={dayOfWeek}
+                                    value={dayOfWeek}
+                                    checked={toComplete}
+                                    onChange={() => onChangeFunction(dayOfWeek)}
+                                />
+                                <label htmlFor={dayOfWeek}>{dayOfWeek}</label>
+                            </li>
+                        )
+                    })}
+                </ul>
+
+                <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
+                <TextareaAutosize
+                    id="preventingActions"
+                    rows={10}
+                    value={habit.preventingActions || ''}
+                    onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
+                    required />
+
+                <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
+                <TextareaAutosize
+                    id="intention"
+                    rows={10}
+                    value={habit.intentions || ''}
+                    onChange={(e) => setHabit({...habit, intentions: e.target.value})}
+                    required />
+
+                <div>
+                    <ButtonStyled>Add habit</ButtonStyled>
+                </div>
+            </Form>
+        </>
     )
 }

@@ -4,6 +4,27 @@ export const Form = styled.form`
 margin: 30px auto;
 padding: 20px;
 
+.nameContainer {
+    display: flex;
+
+    input[type="text"] {
+        width: calc(70% - 65px);
+        padding-right: 65px;
+    }
+    
+    .ideasBtn {
+        margin-left: -60px;
+        background: none;
+        padding: none;
+        color: #87b512;
+    }
+}
+
+input[type="text"] {
+    width: 70%;
+    background-color: #fafafa;
+}
+
 label:not(li label) {
     display: block;
 }
