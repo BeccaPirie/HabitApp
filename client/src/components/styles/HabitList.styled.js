@@ -2,10 +2,10 @@ import styled from "styled-components"
 
 export const StyledHabitList = styled.div`
     width: 100%;
-    min-height: 100vh;
+    height: calc(100vh - 80px);
     padding: 0;
     margin: 0;
-    background-color: #f9f9f9;
+    background-color: #fff;
 
     .list-header {
         margin-left: 20px;

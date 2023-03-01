@@ -1,9 +1,9 @@
 import ReactEcharts from "echarts-for-react"
-import { StyledChart } from "./styles/Chart.styled"
 import moment from "moment"
 import _ from "lodash"
 import { useState, useEffect } from "react"
 import { ButtonStyled } from "./styles/Button.styled"
+import { StyledChart } from "./styles/Chart.styled"
 
 const weeks = [0, -1, -2, -3]
 const months = [0, -1, -2, -3, -4, -5]
@@ -140,9 +140,11 @@ export default function Chart({data}) {
     return(
         <StyledChart>
             <ReactEcharts option={option} />
-            <ButtonStyled onClick={() => setView('week')}>Past 4 Weeks</ButtonStyled>
-            <ButtonStyled onClick={() => setView('month')}>Past 6 Months</ButtonStyled>
-            <ButtonStyled onClick={() => setView('year')}>Past Year</ButtonStyled>
+            <div className="chart-btns">
+                <ButtonStyled onClick={() => setView('week')}>Past 4 Weeks</ButtonStyled>
+                <ButtonStyled onClick={() => setView('month')}>Past 6 Months</ButtonStyled>
+                <ButtonStyled onClick={() => setView('year')}>Past Year</ButtonStyled>
+            </div>
         </StyledChart>
     )
 }

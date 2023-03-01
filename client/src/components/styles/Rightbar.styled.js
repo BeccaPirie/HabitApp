@@ -1,16 +1,17 @@
 import styled from "styled-components"
 
 export const StyledRightbar = styled.div`
-background-color: #e8ffaf;
-// background-color: #fff;
-height: fit-content;
-min-height: 25vh;
+background-color: #fff;
+height: 80vh;
 width: 200px;
 padding: 20px;
-border-radius: 40px;
-position: -webkit-sticky;
-position: sticky;
-top: 20px;
+margin-top: 15px;
+border-radius: 10px;
+box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+// position: -webkit-sticky;
+// position: sticky;
+position: relative;
+top: 70px;
 right: 10px;
 
 .item {
@@ -32,6 +33,6 @@ a {
 }
 
 @media (min-width: 972px) {
-    width: 260px;
+    width: 270px;
 }
 `

@@ -1,17 +1,14 @@
-import axios from "axios"
 import { useState, useEffect, useContext } from "react"
 import { useParams, useNavigate, useOutletContext } from "react-router-dom"
 import { Form } from "./styles/Form.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
-import { AlertStyled } from "./styles/Alert.styled"
 import { UserContext } from "../context/user/UserContext"
 import { ButtonStyled } from "./styles/Button.styled"
 
 export default function Details({axiosJWT}) {
     const habitId = useParams().id
     const [habit, setHabit] = useState({})
-    const [showAlert, setShowAlert] = useState(false)
     const { dispatch } = useContext(HabitContext)
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
@@ -30,7 +27,7 @@ export default function Details({axiosJWT}) {
             } 
         }
         fetchHabit()
-    }, [user._id, habitId])
+    }, [user._id, habitId, axiosJWT, user.token])
 
     // form submit
     const onSubmitClick = async(e) => {
@@ -65,7 +62,6 @@ export default function Details({axiosJWT}) {
 
     return(
         <>
-            {showAlert && <AlertStyled>Habit updated</AlertStyled>}
             <Form onSubmit={onSubmitClick}>
                 <label htmlFor="habitName">Habit Name</label>
                 <input

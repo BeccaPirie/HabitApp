@@ -7,6 +7,7 @@ import { useEffect, useContext, useState } from "react"
 import { HabitContext } from "../context/habit/HabitContext"
 import { UserContext } from "../context/user/UserContext"
 import Alert from "../components/Alert"
+import Navbar from "../components/Navbar"
 
 export default function Index({lg, axiosJWT}) {
     const { dispatch } = useContext(HabitContext)
@@ -29,7 +30,7 @@ export default function Index({lg, axiosJWT}) {
             }
         }
         fetchUserHabits()
-    },[user._id, dispatch, user.token])
+    },[user._id, dispatch, user.token, axiosJWT])
 
     // handle alert display
     const alert = (message) => {
@@ -41,13 +42,16 @@ export default function Index({lg, axiosJWT}) {
     }
 
     return(
-        <PageContainer> 
-            {lg && <HabitList />}
-            <MainContainer>
-            {showAlert && <Alert message={alertMessage}/>}
-                <Outlet context={alert}/>
-            </MainContainer>
-            {lg && <Rightbar />}
-        </PageContainer>
+        <>            
+            <PageContainer> 
+                {lg && <HabitList />}
+                <MainContainer>
+                    <Navbar />
+                    {showAlert && <Alert message={alertMessage}/>}
+                    <Outlet context={alert}/>
+                </MainContainer>
+                {lg && <Rightbar />}
+            </PageContainer>
+        </>
     )
 }

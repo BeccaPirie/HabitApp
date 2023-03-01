@@ -2,9 +2,10 @@ import styled from "styled-components"
 
 export const StyledCalendar = styled.div`
 .react-calendar {
+    width: 700px;
     max-width: 100%;
     margin: auto;
-    background: white;
+    background: #9ed6f0;
     border: 1px solid #a0a096;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.125em;
@@ -92,7 +93,7 @@ export const StyledCalendar = styled.div`
     background: none;
     text-align: center;
     line-height: 16px;
-    // border-radius: 10px;
+    background-color: white;
   }
   .react-calendar__tile:disabled {
     background-color: #f0f0f0;
@@ -141,7 +142,7 @@ export const StyledCalendar = styled.div`
 
   @media (min-width: 768px) {
     .react-calendar {
-      max-width: 550px;
+      // max-width: 550px;
     }
   }
 `

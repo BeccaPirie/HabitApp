@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react"
-import axios from "axios"
 import { Link, useOutletContext } from "react-router-dom"
 import Calendar from "react-calendar"
 import { StyledCalendar } from "./styles/Calendar.styled"
@@ -8,7 +7,7 @@ import { StyledHabit } from "./styles/Habit.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
 import Chart from "./Chart"
-import notificationSettings from "../notifications.js"
+// import notificationSettings from "../notifications.js"
 import { UserContext } from '../context/user/UserContext'
 import { ButtonStyled } from "./styles/Button.styled"
 
@@ -35,7 +34,7 @@ export default function Habit({axiosJWT}) {
             }
         }
         fetchHabit()
-    }, [user._id, habitId, userHabits, user.token])
+    }, [user._id, habitId, userHabits, user.token, axiosJWT])
 
     // set isComplete
     useEffect(() => {
@@ -168,7 +167,7 @@ export default function Habit({axiosJWT}) {
             </div>
 
             <form onSubmit={(e)=> journalButtonClick(e)}>
-               <label htmlFor="journal">
+                <label htmlFor="journal">
                     Journal notes
                 </label>
                 <TextareaAutosize
@@ -183,9 +182,9 @@ export default function Habit({axiosJWT}) {
             </form>
 
             <Chart data={habit.calendarData}/>
-            
+
             <Link to={`/${habitId}/details`}>
-               <ButtonStyled className="details-btn">Details</ButtonStyled> 
+                <ButtonStyled className="details-btn">Details</ButtonStyled> 
             </Link>
             
         </StyledHabit>

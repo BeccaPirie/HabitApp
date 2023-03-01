@@ -22,7 +22,7 @@ padding: 20px;
 
 input[type="text"] {
     width: 70%;
-    background-color: #fafafa;
+    background-color: #f4f4f4;
 }
 
 label:not(li label) {
@@ -43,7 +43,8 @@ input:not(li input) {
 
 textarea {
     width: 95%;
-    background-color: #f5f5f5;
+    // background-color: #f5f5f5;
+    background-color: #fff;
 	padding: 10px;
     border: none;
     border-radius:12px;
