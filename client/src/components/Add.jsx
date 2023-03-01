@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react"
 import { Form } from "./styles/Form.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useOutletContext } from "react-router-dom"
 import { checkboxes } from "../checkboxes"
 import { UserContext } from "../context/user/UserContext"
 import { ButtonStyled } from "./styles/Button.styled"
@@ -17,6 +17,7 @@ export default function Add({axiosJWT}) {
     const { user } = useContext(UserContext)
     const [showIdeas, setShowIdeas] = useState(false)
     const [ideas, setIdeas] = useState({})
+    const alert = useOutletContext()
 
     useEffect(() => {
         const fetchIdeas = async () => {
@@ -54,13 +55,14 @@ export default function Add({axiosJWT}) {
             })
             dispatch({type: "ADD_HABIT", payload: res.data})
             navigate(`/${res.data._id}`)
+            alert('Habit added')
         } catch (err) {
             console.error(err.response.data)
         }
     }
 
     const onChangeFunction = (dayOfWeek) => {
-        const updateToComplete = checkboxes.map((day) => 
+        const updateToComplete = daysToComplete.map((day) =>
             day.dayOfWeek === dayOfWeek ? {...day, toComplete: !day.toComplete} : {...day, toComplete: day.toComplete}
         )
         setDaysToComplete(updateToComplete)

@@ -3,13 +3,16 @@ import { PageContainer } from "../components/styles/PageContainer.styled"
 import { Outlet } from 'react-router-dom'
 import { MainContainer } from "../components/styles/MainContainer.styled"
 import HabitList from "../components/HabitList"
-import { useEffect, useContext } from "react"
+import { useEffect, useContext, useState } from "react"
 import { HabitContext } from "../context/habit/HabitContext"
 import { UserContext } from "../context/user/UserContext"
+import Alert from "../components/Alert"
 
 export default function Index({lg, axiosJWT}) {
     const { dispatch } = useContext(HabitContext)
     const { user } = useContext(UserContext)
+    const [showAlert, setShowAlert] = useState(false)
+    const [alertMessage, setAlertMessage] = useState('')
 
     // fetch users habits
     useEffect(() => {
@@ -28,11 +31,21 @@ export default function Index({lg, axiosJWT}) {
         fetchUserHabits()
     },[user._id, dispatch, user.token])
 
+    // handle alert display
+    const alert = (message) => {
+        setShowAlert(true)
+        setAlertMessage(message)
+        setTimeout(() => {
+            setShowAlert(false)
+        }, 3000);
+    }
+
     return(
         <PageContainer> 
             {lg && <HabitList />}
             <MainContainer>
-                <Outlet />
+            {showAlert && <Alert message={alertMessage}/>}
+                <Outlet context={alert}/>
             </MainContainer>
             {lg && <Rightbar />}
         </PageContainer>

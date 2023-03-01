@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react"
 import axios from "axios"
-import { Link } from "react-router-dom"
+import { Link, useOutletContext } from "react-router-dom"
 import Calendar from "react-calendar"
 import { StyledCalendar } from "./styles/Calendar.styled"
 import { useParams } from "react-router-dom"
@@ -20,8 +20,7 @@ export default function Habit({axiosJWT}) {
     const habitId = useParams().id
     const { userHabits, dispatch } = useContext(HabitContext) || []
     const { user } = useContext(UserContext)
-
-    console.log(userHabits)
+    const alert = useOutletContext()
 
     // set habit
     useEffect(() => {
@@ -139,6 +138,7 @@ export default function Habit({axiosJWT}) {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: 'UPDATE_JOURNAL', payload: {id: habit._id, journal: journal}})
+            alert("Journal updated")
         } catch (err) {
             console.error(err.response.data)
         }
@@ -146,7 +146,6 @@ export default function Habit({axiosJWT}) {
 
     return(
         <StyledHabit>
-
             <div className="habit-top">
                 <h2>{habit.name}</h2> 
                 <ButtonStyled onClick={completeButtonClick}>

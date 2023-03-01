@@ -1,10 +1,10 @@
 import axios from "axios"
 import { useState, useEffect, useContext } from "react"
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, useOutletContext } from "react-router-dom"
 import { Form } from "./styles/Form.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
-import { Alert } from "./styles/Alert.styled"
+import { AlertStyled } from "./styles/Alert.styled"
 import { UserContext } from "../context/user/UserContext"
 import { ButtonStyled } from "./styles/Button.styled"
 
@@ -15,6 +15,7 @@ export default function Details({axiosJWT}) {
     const { dispatch } = useContext(HabitContext)
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
+    const alert = useOutletContext()
 
     // get habit
     useEffect(() => {
@@ -40,18 +41,10 @@ export default function Details({axiosJWT}) {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: "UPDATE_HABIT", payload: habit})
-            alert()
+            alert("Habit updated")
         } catch (err) {
             console.error(err.response.data)
         }
-    }
-
-    // handle alert display
-    const alert = () => {
-        setShowAlert(true)
-        setTimeout(() => {
-            setShowAlert(false)
-        }, 3000);
     }
 
     const updateDaysToComplete = (dayOfWeek) => {
@@ -62,16 +55,17 @@ export default function Details({axiosJWT}) {
     }
 
     const deleteHabit = async() => {
-        await axiosJWT.delete(`http://localhost:5000/server/habit/delete/${habitId}`, habitId, {
+        await axiosJWT.delete(`http://localhost:5000/server/habit/delete/${habitId}`, {
             headers: {authorization:'Bearer ' + user.token}
         })
         dispatch({type: "DELETE_HABIT", payload: habitId})
         navigate('/')
+        alert("Habit deleted")
     }
 
     return(
         <>
-            {showAlert && <Alert>Habit updated</Alert>}
+            {showAlert && <AlertStyled>Habit updated</AlertStyled>}
             <Form onSubmit={onSubmitClick}>
                 <label htmlFor="habitName">Habit Name</label>
                 <input

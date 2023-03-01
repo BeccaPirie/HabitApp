@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Alert = styled.div`
+export const AlertStyled = styled.div`
 background-color: rgba(156, 233, 156, 0.8);
 width: 100%;
 position: fixed;
