@@ -10,6 +10,10 @@ export const StyledChart = styled.div`
         width: 100px;
         height: 60px;
         margin: 5px;
+
+        :hover {
+            background-color: #91c4db;
+        }
     }
 }
 `

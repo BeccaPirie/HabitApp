@@ -22,6 +22,10 @@ border-radius: 10px;
     button {
         width: 130px;
         background-color: #d1ed8a;
+
+        :hover {
+            background-color: #c2db7f;
+        }
     }
 }
 
@@ -33,18 +37,31 @@ border-radius: 10px;
     button {
         display: inline-block;
         margin: 8px;
+        width: 95px;
     }
 
     #Completed {
         background-color: #d1ed8a;
+
+        :hover {
+            background-color: #c2db7f;
+        }
     }
     
     #Skipped {
         background-color: #78cbe4;
+
+        :hover {
+            background-color: #74c1d6;
+        }
     }
     
     #Missed {
         background-color: #f08ca2;
+
+        :hover {
+            background-color: #de8397;
+        }
     }
 }
 
@@ -66,18 +83,26 @@ form {
         border-radius:12px;
         -webkit-border-radius:12px;
         resize: none;
+        outline: 3px solid #d4f08c;
+    }
 
-        :focus {
-            outline: 3px solid #d1ed8a;
+    button {
+        background-color: #9ed6f0;
+
+        :hover {
+            background-color: #91c4db;
         }
     }
 }
 
 .details-btn {
     float: right;
+    background-color: #d1ed8a;
+    width: 100px;
 
     :hover {
         cursor: pointer;
+        background-color: #c2db7f;
     }
 }
 `

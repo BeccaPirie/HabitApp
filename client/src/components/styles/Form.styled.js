@@ -1,8 +1,14 @@
 import styled from "styled-components"
 
 export const Form = styled.form`
-margin: 30px auto;
-padding: 20px;
+width: 90%;
+margin: 15px auto;
+padding-left: 15px;
+padding-right: 5px;
+background-color: #fff;
+box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+border-radius: 10px;
+overflow: auto;
 
 .nameContainer {
     display: flex;
@@ -22,11 +28,11 @@ padding: 20px;
 
 input[type="text"] {
     width: 70%;
-    background-color: #f4f4f4;
 }
 
 label:not(li label) {
     display: block;
+    margin-top: 20px;
 }
 
 input:not(li input) {
@@ -43,8 +49,7 @@ input:not(li input) {
 
 textarea {
     width: 95%;
-    // background-color: #f5f5f5;
-    background-color: #fff;
+    background-color: #f1f1f1;
 	padding: 10px;
     border: none;
     border-radius:12px;
@@ -63,5 +68,36 @@ ul {
 li {
     margin-left: -30px;
     padding: 8px;
+}
+
+.submit-div {
+    overflow: auto;
+    margin: 10px 25px;
+
+    #save-btn {
+        float: right;
+        width: 100px;
+    }    
+}
+
+#add-btn, #save-btn {
+    background-color: #9ed6f0;
+
+    :hover {
+        background-color: #91c4db;
+    }
+}
+
+#add-btn {
+    float: right;
+    margin: 10px;
+}
+
+#delete-btn {
+    background-color: #f08ca2;
+
+    :hover {
+        background-color: #de8397;
+    }
 }
 `

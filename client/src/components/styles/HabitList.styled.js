@@ -29,6 +29,10 @@ export const StyledHabitList = styled.div`
     .habitListItem-true {
         background-color: rgb(248, 248, 248);
         text-decoration: line-through;
+
+        :hover {
+            background-color: #c2db7f;
+        }
     }
 
     a {
@@ -43,8 +47,7 @@ export const StyledHabitList = styled.div`
         border-radius: 50%;
         text-align: center;
         line-height: 40px;
-        position: -webkit-sticky;
-        position: sticky;
+        position: absolute;
         bottom: 40px;
         left: calc(100vw - 100px);
 
@@ -76,8 +79,7 @@ export const StyledHabitList = styled.div`
         }
 
         .addBtn {
-            left: 180px;
-            right: 0;
+            left: 200px;
         }
     }
 
@@ -85,7 +87,7 @@ export const StyledHabitList = styled.div`
         width: 310px;
 
         .addBtn {
-            left: 210px;
+            left: 220px;
         }
     }
 `

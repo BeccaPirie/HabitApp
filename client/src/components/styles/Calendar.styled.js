@@ -2,8 +2,8 @@ import styled from "styled-components"
 
 export const StyledCalendar = styled.div`
 .react-calendar {
-    width: 700px;
-    max-width: 100%;
+    width: 400px;
+    // max-width: 100%;
     margin: auto;
     background: #9ed6f0;
     border: 1px solid #a0a096;
@@ -100,7 +100,7 @@ export const StyledCalendar = styled.div`
   }
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
-    background-color: #e6e6e6;
+    // background-color: #e6e6e6;
   }
   .react-calendar__tile--now {
     background: #ffff76;
@@ -140,9 +140,14 @@ export const StyledCalendar = styled.div`
     background-color: #f08ca2;
   }
 
-  @media (min-width: 768px) {
-    .react-calendar {
-      // max-width: 550px;
-    }
+    @media (min-width: 1120px) {
+      .react-calendar {
+        max-width: 550px;
+      }
+
+    @media (min-width: 1350px) {
+      .react-calendar {
+        width: 700px;
+      }
   }
 `

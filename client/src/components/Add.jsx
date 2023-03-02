@@ -152,7 +152,7 @@ export default function Add({axiosJWT}) {
                     required />
 
                 <div>
-                    <ButtonStyled>Add habit</ButtonStyled>
+                    <ButtonStyled id="add-btn">Add habit</ButtonStyled>
                 </div>
             </Form>
         </>

@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const StyledNavbar = styled.div`
 display: block;
-width: 100%;
+width: 100vw;
 height: 70px;
 display: flex;
 align-items: center;
@@ -10,7 +10,7 @@ align-items: center;
 .left {
     flex: 10;
     align-items: center;
-    padding-left: 50px;
+    padding-left: 20px;
 }
 
 .right {
@@ -34,12 +34,15 @@ align-items: center;
         border-radius: 20px;
         border: 3px solid #d1ed8a;
         text-align: center;
-        color: #d1ed8a;
+        // color: #d1ed8a;
         font-weight: bold;
+        background-color: #d1ed8a;
+        color: white;
 
         :hover {
-            background-color: #d1ed8a;
-            color: white;
+            // background-color: #d1ed8a;
+            // color: white;
+            // background-color: ;
         }
     }
 }
@@ -49,10 +52,14 @@ a {
 }
 
 @media (min-width: 660px) {
-    width: calc(100vw - 280px);
+    width: calc(100vw - 293px);
+
+    .left {
+        padding-left: 50px;
+    }
 }
 
 @media (min-width: 992px) {
-    width: calc(100vw - 310px);
+    width: calc(100vw - 318px);
 }
 `

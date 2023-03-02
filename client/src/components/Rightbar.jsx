@@ -52,9 +52,9 @@ export default function Rightbar() {
                             <span className="name">{habit.name}</span>
                         </Link>
                         <div className="btn-div">
-                            <button id="Completed" onClick={((e) => buttonClick(habit._id, e))}>yes</button>
-                            <button id="Skipped" onClick={((e) => buttonClick(habit._id, e))}>skip</button>
-                            <button id="Missed" onClick={((e) => buttonClick(habit._id, e))}>no</button>
+                            <button id="Completed" onClick={((e) => buttonClick(habit._id, e))}>Yes</button>
+                            <button id="Skipped" onClick={((e) => buttonClick(habit._id, e))}>Skip</button>
+                            <button id="Missed" onClick={((e) => buttonClick(habit._id, e))}>No</button>
                         </div>
                     </div>
                 ))
