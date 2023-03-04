@@ -20,7 +20,7 @@ align-items: center;
         list-style-type: none;
         display: flex;
         padding-left: 0;
-        padding-right: 50px;
+        // padding-right: 50px;
         margin: 0;
     }
 
@@ -51,6 +51,12 @@ a {
     text-decoration: none;
 }
 
+@media (min-width: 500px) {
+    ul {
+        padding-right: 50px;
+    }
+}
+
 @media (min-width: 660px) {
     width: calc(100vw - 293px);
 
@@ -61,5 +67,11 @@ a {
 
 @media (min-width: 992px) {
     width: calc(100vw - 318px);
+}
+
+@media (max-width: 500px) {
+    h2 {
+        font-size: 15px;
+    }
 }
 `

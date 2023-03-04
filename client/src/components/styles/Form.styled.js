@@ -5,7 +5,7 @@ width: 90%;
 margin: 15px auto;
 padding-left: 15px;
 padding-right: 5px;
-background-color: #fff;
+background-color: #f7f7f7;
 box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 border-radius: 10px;
 overflow: auto;
@@ -16,6 +16,7 @@ overflow: auto;
     input[type="text"] {
         width: calc(70% - 65px);
         padding-right: 65px;
+        background-color: #f7f7f7;
     }
     
     .ideasBtn {

@@ -5,7 +5,7 @@ width: 90%;
 margin: 15px auto;
 padding: 10px;
 overflow: auto;
-background-color: #fff;
+background-color: #f7f7f7;
 box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 border-radius: 10px;
 

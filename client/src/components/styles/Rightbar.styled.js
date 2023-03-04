@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export const StyledRightbar = styled.div`
-background-color: #fff;
+background-color: #f7f7f7;
 height: 80vh;
 width: 270px;
 padding: 20px;

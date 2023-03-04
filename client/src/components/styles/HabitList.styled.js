@@ -5,7 +5,7 @@ export const StyledHabitList = styled.div`
     height: calc(100vh - 80px);
     padding: 0;
     margin: 0;
-    background-color: #fff;
+    background-color: #f7f7f7;
 
     .list-header {
         margin-left: 20px;
@@ -27,7 +27,7 @@ export const StyledHabitList = styled.div`
     }
 
     .habitListItem-true {
-        background-color: rgb(248, 248, 248);
+        background-color: #eee;
         text-decoration: line-through;
 
         :hover {

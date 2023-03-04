@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const StyledCalendar = styled.div`
 .react-calendar {
-    width: 400px;
+    width: 300px;
     // max-width: 100%;
     margin: auto;
     background: #9ed6f0;
@@ -138,6 +138,12 @@ export const StyledCalendar = styled.div`
   
   .Missed {
     background-color: #f08ca2;
+  }
+
+  @media (min-width: 500px) {
+    .react-calendar {
+      width: 400px;
+    }
   }
 
     @media (min-width: 1120px) {
