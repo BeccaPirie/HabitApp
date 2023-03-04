@@ -5,9 +5,9 @@ import { useState, useEffect } from "react"
 import { ButtonStyled } from "./styles/Button.styled"
 import { StyledChart } from "./styles/Chart.styled"
 
-const weeks = [0, -1, -2, -3]
-const months = [0, -1, -2, -3, -4, -5]
-const year = [0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11]
+const weeks = [0, 1, 2, 3]
+const months = [0, 1, 2, 3, 4, 5]
+const year = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 export default function Chart({data}) {
     const [view, setView] = useState("week")
@@ -45,7 +45,7 @@ export default function Chart({data}) {
 
         // get dates for past four weeks
         const getWeekRange = (week) => {
-            const weekStart = moment().add(week, 'weeks').startOf('week')
+            const weekStart = moment().subtract(week, 'weeks').startOf('week')
             const dates = []
             for (let i = 0; i < 7; i++) {
                 dates.push(weekStart.clone().add(i, 'day').format('DD/MM/YY'))
@@ -64,14 +64,14 @@ export default function Chart({data}) {
         // set x axis to month name and max y axis to 31
         else if(view === 'month') {
             months.forEach(month => {
-                const monthName = moment().month(month + 1).format('MMM')
+                const monthName = moment().subtract(month, 'months').format('MMM')
                 setXAxis(currentMonths => [monthName, ...currentMonths])
             })
             setYAxisMax(31)
         }
         else if(view === 'year') {
             year.forEach(month => {
-                const monthName = moment().month(month + 1).format('MMM')
+                const monthName = moment().subtract(month, 'months').format('MMM')
                 setXAxis(currentMonths => [monthName, ...currentMonths])
             })
             setYAxisMax(31)
