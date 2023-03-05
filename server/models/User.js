@@ -34,13 +34,11 @@ const UserSchema = new mongoose.Schema({
     refreshToken:{
         type:String,
         default: ''
+    },
+
+    firebaseToken:{
+        type:String,
     }
-    
-    // list of habit ids
-    // habits:{
-    //     type:Array,
-    //     default:[]
-    // }
 })
 
 export default mongoose.model("User", UserSchema)

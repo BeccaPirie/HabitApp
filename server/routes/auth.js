@@ -26,11 +26,14 @@ router.post('/signup', async(req, res) => {
             email: req.body.email,
             password: hashedPassword,
         })
-
         // save user
         const user = await createUser.save()
+
+        // generate JWT tokens
         const token = generateToken(user._id)
         const refreshToken = generateRefreshToken(user._id)
+
+        // update user with JWT tokens
         await user.updateOne({
             $set: {
                 token: token,
@@ -61,10 +64,11 @@ router.post('/login', async(req, res) => {
         const isValid = await bcrypt.compare(req.body.password, loginUser.password)
         if(!isValid) return res.status(400).json("Incorrect password")
 
-        // generate new tokens
+        // generate new JWT tokens
         const token = await generateToken(loginUser._id)
         const refreshToken = await generateRefreshToken(loginUser._id)
 
+        // update user with new tokens
         await loginUser.updateOne({
             $set: {
                 token: token,
@@ -72,7 +76,7 @@ router.post('/login', async(req, res) => {
             }
         })
 
-        res.json({
+        res.status(200).json({
             _id: loginUser._id,
             username: loginUser.username,
             email: loginUser.email,
@@ -100,9 +104,11 @@ router.post('/refresh-token', async(req, res) => {
         if(err) {
             console.error(err)
         }
+        // generate new JWT tokens
         const newAccessToken = await generateToken(decoded.id)
         const newRefreshToken = await generateRefreshToken(decoded.id)
 
+        // update user with new tokens
         await User.findByIdAndUpdate(decoded.id, {
             $set: {
                 token: newAccessToken,
