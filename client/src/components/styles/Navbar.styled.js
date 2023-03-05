@@ -11,6 +11,10 @@ align-items: center;
     flex: 10;
     align-items: center;
     padding-left: 20px;
+
+    h2 {
+        display: none;
+    }
 }
 
 .right {
@@ -69,9 +73,21 @@ a {
     width: calc(100vw - 318px);
 }
 
-@media (max-width: 500px) {
-    h2 {
-        font-size: 15px;
+@media (min-width: 400px) {
+    .left h2 {
+        display: block;
+    }
+}
+
+@media (min-width: 660px) {
+    .left h2 {
+        display: none;
+    }
+}
+
+@media (min-width: 780px) {
+    .left h2 {
+        display: block;
     }
 }
 `

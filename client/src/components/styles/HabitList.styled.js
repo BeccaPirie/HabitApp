@@ -8,7 +8,8 @@ export const StyledHabitList = styled.div`
     background-color: #f7f7f7;
 
     .list-header {
-        margin-left: 20px;
+        margin: 20px;
+        padding-top: 20px;
     }
 
     ul {
@@ -65,6 +66,10 @@ export const StyledHabitList = styled.div`
         position: -webkit-sticky;
         position: sticky;
         top: 0;
+
+        .list-header {
+            padding-top: 0;
+        }
         
         ::-webkit-scrollbar {
             width: 10px;

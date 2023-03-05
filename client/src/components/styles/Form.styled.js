@@ -96,6 +96,7 @@ li {
 
 #delete-btn {
     background-color: #f08ca2;
+    margin-bottom: 10px;
 
     :hover {
         background-color: #de8397;

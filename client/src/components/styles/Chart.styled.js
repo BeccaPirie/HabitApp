@@ -3,7 +3,8 @@ import styled from "styled-components"
 export const StyledChart = styled.div`
 .chart-btns {
     width: fit-content;
-    margin: auto;
+    margin: 0 auto 25px;
+    display: flex;
 
     button {
         background-color: #9ed6f0;
