@@ -3,6 +3,8 @@ import Calendar from "react-calendar"
 import { ButtonStyled } from "./styles/Button.styled"
 import { useState, useContext } from "react"
 import { UserContext } from '../context/user/UserContext'
+import { notificationSettings } from "../notifications"
+import axios from "axios"
 
 export default function CalendarComponent({axiosJWT, habit, dispatch}) {
     const [date, setDate] = useState(new Date())
@@ -70,7 +72,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
         }
 
         // check if notification frequency needs to be updated
-        // notificationSettings(habit)
+        notificationSettings(habit, dispatch, axiosJWT, user)
     }
 
     return(

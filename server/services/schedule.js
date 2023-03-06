@@ -45,7 +45,7 @@ schedule.createSchedule = async(data) => {
             }
 
             const payload = {
-                tokens,
+                tokens: tokens,
                 title: data.title,
                 body: data.body,
             }

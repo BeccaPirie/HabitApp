@@ -46,10 +46,8 @@ export default function Habit({axiosJWT}) {
     // handle complete button click
     const completeButtonClick = async () => {
         try {
-            // const updatedHabit = {...habit, habitCompleted: !isComplete}
-            await axiosJWT.put(`http://localhost:5000/server/habit/complete/${habit._id}`, {
-                complete: !isComplete
-            }, {
+            const updatedHabit = {...habit, habitCompleted: !isComplete}
+            await axiosJWT.put(`http://localhost:5000/server/habit/update/${habit._id}`, updatedHabit, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: 'COMPLETE_HABIT', payload: {id: habit._id, complete: !isComplete}})
@@ -57,6 +55,7 @@ export default function Habit({axiosJWT}) {
             console.error(err.response.data)
         }
         setIsComplete(!isComplete)
+        //TODO stop notifications
     }
 
     // handle journal button click

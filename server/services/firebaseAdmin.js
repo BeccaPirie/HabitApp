@@ -17,7 +17,7 @@ firebaseAdmin.sendMulticastNotification = function(payload) {
             title: payload.title,
             body: payload.body
         },
-        token: payload.token,
+        tokens: payload.tokens,
         data: payload.data || {}
     }
     return admin.messaging().sendMulticast(userNotification)

@@ -53,9 +53,9 @@ router.delete('/delete/:id', protect, async(req, res) => {
 })
 
 // update habit
-router.put('/update/:id', protect, async(req, res) => {
+router.put('/update/:habitId', protect, async(req, res) => {
     try {
-        await Habit.findByIdAndUpdate(req.params.id, {$set: req.body})
+        await Habit.findByIdAndUpdate(req.params.habitId, {$set: req.body})
         res.json("habit updated")
     } catch (err) {
         res.status(500).json(err)

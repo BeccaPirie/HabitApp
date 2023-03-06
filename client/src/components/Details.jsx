@@ -34,10 +34,11 @@ export default function Details({axiosJWT}) {
         e.preventDefault()
 
         try {
-            await axiosJWT.put(`http://localhost:5000/server/habit/update/${habit._id}`, habit, {
+            await axiosJWT.put(`http://localhost:5000/server/habit/update/`, habit, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: "UPDATE_HABIT", payload: habit})
+            // TODO set notification
             navigate(`/${habit._id}`)
             alert("Habit updated")
         } catch (err) {
