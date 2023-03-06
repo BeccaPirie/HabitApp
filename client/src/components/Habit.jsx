@@ -7,7 +7,7 @@ import { StyledHabit } from "./styles/Habit.styled"
 import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
 import Chart from "./Chart"
-// import notificationSettings from "../notifications.js"
+import notificationSettings from "../notifications.js"
 import { UserContext } from '../context/user/UserContext'
 import { ButtonStyled } from "./styles/Button.styled"
 
@@ -107,8 +107,8 @@ export default function Habit({axiosJWT}) {
             }
         }
 
-        // TODO check if notification frequency needs to be updated
-        // notificationSettings(habit)
+        // check if notification frequency needs to be updated
+        notificationSettings(habit)
     }
 
     // handle complete button click

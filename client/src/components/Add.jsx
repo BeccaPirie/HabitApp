@@ -47,12 +47,22 @@ export default function Add({axiosJWT}) {
             preventingActions: habit.preventingActions,
             intentions: habit.intentions,
             habitCompleted: false
+            // TODO create new notification
         }
 
         try {
             const res = await axiosJWT.post("http://localhost:5000/server/habit/add", newHabit, {
                 headers: {authorization:'Bearer ' + user.token}
             })
+
+            // add notification
+        // await axios.put(`http://localhost:5000/server/notification/set-notification/${habit.userId}`, {
+        //     title: habit.name,
+        //     message: `Have you completed ${habit.name} today?`,
+        //     days: notifDays,
+        //     time: '18:00' // let users select morning/afternoon/evening
+        // })
+
             dispatch({type: "ADD_HABIT", payload: res.data})
             navigate(`/${res.data._id}`)
             alert('Habit added')

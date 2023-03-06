@@ -123,4 +123,31 @@ router.post('/refresh-token', async(req, res) => {
     })
 })
 
+// update user with FCM register token
+router.put('/firebase-token', async (req, res) => {
+    try {
+        const user = await User.findById(req.body.userId)
+
+        if(user.firebaseToken.includes(req.body.firebaseToken)) {
+            res.json("token already added")
+        }
+        else if(req.body.firebaseToken === "") {
+            res.json("no token")
+        }
+        else {
+            await user.updateOne({
+                $push: {
+                    firebaseToken: req.body.firebaseToken
+                }
+            })
+        }
+
+        res.status(200).json({
+            firebaseToken: user.firebaseToken
+        })
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
 export default router

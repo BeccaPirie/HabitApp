@@ -7,7 +7,6 @@ import Habit from './components/Habit'
 import NoSelection from './components/NoSelection'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
-import { requestNotificationPermission } from './firebaseAdmin'
 import { useContext } from 'react'
 import { UserContext } from './context/user/UserContext'
 import axios from "axios"
@@ -15,12 +14,9 @@ import jwt_decode from "jwt-decode"
 import About from './components/About'
 import Profile from './pages/Profile'
 
-
 export default function App() {
   const lg = useMediaQuery('(min-width:660px)')
   const { user, dispatch } = useContext(UserContext)
-
-  requestNotificationPermission()
 
   // refresh token when token has expired
     const refreshToken = async () => {

@@ -59,6 +59,7 @@ export default function Details({axiosJWT}) {
         dispatch({type: "DELETE_HABIT", payload: habitId})
         navigate('/')
         alert("Habit deleted")
+        // TODO delete scheduled notifications
     }
 
     return(

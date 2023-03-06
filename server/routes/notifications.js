@@ -31,7 +31,7 @@ router.get('/', protect, async(req, res) => {
         
         schedules = schedules.filter((item) =>
             keys.includes(item._id.toString()))
-        // console.log(schedules)
+        console.log(schedules)
 
         res.status(200).json(schedules)
     } catch (e) {

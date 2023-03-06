@@ -37,7 +37,8 @@ const UserSchema = new mongoose.Schema({
     },
 
     firebaseToken:{
-        type:String,
+        type:Array,
+        default: []
     }
 })
 

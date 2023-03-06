@@ -12,6 +12,7 @@ schedule.getJobs = function () {
 
 schedule.createSchedule = async(data) => {
     try {
+        // create new notification
         const scheduledNotification = new Notification({
             time: data.time,
             days: data.days,
@@ -22,17 +23,22 @@ schedule.createSchedule = async(data) => {
             userId: data.userId
         })
 
-        await Notification.save()
+        // save to database
+        await scheduledNotification.save()
+
+        // set data required for scheduling
         const dayOfWeek = data.days.join(",")
-        const timeToSent = data.time.split(":")
-        const hours = timeToSent[0]
-        const minutes = timeToSent[1]
+        const timeToSend = data.time.split(":")
+        const hours = timeToSend[0]
+        const minutes = timeToSend[1]
         const scheduleId = scheduledNotification._id.toString()
         const scheduleTimeout = `${minutes} ${hours} * * ${dayOfWeek}`
 
-        scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () => {
+        // schedule notification
+        scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () => {            
+            // find users token
             const user = await User.findById(data.userId)
-            
+
             let tokens
             if(user.firebaseToken) {
                 tokens = user.firebaseToken
@@ -43,6 +49,7 @@ schedule.createSchedule = async(data) => {
                 title: data.title,
                 body: data.body,
             }
+            
             return firebaseAdmin.sendMulticastNotification(payload);
         })
     } catch (err) {

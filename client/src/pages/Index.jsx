@@ -8,12 +8,33 @@ import { HabitContext } from "../context/habit/HabitContext"
 import { UserContext } from "../context/user/UserContext"
 import Alert from "../components/Alert"
 import Navbar from "../components/Navbar"
+import { getFirebaseToken } from "../firebaseAdmin"
+import axios from "axios"
 
 export default function Index({lg, axiosJWT}) {
     const { dispatch } = useContext(HabitContext)
     const { user } = useContext(UserContext)
     const [showAlert, setShowAlert] = useState(false)
     const [alertMessage, setAlertMessage] = useState('')
+    const [firebaseToken, setToken] = useState('')
+
+    useEffect(() => {
+        try {
+            getFirebaseToken(setToken)
+            const setFirebaseToken = async() => {
+                await axios.put('http://localhost:5000/server/auth/firebase-token', {
+                    userId: user._id,
+                    firebaseToken: firebaseToken
+                })
+                console.log("Firebase token updated")
+                // TODO user context
+            }
+            setFirebaseToken()
+        } catch (err) {
+            console.error(err.response.data)
+        }
+        
+    }, [user._id, firebaseToken])
 
     // fetch users habits
     useEffect(() => {
@@ -42,7 +63,8 @@ export default function Index({lg, axiosJWT}) {
     }
 
     return(
-        <>            
+        <>
+        {firebaseToken && <div>{firebaseToken}</div>}
             <PageContainer> 
                 {lg && <HabitList />}
                 <MainContainer>

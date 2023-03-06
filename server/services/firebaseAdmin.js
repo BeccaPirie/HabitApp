@@ -1,14 +1,15 @@
-
 import admin from 'firebase-admin'
 import serviceAccount from './service-account.js'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
+// initialise firebase with the project
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 })
 
+// send notification
 export const firebaseAdmin = {}
 firebaseAdmin.sendMulticastNotification = function(payload) {
     const userNotification = {
@@ -19,6 +20,5 @@ firebaseAdmin.sendMulticastNotification = function(payload) {
         token: payload.token,
         data: payload.data || {}
     }
-    // console.log(userNotification)
     return admin.messaging().sendMulticast(userNotification)
 }
