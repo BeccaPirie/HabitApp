@@ -14,6 +14,7 @@ position: relative;
 top: 70px;
 right: 10px;
 display: none;
+overflow: auto;
 
 .item {
     display: flex;

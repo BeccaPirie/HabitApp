@@ -13,6 +13,7 @@ router.post('/set-notification/:userId', async(req, res) => {
             days: req.body.days,
             time: req.body.time,
             userId: req.params.userId,
+            habitId: req.body.habitId
         }
         await schedule.createSchedule(notificationData)
         res.status(200).json("Notification added successfully")
@@ -28,6 +29,27 @@ router.get('/', protect, async(req, res) => {
         console.log(list)
 
         let schedules = await Notification.find({userId: req.user._id})
+        
+        schedules = schedules.filter((item) =>
+            keys.includes(item._id.toString()))
+        console.log(schedules)
+
+        res.status(200).json(schedules)
+    } catch (e) {
+        res.status(400).json({ message: e.message })
+    }
+})
+
+router.get('/:habitId', protect, async(req, res) => {
+    try {
+        const list = schedule.getJobs()
+        const keys = Object.keys(list)
+        console.log(list)
+
+        let schedules = await Notification.find({
+            userId: req.user._id,
+            habitId: req.params.habitId
+        })
         
         schedules = schedules.filter((item) =>
             keys.includes(item._id.toString()))

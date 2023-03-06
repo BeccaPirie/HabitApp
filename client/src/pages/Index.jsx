@@ -64,7 +64,6 @@ export default function Index({lg, axiosJWT}) {
 
     return(
         <>
-        {firebaseToken && <div>{firebaseToken}</div>}
             <PageContainer> 
                 {lg && <HabitList />}
                 <MainContainer>

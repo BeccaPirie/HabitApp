@@ -1,17 +1,37 @@
 import moment from "moment"
 import axios from "axios"
-import HabitList from "./components/HabitList"
+import { createDaysArray } from "./utils"
 
 const days = [0, 1, 2, 3, 4]
-const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 export default async function notificationSettings(habit) {
+    // TODO dont send notification if already calendar data for current day - not sure how to do this
+
     // reformat date function
     const reformatDate = (date) => {
         const tmp = date.split('-')
         tmp[1] = parseInt(tmp[1]) + 1
         const newDate = `${tmp[0]}-${tmp[1]}-${tmp[2]}`
         return newDate
+    }
+    
+    // add notification function
+    const addNotification = async (notifDays) => {
+        await axios.put(`http://localhost:5000/server/notification/set-notification/${habit.userId}`, {
+            title: habit.name,
+            message: `Have you completed ${habit.name} today?`,
+            days: notifDays,
+            time: '18:00' // TODO let users select morning/afternoon/evening
+        })
+
+        // TODO update habit with notification frequency++
+    }
+
+    // delete notification function
+    const deleteNotification = () => {
+        // TODO
+        // check if notification exists for habit
+        // if it exists, delete current scheduled notifications
     }
 
     // reformat calendarData dates
@@ -38,49 +58,29 @@ export default async function notificationSettings(habit) {
     const isAllCompleted = dates.every(date => date.status === 'Completed')
     if(isAllCompleted) {
         console.log("all days completed")
-
-        // TODO
-        // check if notification exists for habit - add schedule id to habit ????
-        // if it exists, delete current scheduled notifications
-        // dont send notification if already calendar data for current day - not sure how to do this
+        // delete current notification
+        deleteNotification()
         
         // use filter to find days habit is to be completed
         const daysToComplete = habit.daysToComplete.filter(day => day.toComplete === true)
-
         // now need to get number corresponding with day
-        const days = daysToComplete.map(day => {
-            for(let i = 0; i < dayNames.length; i++) {
-                if(day.dayOfWeek === dayNames[i]) {
-                    return i
-                }
-            }
-        })
+        const days = createDaysArray(daysToComplete)
 
         // update notification frequency
         let notifDays
         if(habit.notificationFrequency === 1) {
             // send every second day (every second element in array)
-            notifDays = days.filter((d, i) => i % 2 === 1)
-            habit.notificationFrequency = 2
+            notifDays = days.filter((d, i) => i % 2 === 1)            
         }
         else if(habit.notificationFrequency === 2) {            
           notifDays = notifDays.filter((d, i) => i % 3 === 2)
-          habit.notificationFrequency = 3
         }
         else if(habit.notificationFrequency === 3) {
-
-        }
-        // eventually stop notifications
+            // eventually stop notifications
+        } 
 
         // add notification
-        // await axios.put(`http://localhost:5000/server/notification/set-notification/${habit.userId}`, {
-        //     title: habit.name,
-        //     message: `Have you completed ${habit.name} today?`,
-        //     days: notifDays,
-        //     time: '18:00' // let users select morning/afternoon/evening
-        // })
-
-        // add schedule id to habit ??
+        addNotification(notifDays)
     }
 
     // count number of days missed
@@ -93,7 +93,7 @@ export default async function notificationSettings(habit) {
         console.log(`${count} days missed`)
     
         if(habit.notificationFrequency > 1) {
-            habit.notificationFrequency = 1
+            // change notif frequency to 1
         }
         // suggest changing event cue
     }

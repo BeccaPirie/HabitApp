@@ -8,6 +8,7 @@ import { UserContext } from "../context/user/UserContext"
 import { ButtonStyled } from "./styles/Button.styled"
 import { Ideas } from "./styles/Ideas.styled"
 import axios from "axios"
+import { createDaysArray } from "../utils"
 
 export default function Add({axiosJWT}) {
     const [habit, setHabit] = useState({})
@@ -47,22 +48,20 @@ export default function Add({axiosJWT}) {
             preventingActions: habit.preventingActions,
             intentions: habit.intentions,
             habitCompleted: false
-            // TODO create new notification
         }
 
         try {
             const res = await axiosJWT.post("http://localhost:5000/server/habit/add", newHabit, {
                 headers: {authorization:'Bearer ' + user.token}
             })
-
             // add notification
-        // await axios.put(`http://localhost:5000/server/notification/set-notification/${habit.userId}`, {
-        //     title: habit.name,
-        //     message: `Have you completed ${habit.name} today?`,
-        //     days: notifDays,
-        //     time: '18:00' // let users select morning/afternoon/evening
-        // })
-
+            await axios.post(`http://localhost:5000/server/notification/set-notification/${user._id}`, {
+                title: habit.name,
+                body: `Have you completed ${habit.name} today?`,
+                days: createDaysArray(res.data.daysToComplete),
+                time: '18:00', // TODO let users select morning/afternoon/evening
+                habitId: res.data._id
+            })
             dispatch({type: "ADD_HABIT", payload: res.data})
             navigate(`/${res.data._id}`)
             alert('Habit added')

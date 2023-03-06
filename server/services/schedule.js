@@ -20,12 +20,12 @@ schedule.createSchedule = async(data) => {
                 title: data.title,
                 body: data.body,
             },
-            userId: data.userId
+            userId: data.userId,
+            habitId: data.habitId
         })
 
         // save to database
         await scheduledNotification.save()
-
         // set data required for scheduling
         const dayOfWeek = data.days.join(",")
         const timeToSend = data.time.split(":")
