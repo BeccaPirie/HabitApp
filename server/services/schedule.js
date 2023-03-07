@@ -36,7 +36,7 @@ schedule.createSchedule = async(data) => {
 
         // schedule notification
         scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () => {            
-            // find users token
+            // find users tokens
             const user = await User.findById(data.userId)
 
             let tokens

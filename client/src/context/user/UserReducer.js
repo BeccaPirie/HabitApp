@@ -30,6 +30,15 @@ const UserReducer = (state, action) => {
                     refreshToken: action.payload.refreshToken
                 }
             }
+
+            case "UPDATE_FIREBASE_TOKEN":
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    firebaseToken: [...state.user.firebaseToken, action.payload]
+                }
+            }
         default:
             return state
     }

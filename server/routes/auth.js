@@ -140,11 +140,12 @@ router.put('/firebase-token', async (req, res) => {
                     firebaseToken: req.body.firebaseToken
                 }
             })
+            res.status(200).json({
+                firebaseToken: user.firebaseToken
+            })
         }
-
-        res.status(200).json({
-            firebaseToken: user.firebaseToken
-        })
+ 
+        
     } catch (err) {
         res.status(500).json(err)
     }

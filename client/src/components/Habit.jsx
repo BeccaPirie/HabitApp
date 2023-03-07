@@ -8,6 +8,7 @@ import Chart from "./Chart"
 import { UserContext } from '../context/user/UserContext'
 import { ButtonStyled } from "./styles/Button.styled"
 import CalendarComponent from "./Calendar"
+import { addNotification, createDaysArray, deleteNotification } from "../notifications"
 
 export default function Habit({axiosJWT}) {
     const [habit, setHabit] = useState({})
@@ -51,11 +52,20 @@ export default function Habit({axiosJWT}) {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: 'COMPLETE_HABIT', payload: {id: habit._id, complete: !isComplete}})
+
+            if(!isComplete) {
+                deleteNotification(axiosJWT, habit, user)              
+            }
+            else {
+                // start notifications
+                const days = createDaysArray(habit.daysToComplete)
+                addNotification(days, axiosJWT, habit, user)
+            }
+
         } catch (err) {
             console.error(err.response.data)
         }
         setIsComplete(!isComplete)
-        //TODO stop notifications
     }
 
     // handle journal button click
@@ -68,7 +78,7 @@ export default function Habit({axiosJWT}) {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: 'UPDATE_JOURNAL', payload: {id: habit._id, journal: journal}})
-            alert("Journal updated")
+            alert("Journal updated", 3000)
         } catch (err) {
             console.error(err.response.data)
         }
@@ -87,6 +97,7 @@ export default function Habit({axiosJWT}) {
                 axiosJWT={axiosJWT}
                 habit={habit}
                 dispatch={dispatch}
+                alert={alert}
             />
 
             <form onSubmit={(e)=> journalButtonClick(e)}>

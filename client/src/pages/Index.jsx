@@ -26,15 +26,14 @@ export default function Index({lg, axiosJWT}) {
                     userId: user._id,
                     firebaseToken: firebaseToken
                 })
-                console.log("Firebase token updated")
-                // TODO user context
+                dispatch({ type: "UPDATE_FIREBASE_TOKEN", payload: firebaseToken})
             }
             setFirebaseToken()
         } catch (err) {
             console.error(err.response.data)
         }
         
-    }, [user._id, firebaseToken])
+    }, [user._id, firebaseToken, dispatch])
 
     // fetch users habits
     useEffect(() => {
@@ -54,12 +53,12 @@ export default function Index({lg, axiosJWT}) {
     },[user._id, dispatch, user.token, axiosJWT])
 
     // handle alert display
-    const alert = (message) => {
+    const alert = (message, timeout) => {
         setShowAlert(true)
         setAlertMessage(message)
         setTimeout(() => {
             setShowAlert(false)
-        }, 3000);
+        }, timeout);
     }
 
     return(

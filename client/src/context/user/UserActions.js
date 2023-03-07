@@ -12,9 +12,14 @@ export const LoginFail = (err) => ({
     payload: err,
 })
 
-export const updateTokens = (user) => ({
+export const UpdateTokens = (tokens) => ({
     type: "UPDATE_TOKENS",
-    payload: user,
+    payload: tokens,
+})
+
+export const UpdateFirebaseToken = (token) => ({
+    type: "UPDATE_FIREBASE_TOKEN",
+    payload: token
 })
 
 // update account

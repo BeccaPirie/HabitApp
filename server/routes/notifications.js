@@ -5,14 +5,15 @@ import protect from '../middleware/auth.js'
 
 const router = express.Router()
 
-router.post('/set-notification/:userId', async(req, res) => {
+// create notification
+router.post('/set-notification', protect, async(req, res) => {
     try {
         const notificationData = {
             title: req.body.title,
             body: req.body.body,
             days: req.body.days,
             time: req.body.time,
-            userId: req.params.userId,
+            userId: req.user._id,
             habitId: req.body.habitId
         }
         await schedule.createSchedule(notificationData)
@@ -22,6 +23,7 @@ router.post('/set-notification/:userId', async(req, res) => {
     }
 })
 
+// get users notifications
 router.get('/', protect, async(req, res) => {
     try {
         const list = schedule.getJobs()
@@ -40,6 +42,7 @@ router.get('/', protect, async(req, res) => {
     }
 })
 
+// get the notifications for a habit
 router.get('/:habitId', protect, async(req, res) => {
     try {
         const list = schedule.getJobs()
@@ -59,27 +62,19 @@ router.get('/:habitId', protect, async(req, res) => {
     }
 })
 
-router.delete('/:habitId', protect, async(req, res) => {
+// delete the notifications for a habit
+router.delete('/', protect, async(req, res) => {
     try {
+        const notificationIds = req.body.ids
         const list = schedule.getJobs()
-        const keys = Object.keys(list)
 
-        let scheduledNotification = await Notification.findOne({
-            userId: req.user._id,
-            habitId: req.params.habitId
+        notificationIds.forEach(async (n) => {
+            const current = list[n]
+            console.log(current)
+            if(!current) throw new Error("Notification not found")
+            await Notification.findByIdAndDelete(n)
+            n.cancel()
         })
-
-        scheduledNotification = scheduledNotification.find((item) =>
-            keys.includes(item._id.toString()))
-
-        if (!scheduledNotification) throw new Error("Notification not found")
-
-        await Notification.findOneAndRemove({
-            userId: req.user._id,
-            habitId: req.params.habitId
-        })
-
-        scheduledNotification.cancel()
         res.status(200).json("Notification deleted")
     } catch (e) {
         res.status(400).json({ message: e.message })

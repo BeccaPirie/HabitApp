@@ -5,6 +5,7 @@ import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
 import { UserContext } from "../context/user/UserContext"
 import { ButtonStyled } from "./styles/Button.styled"
+import { addNotification, createDaysArray, deleteNotification } from "../notifications"
 
 export default function Details({axiosJWT}) {
     const habitId = useParams().id
@@ -38,9 +39,15 @@ export default function Details({axiosJWT}) {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: "UPDATE_HABIT", payload: habit})
-            // TODO set notification
+            
+            // delete current notification
+            deleteNotification(axiosJWT, habit, user)
+            // create new notification
+            const days = createDaysArray(habit.daysToComplete)
+            addNotification(days, axiosJWT, habit, user)
+
             navigate(`/${habit._id}`)
-            alert("Habit updated")
+            alert("Habit updated", 3000)
         } catch (err) {
             console.error(err.response.data)
         }
@@ -59,8 +66,8 @@ export default function Details({axiosJWT}) {
         })
         dispatch({type: "DELETE_HABIT", payload: habitId})
         navigate('/')
-        alert("Habit deleted")
-        // TODO delete scheduled notifications
+        alert("Habit deleted", 3000)
+        deleteNotification(axiosJWT, habit, user)
     }
 
     return(
