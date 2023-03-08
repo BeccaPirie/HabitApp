@@ -17,7 +17,7 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
     }
     
     // function for getting dates habit is due for n amount of days
-    const getDates = (days, n) => {
+    const getDates = (days, n, t) => {
         // get past dates for when habit was due
         let dates = []
         // iterate through past n days
@@ -27,8 +27,8 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
             const dayOfWeek = moment(date).day()
             if(!days.includes(dayOfWeek)) continue
             dates.push({date: date, status: ''})
-            // once the length = 5, break out of loop
-            if(dates.length >= 5) break
+            // once the length = t, break out of loop
+            if(dates.length >= t) break
         }
         console.log(dates)
         return dates
@@ -55,8 +55,9 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
     const daysToComplete = habit.daysToComplete.filter(day => day.toComplete === true)
     // now need to get number corresponding with day
     const days = createDaysArray(daysToComplete)
-    // get dates for past 5 days habit was due
-    let dates = getDates(days, 35)
+    // get dates for past 5 and 10 days habit was due
+    const dates = getDates(days, 35, 5)
+    const datesTenDays = getDates(days, 70, 10)
     
     // find calendar data that matches each date
     dates.forEach(date => {
@@ -64,9 +65,19 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
         if(matchingDate) return date.status = matchingDate.status
         else return date.status = "No data"
     })
+    datesTenDays.forEach(date => {
+        const matchingDate = reformatData.find(data => data.date === date.date)
+        if(matchingDate) return date.status = matchingDate.status
+        else return date.status = "No data"
+    })
+    
+    const isAllCompleted = dates.every(date => date.status === 'Completed')
+    const isAllMissed = dates.every(date => date.status === 'Missed' || date.status === 'No data')
+    const isTwoWeeksMissed = datesTenDays.every(date => date.status === "Missed" || date.status === "No data")
+    const createdAt = moment(habit.createdAt).format('YYYY-M-D')
+    const twoWeeks = moment().subtract(14, 'days').format('YYYY-M-DD')
 
     // if all days completed half the amount of notifications received
-    const isAllCompleted = dates.every(date => date.status === 'Completed')
     if(isAllCompleted) {
         console.log("all days completed")
         // delete current notification
@@ -91,10 +102,9 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
         addNotification(notifDays, axiosJWT, habit, user)
         updateHabit()
     }
-    
+
     // if 5 days missed, start daily notifications and suggest changing event cue
-    const isAllMissed = dates.every(date => date.status === 'Missed' || date.status === 'No data')
-    if(isAllMissed) {
+    else if(isAllMissed) {
         console.log('All days missed')
         if(habit.notificationFrequency > 1) {
             deleteNotification(axiosJWT, habit, user)
@@ -110,23 +120,16 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
         alert(`Try a different event cue to help integrate ${habit.name} into your routine!`, 6000)
     }
 
-    // if 10 days missed delete notifications
-    dates = getDates(days, 98)
-    const isTwoWeeksMissed = dates.every(date => date.status === "Missed" || date.status === "No data")
-    if(isTwoWeeksMissed) {
+    // else if 10 days missed delete notification
+    else if(isTwoWeeksMissed) {
         console.log("10 days missed, stopping notifications")
         deleteNotification(axiosJWT, habit, user)
     }
 
-    // TODO
-    // if notifications are still daily after two weeks, get user to change event cue ?? - add creation date to habit
-    // if notification frequency === 1 after two weeks (use moment to get date)
-    // send alert to change event cue
-
-    // reduce notifications (every/one) month if still daily
-    // use moment to get date
-    // reduce by ...
-    
+    // else if notification frequency === 1 after two weeks send alert to change event cue
+    else if((createdAt > twoWeeks) && habit.notificationFrequency === 1 && !isTwoWeeksMissed && !isAllMissed) {
+        alert(`Try a different event cue to help integrate ${habit.name} into your routine!`, 6000)
+    }
 }
 
 // ******************** CREATE DAYS ARRAY ********************

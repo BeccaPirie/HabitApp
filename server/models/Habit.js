@@ -69,7 +69,8 @@ const HabitSchema = new mongoose.Schema({
         type:Boolean,
         default:false,
         required:true
-    }
-})
+    }    
+},
+{timestamp: true})
 
 export default mongoose.model("Habit", HabitSchema)
