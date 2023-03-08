@@ -39,7 +39,7 @@ export const getFirebaseToken = async(setToken) => {
     })
 }
 
-// configure forground listener
+// configure foreground listener
 export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage((payload) => {

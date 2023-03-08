@@ -35,7 +35,7 @@ export default function Details({axiosJWT}) {
         e.preventDefault()
 
         try {
-            await axiosJWT.put(`http://localhost:5000/server/habit/update/`, habit, {
+            await axiosJWT.put(`http://localhost:5000/server/habit/update/${habit._id}`, habit, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: "UPDATE_HABIT", payload: habit})

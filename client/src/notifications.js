@@ -1,7 +1,133 @@
 import moment from "moment"
 
-const days = [0, 1, 2, 3, 4]
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+// ******************** UPDATE NOTIFICATION FREQUENCY ********************
+export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
+    // TODO dont send notification if already calendar data for current day (not sure how to do this)
+
+    let newNotificationFrequency = 0
+
+    // reformat date function
+    const reformatDate = (date) => {
+        const tmp = date.split('-')
+        tmp[1] = parseInt(tmp[1]) + 1
+        const newDate = `${tmp[0]}-${tmp[1]}-${tmp[2]}`
+        return newDate
+    }
+    
+    // function for getting dates habit is due for n amount of days
+    const getDates = (days, n) => {
+        // get past dates for when habit was due
+        let dates = []
+        // iterate through past n days
+        for(let i = 0; i < n; i++) {
+            const date = moment().subtract(i, 'day').format('YYYY-M-D')
+            // check if habit is due on current day of week
+            const dayOfWeek = moment(date).day()
+            if(!days.includes(dayOfWeek)) continue
+            dates.push({date: date, status: ''})
+            // once the length = 5, break out of loop
+            if(dates.length >= 5) break
+        }
+        console.log(dates)
+        return dates
+    }
+
+    // update habit function
+    const updateHabit = async () => {
+        // update habit with new notification frequency
+        const updatedHabit = {...habit, notificationFrequency: newNotificationFrequency}
+        await axiosJWT.put(`http://localhost:5000/server/habit/update/${habit._id}`, updatedHabit, {
+            headers: {authorization:'Bearer ' + user.token}
+        })
+        dispatch({type: "UPDATE_HABIT", payload: habit})
+        console.log("habit updated")
+    }
+
+    // reformat calendarData dates
+    const reformatData = habit.calendarData.map(({date, ...data}) => ({
+        date: reformatDate(date),
+        ...data
+    }))
+
+    // use filter to find days habit is to be completed
+    const daysToComplete = habit.daysToComplete.filter(day => day.toComplete === true)
+    // now need to get number corresponding with day
+    const days = createDaysArray(daysToComplete)
+    // get dates for past 5 days habit was due
+    let dates = getDates(days, 35)
+    
+    // find calendar data that matches each date
+    dates.forEach(date => {
+        const matchingDate = reformatData.find(data => data.date === date.date)
+        if(matchingDate) return date.status = matchingDate.status
+        else return date.status = "No data"
+    })
+
+    // if all days completed half the amount of notifications received
+    const isAllCompleted = dates.every(date => date.status === 'Completed')
+    if(isAllCompleted) {
+        console.log("all days completed")
+        // delete current notification
+        deleteNotification(axiosJWT, habit, user)
+
+        // update notification frequency
+        let notifDays
+        if(habit.notificationFrequency === 1) {
+            // send every second day (every second element in array)
+            notifDays = days.filter((d, i) => i % 2 === 1)  
+            newNotificationFrequency++    
+        }
+        else if(habit.notificationFrequency === 2) {            
+          notifDays = notifDays.filter((d, i) => i % 3 === 2)
+          newNotificationFrequency++
+        }
+        else if(habit.notificationFrequency === 3) {
+            // eventually stop notifications
+        } 
+
+        // add notification and update habit
+        addNotification(notifDays, axiosJWT, habit, user)
+        updateHabit()
+    }
+    
+    // if 5 days missed, start daily notifications and suggest changing event cue
+    const isAllMissed = dates.every(date => date.status === 'Missed' || date.status === 'No data')
+    if(isAllMissed) {
+        console.log('All days missed')
+        if(habit.notificationFrequency > 1) {
+            deleteNotification(axiosJWT, habit, user)
+            newNotificationFrequency = 1
+
+            // use filter to find days habit is to be completed
+            const daysToComplete = habit.daysToComplete.filter(day => day.toComplete === true)
+            // now need to get number corresponding with day
+            const days = createDaysArray(daysToComplete)
+            addNotification(days, axiosJWT, habit, user)
+            updateHabit()
+        }
+        alert(`Try a different event cue to help integrate ${habit.name} into your routine!`, 6000)
+    }
+
+    // if 10 days missed delete notifications
+    dates = getDates(days, 98)
+    const isTwoWeeksMissed = dates.every(date => date.status === "Missed" || date.status === "No data")
+    if(isTwoWeeksMissed) {
+        console.log("10 days missed, stopping notifications")
+        deleteNotification(axiosJWT, habit, user)
+    }
+
+    // TODO
+    // if notifications are still daily after two weeks, get user to change event cue ?? - add creation date to habit
+    // if notification frequency === 1 after two weeks (use moment to get date)
+    // send alert to change event cue
+
+    // reduce notifications (every/one) month if still daily
+    // use moment to get date
+    // reduce by ...
+    
+}
 
 // ******************** CREATE DAYS ARRAY ********************
 // ******** (FIREBASE REQUIRES ARRAY 0-6 FOR SUN-MON) ********
@@ -51,122 +177,4 @@ export const deleteNotification = async (axiosJWT, habit, user) => {
         })
         console.log("notification deleted")
     }
-}
-
-// ******************** UPDATE NOTIFICATION FREQUENCY ********************
-export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
-    // TODO dont send notification if already calendar data for current day (not sure how to do this)
-
-    let newNotificationFrequency = 0
-
-    // reformat date function
-    const reformatDate = (date) => {
-        const tmp = date.split('-')
-        tmp[1] = parseInt(tmp[1]) + 1
-        const newDate = `${tmp[0]}-${tmp[1]}-${tmp[2]}`
-        return newDate
-    }
-    
-    // update habit function
-    const updateHabit = async () => {
-        // update habit with new notification frequency
-        const updatedHabit = {...habit, notificationFrequency: newNotificationFrequency}
-        await axiosJWT.put(`http://localhost:5000/server/habit/update/${habit._id}`, updatedHabit, {
-            headers: {authorization:'Bearer ' + user.token}
-        })
-        dispatch({type: "UPDATE_HABIT", payload: habit})
-        console.log("habit updated")
-    }
-
-    // reformat calendarData dates
-    const reformatData = habit.calendarData.map(({date, ...data}) => ({
-        date: reformatDate(date),
-        ...data
-    }))
-
-    // TODO change to last 5 days when habit was due
-    // get dates for past 5 days
-    let dates = []
-    days.forEach(day => {
-        const date = moment().subtract(day, 'day').format('YYYY-M-D')
-        dates.push({date: date, status: ''})
-    })
-    
-    // find calendar data that matches each date
-    dates.forEach(date => {
-        const matchingDate = reformatData.find(data => data.date === date.date)
-        if(matchingDate) return date.status = matchingDate.status
-        else return date.status = "No data"
-    })
-
-    // if all days completed half the amount of notifications received
-    const isAllCompleted = dates.every(date => date.status === 'Completed')
-
-    if(isAllCompleted) {
-        console.log("all days completed")
-        // delete current notification
-        deleteNotification(axiosJWT, habit, user)
-        
-        // use filter to find days habit is to be completed
-        const daysToComplete = habit.daysToComplete.filter(day => day.toComplete === true)
-        // now need to get number corresponding with day
-        const days = createDaysArray(daysToComplete)
-
-        // update notification frequency
-        let notifDays
-        if(habit.notificationFrequency === 1) {
-            // send every second day (every second element in array)
-            notifDays = days.filter((d, i) => i % 2 === 1)  
-            newNotificationFrequency++    
-        }
-        else if(habit.notificationFrequency === 2) {            
-          notifDays = notifDays.filter((d, i) => i % 3 === 2)
-          newNotificationFrequency++
-        }
-        else if(habit.notificationFrequency === 3) {
-            // eventually stop notifications
-        } 
-
-        // add notification and update habit
-        addNotification(notifDays, axiosJWT, habit, user)
-        updateHabit()
-    }
-
-    // count number of days missed
-    let count = 0
-    dates.forEach(date => {
-        if(date.status === 'Missed' || date.status === 'No data') return count++
-    })
-    
-    // if 5 or more days missed, start daily notifications and suggest event cue change
-    if(count >= 5) {
-        console.log(`${count} days missed`)
-        if(habit.notificationFrequency > 1) {
-            deleteNotification(axiosJWT, habit, user)
-            newNotificationFrequency = 1
-
-            // use filter to find days habit is to be completed
-            const daysToComplete = habit.daysToComplete.filter(day => day.toComplete === true)
-            // now need to get number corresponding with day
-            const days = createDaysArray(daysToComplete)
-            addNotification(days, axiosJWT, habit, user)
-            updateHabit()
-        }
-        alert(`Try a different event cue to help integrate ${habit.name} into your routine!`, 6000)
-    }
-
-    // If __ days missed delete notifications
-    const isAllMissed = dates.every(date => date.status === "Missed" || date.status === "No data")
-    if(isAllMissed) {
-        console.log("all days missed")
-    }
-
-    // if notifications are still daily after two weeks, get user to change event cue ?? - add creation date to habit
-    // if notification frequency === 1 after two weeks (use moment to get date)
-    // send alert to change event cue
-
-    // reduce notifications (every/one) month if still daily
-    // use moment to get date
-    // reduce by ...
-    
 }
