@@ -101,9 +101,15 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
         // add notification and update habit
         addNotification(notifDays, axiosJWT, habit, user)
         updateHabit()
+    }    
+
+    // else if 10 days missed delete notification
+    else if(isTwoWeeksMissed) {
+        console.log("10 days missed, stopping notifications")
+        deleteNotification(axiosJWT, habit, user)
     }
 
-    // if 5 days missed, start daily notifications and suggest changing event cue
+    // else if 5 days missed, start daily notifications and suggest changing event cue
     else if(isAllMissed) {
         console.log('All days missed')
         if(habit.notificationFrequency > 1) {
@@ -120,14 +126,8 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
         alert(`Try a different event cue to help integrate ${habit.name} into your routine!`, 6000)
     }
 
-    // else if 10 days missed delete notification
-    else if(isTwoWeeksMissed) {
-        console.log("10 days missed, stopping notifications")
-        deleteNotification(axiosJWT, habit, user)
-    }
-
     // else if notification frequency === 1 after two weeks send alert to change event cue
-    else if((createdAt > twoWeeks) && habit.notificationFrequency === 1 && !isTwoWeeksMissed && !isAllMissed) {
+    else if((createdAt > twoWeeks) && habit.notificationFrequency === 1) {
         alert(`Try a different event cue to help integrate ${habit.name} into your routine!`, 6000)
     }
 }
