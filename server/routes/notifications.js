@@ -62,7 +62,7 @@ router.get('/:habitId', protect, async(req, res) => {
     }
 })
 
-// delete the notifications for a habit
+// delete notifications
 router.delete('/', protect, async(req, res) => {
     try {
         const notificationIds = req.body.ids

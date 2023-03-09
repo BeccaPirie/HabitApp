@@ -21,6 +21,21 @@ const UserReducer = (state, action) => {
                 error: action.payload
             }
 
+            case "UPDATE_USER":
+            return {
+                ...state,
+                user: action.payload
+            }
+
+            case "UPDATE_PASSWORD":
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    password: action.payload
+                }
+            }
+
             case "UPDATE_TOKENS":
             return {
                 ...state,
@@ -39,6 +54,13 @@ const UserReducer = (state, action) => {
                     firebaseToken: [...state.user.firebaseToken, action.payload]
                 }
             }
+
+            case "DELETE_USER":
+            return {
+                ...state,
+                user: null
+            }
+            
         default:
             return state
     }

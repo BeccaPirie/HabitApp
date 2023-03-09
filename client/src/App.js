@@ -11,7 +11,7 @@ import { useContext } from 'react'
 import { UserContext } from './context/user/UserContext'
 import axios from "axios"
 import jwt_decode from "jwt-decode"
-import About from './components/About'
+import About from './pages/About'
 import Profile from './pages/Profile'
 
 export default function App() {
@@ -48,12 +48,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/'element={user ? <Index lg={lg} axiosJWT={axiosJWT} /> : <Login />}>
+        <Route exact path='/' element={user ? <Index lg={lg} axiosJWT={axiosJWT} /> : <Login />}>
           <Route path='' element={<NoSelection lg={lg} />}></Route>
           <Route path=':id' element={<Habit axiosJWT={axiosJWT} />}></Route>
           <Route path='add' element={<Add axiosJWT={axiosJWT}/>}></Route>
           <Route path=':id/Details' element={<Details axiosJWT={axiosJWT}/>}></Route>
-          <Route path='/about' element={<About />}></Route>
         </Route>
         <Route path='/signup'
           element={user ? <Navigate to='/' replace /> : <Signup />}>
@@ -61,7 +60,8 @@ export default function App() {
         <Route path='/login'
           element={user ? <Navigate to='/' replace /> :<Login />}>
         </Route>
-        <Route path='/profile' element={<Profile />}></Route>
+        <Route path='/about' element={<About />}></Route>
+        <Route path='/profile' element={<Profile axiosJWT={axiosJWT}/>}></Route>
       </Routes>
     </BrowserRouter>
   );

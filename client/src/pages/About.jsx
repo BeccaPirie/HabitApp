@@ -1,8 +1,12 @@
-import { AboutStyled } from "./styles/About.styled"
+import Navbar from "../components/Navbar"
+import { AboutStyled } from "../components/styles/About.styled"
+import { MainContainer } from "../components/styles/MainContainer.styled"
 
 export default function About() {
     return (
-        <AboutStyled>
+        <>
+            <Navbar text={'Habit App'}/>
+            <AboutStyled>
             <div className="main-container">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. 
                 Obcaecati nesciunt fugiat eaque perferendis ipsum qui 
@@ -25,6 +29,7 @@ export default function About() {
                 cupiditate! Aperiam amet, vitae voluptatem corporis quas 
                 illum.
             </div>
-        </AboutStyled>
+            </AboutStyled>
+        </>
     )
 }

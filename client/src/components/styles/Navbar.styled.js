@@ -6,6 +6,7 @@ width: 100vw;
 height: 70px;
 display: flex;
 align-items: center;
+margin: auto;
 
 .left {
     flex: 10;

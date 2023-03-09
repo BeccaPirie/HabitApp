@@ -26,6 +26,11 @@ const UserSchema = new mongoose.Schema({
         min:6
     },
 
+    notifications:{
+        type:Boolean,
+        default: true
+    },
+
     token:{
         type:String,
         default: ''

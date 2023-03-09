@@ -1,23 +1,19 @@
 import { StyledNavbar } from "./styles/Navbar.styled"
 import { Link } from "react-router-dom"
-import { useContext } from "react"
-import { UserContext } from '../context/user/UserContext'
 
-export default function Navbar() {
-    const { user } = useContext(UserContext)
-
+export default function Navbar({text}) {
     return(
         <StyledNavbar>
             <div className="left">
-                <h2>Welcome back {user.username}!</h2>
+                <h2>{text}</h2>
             </div>
             
             <div className="right">  
                 <ul>
-                    <Link to="/">
+                    <Link to="/about">
                         <li>About</li>
                     </Link>
-                    <Link to="/">
+                    <Link to="/profile">
                         <li>Profile</li>
                     </Link>
                 </ul>

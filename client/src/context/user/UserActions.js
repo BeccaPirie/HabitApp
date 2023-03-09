@@ -1,4 +1,4 @@
-export const LoginStart = (credentials) => ({
+export const LoginStart = () => ({
     type: "LOGIN_START",
 })
 
@@ -12,6 +12,16 @@ export const LoginFail = (err) => ({
     payload: err,
 })
 
+export const UpdateUser = (user) => ({
+    type: "UPDATE_USER",
+    payload: user
+})
+
+export const UpdatePassword = (password) => ({
+    type: "UPDATE_PASSWORD",
+    payload: password
+})
+
 export const UpdateTokens = (tokens) => ({
     type: "UPDATE_TOKENS",
     payload: tokens,
@@ -22,5 +32,6 @@ export const UpdateFirebaseToken = (token) => ({
     payload: token
 })
 
-// update account
-// delete account
+export const DeleteUser = () => ({
+    type: "DELETE_USER"
+})

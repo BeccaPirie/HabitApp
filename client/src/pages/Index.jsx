@@ -18,6 +18,8 @@ export default function Index({lg, axiosJWT}) {
     const [alertMessage, setAlertMessage] = useState('')
     const [firebaseToken, setToken] = useState('')
 
+    // TODO check/update notification frequency for each of users habits
+
     useEffect(() => {
         try {
             getFirebaseToken(setToken)
@@ -66,7 +68,7 @@ export default function Index({lg, axiosJWT}) {
             <PageContainer> 
                 {lg && <HabitList />}
                 <MainContainer>
-                    <Navbar />
+                    <Navbar text={`Welcome back ${user.username}!`}/>
                     {showAlert && <Alert message={alertMessage}/>}
                     <Outlet context={alert}/>
                 </MainContainer>
