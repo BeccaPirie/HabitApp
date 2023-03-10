@@ -1,29 +1,51 @@
 import styled from "styled-components"
 
 export const EditProfileStyled = styled.div`
-background-color: #ECF4F3;
+// background-color: #ECF4F3;
+background-color: #fff;
+// overflow: auto;
+// min-height: calc(100vh - 75px);
+
+// .container {
+//     background-color: #fff;
+//     overflow: auto;
+//     width: 600px;
+//     margin: 20px auto;
+// }
+
+width: 90%;
+margin: 15px auto;
+padding: 10px;
 overflow: auto;
-min-height: calc(100vh - 75px);
+background-color: #f7f7f7;
+box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+border-radius: 10px;
 
 .header {
-    width: 60%;
+    width: fit-content;
     margin: auto;
 }
 
 form {
-    width: 60%;
+    width: 90%;
     margin: auto;
     overflow: auto;
-}
 
-button {
-    float: right;
-    margin-top: 10px;
+    button {
+        width: 98%;
+        margin: auto;
+        background-color: #9ed6f0;
+        margin: 10px 0 20px;
+
+        :hover {
+            background-color: #91c4db;
+        }
+    }
 }
 
 input {
     display: block;
-    width: 97%;
+    width: 96%;
     margin: auto;
     padding: 10px 5px;
     border: none;
@@ -32,18 +54,36 @@ input {
 
     :focus {
         outline: none;
+        border:3px solid #d4f08c;
     }
 }
 
 .delete-acc {
-    width: 80%;
+    width: 95%;
+
+    button {
+        background-color: #f08ca2;
+        margin: 20px 0 20px;
+        float: right;
+
+        :hover {
+            background-color: #de8397;
+        }
+    }
 }
+
+.notif-form {
+    padding: 10px;    
+}
+
 
 .notif-switch {
     position: relative;
     display: inline-block;
     width: 60px;
-    height: 34px;
+    height: 29px;
+    margin-left: 10px;
+    top: 10px;
 
     input {
         width: 0;
@@ -54,7 +94,7 @@ input {
     .slider {
         position: absolute;
         cursor: pointer;
-        border-radius: 34px;
+        border-radius: 29px;
         top: 0;
         left: 0;
         right: 0;
@@ -67,8 +107,8 @@ input {
             position: absolute;
             border-radius: 50%;
             content: "";
-            height: 26px;
-            width: 26px;
+            height: 21px;
+            width: 21px;
             left: 4px;
             bottom: 4px;
             background-color: white;

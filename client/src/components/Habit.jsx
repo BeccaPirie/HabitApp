@@ -100,6 +100,8 @@ export default function Habit({axiosJWT}) {
                 alert={alert}
             />
 
+            {/* TODO todos */}
+
             <form onSubmit={(e)=> journalButtonClick(e)}>
                 <label htmlFor="journal">
                     Journal notes

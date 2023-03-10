@@ -5,6 +5,8 @@ const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 // ******************** UPDATE NOTIFICATION FREQUENCY ********************
 export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
     // TODO dont send notification if already calendar data for current day (not sure how to do this)
+    // TODO dont change notifications if habit created in past 5 days
+    // TODO take skips into consideration
 
     let newNotificationFrequency = 0
 

@@ -53,6 +53,7 @@ export default function App() {
           <Route path=':id' element={<Habit axiosJWT={axiosJWT} />}></Route>
           <Route path='add' element={<Add axiosJWT={axiosJWT}/>}></Route>
           <Route path=':id/Details' element={<Details axiosJWT={axiosJWT}/>}></Route>
+          <Route path='profile' element={<Profile axiosJWT={axiosJWT}/>}></Route>
         </Route>
         <Route path='/signup'
           element={user ? <Navigate to='/' replace /> : <Signup />}>
@@ -61,7 +62,7 @@ export default function App() {
           element={user ? <Navigate to='/' replace /> :<Login />}>
         </Route>
         <Route path='/about' element={<About />}></Route>
-        <Route path='/profile' element={<Profile axiosJWT={axiosJWT}/>}></Route>
+        {/* <Route path='/profile' element={<Profile axiosJWT={axiosJWT}/>}></Route> */}
       </Routes>
     </BrowserRouter>
   );

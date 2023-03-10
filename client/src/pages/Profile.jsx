@@ -2,6 +2,7 @@ import { useContext, useRef, useState } from "react"
 import { UserContext } from "../context/user/UserContext"
 import Navbar from "../components/Navbar"
 import { EditProfileStyled } from "../components/styles/EditProfile.styled";
+import { ButtonStyled } from "../components/styles/Button.styled";
 
 export default function Profile({axiosJWT}) {
     const {user, dispatch} = useContext(UserContext)
@@ -130,14 +131,15 @@ export default function Profile({axiosJWT}) {
 
     return (
         <>
-            <Navbar text={'Habit App'}/>
+            {/* <Navbar text={'Habit App'}/> */}
      
             <EditProfileStyled>
+                <div className="container">
                 <div className="header">
-                    <h3>Update your account</h3>
+                    <h2>Update your account</h2>
                 </div>
                 
-                <form className="username-form" onSubmit={onSubmit}>
+                <form className="form" onSubmit={onSubmit}>
                     <label htmlFor="username">Username:</label>
                     <input
                         type="text"
@@ -145,10 +147,6 @@ export default function Profile({axiosJWT}) {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
-                    <button>Update Username</button>
-                </form>
-
-                <form className="email-form" onSubmit={onSubmit}>
                     <label htmlFor="email">Email:</label>
                     <input
                         type="email"
@@ -156,7 +154,7 @@ export default function Profile({axiosJWT}) {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    <button>Update Email</button>
+                    <ButtonStyled id="update-btn">Save Changes</ButtonStyled>
                 </form>
 
                 <form  className="password-form" onSubmit={updatePassword}>
@@ -178,11 +176,11 @@ export default function Profile({axiosJWT}) {
                         id="confirm-pass"
                         ref={confirmPass}
                     />
-                    <button>Update Password</button>
+                    <ButtonStyled>Update Password</ButtonStyled>
                 </form>
 
                 <form className="notif-form">
-                    <span>Allow Notifications?</span>
+                    <span id="notif-header">Allow Notifications?</span>
                     <label className="notif-switch">
                         <input
                             type="checkbox"
@@ -194,9 +192,10 @@ export default function Profile({axiosJWT}) {
                 </form>
 
                 <div className="delete-acc">
-                    <button onSubmit={deleteAccount}>
+                    <ButtonStyled onSubmit={deleteAccount}>
                         Delete Account
-                    </button>
+                    </ButtonStyled>
+                </div>
                 </div>
             </EditProfileStyled>
         </>
