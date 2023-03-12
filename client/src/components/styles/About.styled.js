@@ -1,22 +1,12 @@
 import styled from "styled-components"
 
 export const AboutStyled = styled.div`
-background-color: #ECF4F3;
-min-height: calc(100vh - 70px);
-display: flex;
-justify-content: center;
-
-.main-container {
-    background-color: #fff;
-    width: 100%;
-    margin: 40px 5px;
-    padding: 50px;
-    border-radius: 15px;
-}
-
-@media (min-width: 768px) {
-    .main-container {
-        width: 60vw;
-    }
-}
+width: 90%;
+margin: 15px auto;
+padding: 10px;
+padding-top: 40px;
+overflow: auto;
+background-color: #f7f7f7;
+box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+border-radius: 10px;
 `

@@ -7,7 +7,7 @@ import { notificationSettings } from "../notifications"
 
 export default function CalendarComponent({axiosJWT, habit, dispatch}) {
     const [date, setDate] = useState(new Date())
-    const { user } = useContext(UserContext)
+    const { user, dispatch:userDispatch } = useContext(UserContext)
 
     // disable future dates on calendar
     const disableFutureDates = ({date, view}) => {
@@ -71,7 +71,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
         }
 
         // check if notification frequency needs to be updated
-        notificationSettings(habit, dispatch, axiosJWT, user)
+        notificationSettings(habit, dispatch, axiosJWT, user, userDispatch)
     }
 
     return(

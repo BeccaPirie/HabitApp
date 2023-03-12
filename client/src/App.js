@@ -11,8 +11,8 @@ import { useContext } from 'react'
 import { UserContext } from './context/user/UserContext'
 import axios from "axios"
 import jwt_decode from "jwt-decode"
-import About from './pages/About'
-import Profile from './pages/Profile'
+import About from './components/About'
+import Profile from './components/Profile'
 
 export default function App() {
   const lg = useMediaQuery('(min-width:660px)')
@@ -53,6 +53,7 @@ export default function App() {
           <Route path=':id' element={<Habit axiosJWT={axiosJWT} />}></Route>
           <Route path='add' element={<Add axiosJWT={axiosJWT}/>}></Route>
           <Route path=':id/Details' element={<Details axiosJWT={axiosJWT}/>}></Route>
+          <Route path='/about' element={<About />}></Route>
           <Route path='profile' element={<Profile axiosJWT={axiosJWT}/>}></Route>
         </Route>
         <Route path='/signup'
@@ -61,7 +62,7 @@ export default function App() {
         <Route path='/login'
           element={user ? <Navigate to='/' replace /> :<Login />}>
         </Route>
-        <Route path='/about' element={<About />}></Route>
+        {/* <Route path='/about' element={<About />}></Route> */}
         {/* <Route path='/profile' element={<Profile axiosJWT={axiosJWT}/>}></Route> */}
       </Routes>
     </BrowserRouter>

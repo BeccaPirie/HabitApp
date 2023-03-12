@@ -11,7 +11,7 @@ export const MainContainer = styled.div`
         width: calc(100vw - 620px);
     }
 
-    @media (min-width: 1500px) {
-        width: calc(100vw - 620px);
-    }
+    // @media (min-width: 1500px) {
+    //     width: calc(100vw - 620px);
+    // }
 `

@@ -112,7 +112,7 @@ router.put('/:id/remove-calendar-data', protect, async(req, res) => {
             _id: req.params.id,
             'calendarData.date': req.body.date
         },
-        {$pull: {calendarData: {date: req.body.date}}}),
+        {$pull: {calendarData: {date: req.body.date}}})
         res.json("Data has been removed")
     } catch (err) {
         res.status(500).json(err)

@@ -11,12 +11,36 @@ import Navbar from "../components/Navbar"
 import { getFirebaseToken } from "../firebaseAdmin"
 import axios from "axios"
 
+// const drawerWidth = 270;
+
+// const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+//   ({ theme, open }) => ({
+//     // display: "block",
+//     width: "80%",
+//     margin: "auto",
+//     transition: theme.transitions.create('margin', {
+//       easing: theme.transitions.easing.sharp,
+//       duration: theme.transitions.duration.leavingScreen,
+//     }),
+//     marginLeft: `-${drawerWidth}px`,
+//     ...(open && {
+//         width: "60%",
+//       transition: theme.transitions.create('margin', {
+//         easing: theme.transitions.easing.easeOut,
+//         duration: theme.transitions.duration.enteringScreen,
+//       }),
+//       marginLeft: 0,
+//     }),
+//   }),
+// );
+
 export default function Index({lg, axiosJWT}) {
     const { dispatch } = useContext(HabitContext)
     const { user } = useContext(UserContext)
     const [showAlert, setShowAlert] = useState(false)
     const [alertMessage, setAlertMessage] = useState('')
     const [firebaseToken, setToken] = useState('')
+    // const [open, setOpen] = useState(false)
 
     // TODO check/update notification frequency for each of users habits
 
@@ -67,11 +91,13 @@ export default function Index({lg, axiosJWT}) {
         <>
             <PageContainer> 
                 {lg && <HabitList />}
-                <MainContainer>
-                    <Navbar text={`Welcome back ${user.username}!`}/>
-                    {showAlert && <Alert message={alertMessage}/>}
-                    <Outlet context={alert}/>
-                </MainContainer>
+                {/* <Main open={open}> */}
+                    <MainContainer>
+                        <Navbar text={`Welcome back ${user.username}!`} axiosJWT={axiosJWT}/>
+                        {showAlert && <Alert message={alertMessage}/>}
+                           <Outlet context={alert}/>
+                    </MainContainer>
+                {/* </Main> */}
                 {lg && <Rightbar />}
             </PageContainer>
         </>

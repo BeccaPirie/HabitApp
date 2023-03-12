@@ -1,21 +1,10 @@
 import styled from "styled-components"
 
 export const EditProfileStyled = styled.div`
-// background-color: #ECF4F3;
-background-color: #fff;
-// overflow: auto;
-// min-height: calc(100vh - 75px);
-
-// .container {
-//     background-color: #fff;
-//     overflow: auto;
-//     width: 600px;
-//     margin: 20px auto;
-// }
-
 width: 90%;
 margin: 15px auto;
 padding: 10px;
+padding-top: 40px;
 overflow: auto;
 background-color: #f7f7f7;
 box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
@@ -32,8 +21,7 @@ form {
     overflow: auto;
 
     button {
-        width: 98%;
-        margin: auto;
+        width: 100%;
         background-color: #9ed6f0;
         margin: 10px 0 20px;
 

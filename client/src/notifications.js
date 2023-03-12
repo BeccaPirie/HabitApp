@@ -3,7 +3,7 @@ import moment from "moment"
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 // ******************** UPDATE NOTIFICATION FREQUENCY ********************
-export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
+export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispatch) => {
     // TODO dont send notification if already calendar data for current day (not sure how to do this)
     // TODO dont change notifications if habit created in past 5 days
     // TODO take skips into consideration
@@ -32,7 +32,6 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
             // once the length = t, break out of loop
             if(dates.length >= t) break
         }
-        console.log(dates)
         return dates
     }
 
@@ -125,19 +124,23 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user) => {
             addNotification(days, axiosJWT, habit, user)
             updateHabit()
         }
-        alert(`Try a different event cue to help integrate ${habit.name} into your routine!`, 6000)
+        const msg = `Try a different event cue to help integrate ${habit.name} into your routine!`
+        // addMessage(axiosJWT, user, habit, msg, userDispatch)
+        alert(msg, 6000)
     }
 
     // else if notification frequency === 1 after two weeks send alert to change event cue
     else if((createdAt > twoWeeks) && habit.notificationFrequency === 1) {
-        alert(`Try a different event cue to help integrate ${habit.name} into your routine!`, 6000)
+        const msg = `Try a different event cue to help integrate ${habit.name} into your routine!`
+        // addMessage(axiosJWT, user, habit, msg, userDispatch)
+        alert(msg, 6000)
     }
 }
 
 // ******************** CREATE DAYS ARRAY ********************
 // ******** (FIREBASE REQUIRES ARRAY 0-6 FOR SUN-MON) ********
 export const createDaysArray = (daysToComplete) => {
-    const days = daysToComplete.map(day => {
+    const days = daysToComplete.filter(day => day.toComplete === true).map(day => {
         for(let i = 0; i < dayNames.length; i++) {
             if(day.dayOfWeek === dayNames[i]) {
                 return i
@@ -149,7 +152,8 @@ export const createDaysArray = (daysToComplete) => {
 
 // ******************** CALL API TO ADD NOTIFICATION ********************
 export const addNotification = async (days, axiosJWT, habit, user) => {
-    await axiosJWT.post(`http://localhost:5000/server/notification/set-notification`, {
+    try{
+      await axiosJWT.post(`http://localhost:5000/server/notification/set-notification`, {
         title: habit.name,
         body: `Have you completed ${habit.name} today?`,
         days: days,
@@ -158,7 +162,12 @@ export const addNotification = async (days, axiosJWT, habit, user) => {
     }, {
         headers: {authorization:'Bearer ' + user.token}
     })
-    console.log("notification created")
+    console.log("notification created")  
+    }
+    catch(err) {
+        console.error(err.response.data)
+    }
+    
 }
 
 // ******************** CALL API TO DELETE NOTIFICATION ********************
@@ -167,7 +176,6 @@ export const deleteNotification = async (axiosJWT, habit, user) => {
     const res = await axiosJWT.get(`http://localhost:5000/server/notification/${habit._id}`, {
         headers: {authorization:'Bearer ' + user.token}
     })
-    console.log(res.data)
 
     let ids = []
     if(res.data) {
@@ -183,3 +191,16 @@ export const deleteNotification = async (axiosJWT, habit, user) => {
         console.log("notification deleted")
     }
 }
+
+// ******************** CALL API TO SHOW ALERTS AND NOTIFICATIONS IN MESSAGES ********************
+// const addMessage = async (axiosJWT, user, habit, message, dispatch) => {
+//     const newMessage = {
+//         message: message,
+//         habitId: habit._id,
+//         read: false
+//     }
+//     const res = await axiosJWT.put('http://localhost:5000/server/user/message/', newMessage, {
+//         headers: {authorization: 'Bearer ' + user.token}
+//     })
+//     dispatch({type: "ADD_MESSAGE", payload: res.data})
+// }

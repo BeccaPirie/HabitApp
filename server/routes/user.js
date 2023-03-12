@@ -54,4 +54,54 @@ router.delete('/', protect, async(req, res) => {
     }
 })
 
+// add message
+router.put('/message', protect, async(req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+        await user.updateOne({$push:{
+            messages: {
+                message: req.body.message,
+                habitId: req.body.habitId,
+                read:false
+            }
+        }})
+        res.status(200).send(updatedMessage)
+    } catch (err) {
+        res.status(500).send(err)
+    }
+})
+
+// update message
+// router.put('/update-message', protect, async(req, res) => {
+//     try{
+//         console.log(req.body.read)
+//         const user = await User.findOneAndUpdate({
+//             _id: req.user._id,
+//             'messages._id': req.body.id
+//         },
+//         {$set: {'messages.$.read': req.body.read}},
+//         {new:false})
+
+//         console.log(user)
+
+//         console.log("message updated")
+//         res.status(200).send("Message updated")
+//     } catch(err) {
+//         res.status(500).send(err)
+//     }
+// })
+
+// remove message
+router.put('/remove-message', protect, async(req, res) => {
+    try {
+        await User.findOneAndUpdate({
+            _id: req.user._id,
+            'messages._id': req.body.id
+        },
+        {$pull: {messages: {_id: req.body.id}}})
+        res.status(200).send("Message removed")
+    } catch (err) {
+        res.status(500).send(err)
+    }
+})
 export default router

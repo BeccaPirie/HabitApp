@@ -17,7 +17,6 @@ app.use("/server/habit", habitRoute)
 app.use("/server/notification", notificationRoute)
 app.use("/server/idea", ideasRoute)
 
-
 app.use('*', (req, res)=>{
     res.status(404).json({error: "not found"})
 })

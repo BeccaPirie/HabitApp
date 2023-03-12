@@ -1,8 +1,14 @@
 import { useContext, useRef, useState } from "react"
 import { UserContext } from "../context/user/UserContext"
-import Navbar from "../components/Navbar"
-import { EditProfileStyled } from "../components/styles/EditProfile.styled";
-import { ButtonStyled } from "../components/styles/Button.styled";
+import { EditProfileStyled } from "./styles/EditProfile.styled";
+import { ButtonStyled } from "./styles/Button.styled";
+import { FormGroup, FormControlLabel, Switch } from '@mui/material'
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 export default function Profile({axiosJWT}) {
     const {user, dispatch} = useContext(UserContext)
@@ -10,6 +16,7 @@ export default function Profile({axiosJWT}) {
     const [email, setEmail] = useState(user.email)
     const [notifSettings, setNotifSettings] = useState(user.notifications)
     const [notifications, setNotifications] = useState('')
+    const [openAlert, setOpenAlert] = useState(false)
     const oldPass = useRef()
     const newPass = useRef()
     const confirmPass = useRef()
@@ -19,7 +26,7 @@ export default function Profile({axiosJWT}) {
         console.log("on submit")
 
         const updatedUser = {
-            ... user,
+            ...user,
             username: username,
             email: email
         }
@@ -79,7 +86,7 @@ export default function Profile({axiosJWT}) {
             console.error(err.response.data)
         }
 
-        if(user.notifs) {
+        if(notifSettings) {
             // set notifications
             try {
                 notifications.forEach(async(n) => {
@@ -129,75 +136,99 @@ export default function Profile({axiosJWT}) {
         }
     }
 
-    return (
-        <>
-            {/* <Navbar text={'Habit App'}/> */}
-     
-            <EditProfileStyled>
-                <div className="container">
-                <div className="header">
-                    <h2>Update your account</h2>
-                </div>
-                
-                <form className="form" onSubmit={onSubmit}>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <ButtonStyled id="update-btn">Save Changes</ButtonStyled>
-                </form>
+    return (     
+        <EditProfileStyled>
+            <form className="form" onSubmit={onSubmit}>
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <label htmlFor="email">Email:</label>
+                <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <ButtonStyled id="update-btn">Save Changes</ButtonStyled>
+            </form>
 
-                <form  className="password-form" onSubmit={updatePassword}>
-                    <label htmlFor="old-pass">Old Password:</label>
-                    <input
-                        type="password"
-                        id="old-pass"
-                        ref={oldPass}
-                    />
-                    <label htmlFor="new-pass">New Password:</label>
-                    <input
-                        type="password"
-                        id="new-pass"
-                        ref={newPass}
-                    />
-                    <label htmlFor="confirm-pass">Confirm New Password:</label>
-                    <input
-                        type="password"
-                        id="confirm-pass"
-                        ref={confirmPass}
-                    />
-                    <ButtonStyled>Update Password</ButtonStyled>
-                </form>
+            <form  className="password-form" onSubmit={updatePassword}>
+                <label htmlFor="old-pass">Old Password:</label>
+                <input
+                    type="password"
+                    id="old-pass"
+                    ref={oldPass}
+                />
+                <label htmlFor="new-pass">New Password:</label>
+                <input
+                    type="password"
+                    id="new-pass"
+                    ref={newPass}
+                />
+                <label htmlFor="confirm-pass">Confirm New Password:</label>
+                <input
+                    type="password"
+                    id="confirm-pass"
+                    ref={confirmPass}
+                />
+                <ButtonStyled>Update Password</ButtonStyled>
+            </form>
 
-                <form className="notif-form">
-                    <span id="notif-header">Allow Notifications?</span>
-                    <label className="notif-switch">
-                        <input
-                            type="checkbox"
-                            checked={notifSettings}
-                            onChange={updateNotifications}       
-                        />
-                        <span className="slider"></span>
-                    </label>
-                </form>
+            {/* <form className="notif-form">
+                <span id="notif-header">Allow Notifications?</span>
+                <label className="notif-switch">
+                    <input
+                        type="checkbox"
+                        checked={notifSettings}
+                        onChange={updateNotifications}       
+                    />
+                    <span className="slider"></span>
+                </label>
+            </form> */}
 
-                <div className="delete-acc">
-                    <ButtonStyled onSubmit={deleteAccount}>
-                        Delete Account
-                    </ButtonStyled>
-                </div>
-                </div>
-            </EditProfileStyled>
-        </>
+            <FormGroup>
+                <FormControlLabel
+                label={"Notifications"}
+                control={
+                    <Switch
+                        checked={notifSettings}
+                        onChange={updateNotifications}
+                    />}
+                />
+            </FormGroup>
+
+
+            <div className="delete-acc">
+                <ButtonStyled onClick={() => setOpenAlert(true)}>
+                    Delete Account
+                </ButtonStyled>
+
+                <Dialog
+                    open={openAlert}
+                    onClose={() => setOpenAlert(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Are you sure you want to delete your account?"}
+                        </DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={() => setOpenAlert(false)}>No</Button>
+                        <Button onClick={deleteAccount} autoFocus>
+                            Yes
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
+            </div>
+        </EditProfileStyled>
     )
 }

@@ -29,25 +29,46 @@ margin: auto;
         margin: 0;
     }
 
-    a li {
-        align-items: center;
-        height: 35px;
-        width: 60px;
-        margin: 10px;
-        line-height: 35px;
-        padding: 0 15px;
-        border-radius: 20px;
-        border: 3px solid #d1ed8a;
-        text-align: center;
-        // color: #d1ed8a;
-        font-weight: bold;
-        background-color: #d1ed8a;
-        color: white;
+    // a li {
+    //     align-items: center;
+    //     height: 35px;
+    //     width: 60px;
+    //     margin: 10px;
+    //     line-height: 35px;
+    //     padding: 0 15px;
+    //     border-radius: 20px;
+    //     border: 3px solid #d1ed8a;
+    //     text-align: center;
+    //     // color: #d1ed8a;
+    //     font-weight: bold;
+    //     background-color: #d1ed8a;
+    //     color: white;
 
-        :hover {
-            // background-color: #d1ed8a;
-            // color: white;
-            // background-color: ;
+    //     :hover {
+    //         // background-color: #d1ed8a;
+    //         // color: white;
+    //         // background-color: ;
+    //     }
+    // }
+
+    .notif-list {
+        position: absolute;
+        width: 300px;
+        top: 45px;
+        right: 70px;
+        z-index: 100;
+
+        ul {
+            display: block;
+            padding: 0;
+
+            a li {
+                color: black;
+            }
+
+            // li {
+            //     // different styling for read/unread
+            // }
         }
     }
 }

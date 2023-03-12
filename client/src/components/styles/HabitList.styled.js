@@ -6,6 +6,7 @@ export const StyledHabitList = styled.div`
     padding: 0;
     margin: 0;
     background-color: #f7f7f7;
+    overflow: auto;
 
     .list-header {
         margin: 20px;
@@ -19,7 +20,6 @@ export const StyledHabitList = styled.div`
 
     li {
         padding: 30px;
-        margin-left: -40px;
         border-bottom: 1px solid #ccc;
     }
 
@@ -50,34 +50,15 @@ export const StyledHabitList = styled.div`
         line-height: 40px;
         position: absolute;
         bottom: 40px;
-        left: calc(100vw - 100px);
-
-        span {
-        font-size: 50px;
-        font-weight: bold;
-        color: #fff;
-        }
+        left: 220px;
     }
 
     @media (min-width: 660px) {
         width: 280px;
         height: 100vh;
-        overflow-y: scroll;
         position: -webkit-sticky;
         position: sticky;
         top: 0;
-
-        .list-header {
-            padding-top: 0;
-        }
-        
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-        background-color: #f1f1f1;
-        }
         
         ::-webkit-scrollbar-thumb {
         background-color: rgb(179, 179, 179);
@@ -85,14 +66,6 @@ export const StyledHabitList = styled.div`
 
         .addBtn {
             left: 200px;
-        }
-    }
-
-    @media (min-width: 992px) {
-        width: 310px;
-
-        .addBtn {
-            left: 220px;
         }
     }
 `

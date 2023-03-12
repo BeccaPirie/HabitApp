@@ -9,6 +9,7 @@ import { UserContext } from '../context/user/UserContext'
 import { ButtonStyled } from "./styles/Button.styled"
 import CalendarComponent from "./Calendar"
 import { addNotification, createDaysArray, deleteNotification } from "../notifications"
+import Todos from "./Todos"
 
 export default function Habit({axiosJWT}) {
     const [habit, setHabit] = useState({})
@@ -100,7 +101,7 @@ export default function Habit({axiosJWT}) {
                 alert={alert}
             />
 
-            {/* TODO todos */}
+            <Todos />
 
             <form onSubmit={(e)=> journalButtonClick(e)}>
                 <label htmlFor="journal">

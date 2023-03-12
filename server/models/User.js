@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import MessageSchema from "./Message.js"
 
 // user details
 const UserSchema = new mongoose.Schema({
@@ -44,7 +45,9 @@ const UserSchema = new mongoose.Schema({
     firebaseToken:{
         type:Array,
         default: []
-    }
+    },
+
+    messages: [MessageSchema]
 })
 
 export default mongoose.model("User", UserSchema)

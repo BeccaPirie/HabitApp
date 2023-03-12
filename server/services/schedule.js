@@ -23,6 +23,7 @@ schedule.createSchedule = async(data) => {
             userId: data.userId,
             habitId: data.habitId
         })
+        console.log(scheduledNotification)
 
         // save to database
         await scheduledNotification.save()
@@ -39,11 +40,22 @@ schedule.createSchedule = async(data) => {
             // find users tokens
             const user = await User.findById(data.userId)
 
+            // save message to display in notification menu
+            // await user.updateOne({$push:{
+            //     messages: {
+            //         message: req.body.message,
+            //         habitId: req.body.habitId,
+            //         read: false
+            //     }
+            // }})
+
+            // update firebase token
             let tokens
             if(user.firebaseToken) {
                 tokens = user.firebaseToken
             }
 
+            // payload for creating notification
             const payload = {
                 tokens: tokens,
                 title: data.title,

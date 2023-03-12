@@ -9,6 +9,11 @@ import { ButtonStyled } from "./styles/Button.styled"
 import { Ideas } from "./styles/Ideas.styled"
 import axios from "axios"
 import { addNotification, createDaysArray } from "../notifications"
+import {Checkbox, FormGroup, FormControlLabel } from '@mui/material'
+// import InputLabel from '@mui/material/InputLabel';
+// import MenuItem from '@mui/material/MenuItem';
+// import FormControl from '@mui/material/FormControl';
+// import Select from '@mui/material/Select';
 
 export default function Add({axiosJWT}) {
     const [habit, setHabit] = useState({})
@@ -19,6 +24,7 @@ export default function Add({axiosJWT}) {
     const [showIdeas, setShowIdeas] = useState(false)
     const [ideas, setIdeas] = useState({})
     const alert = useOutletContext()
+    // const[time, setTime] = useState('')
 
     useEffect(() => {
         const fetchIdeas = async () => {
@@ -47,7 +53,8 @@ export default function Add({axiosJWT}) {
             journal: "",
             preventingActions: habit.preventingActions,
             intentions: habit.intentions,
-            habitCompleted: false
+            habitCompleted: false,
+            // messages: []
         }
 
         try {
@@ -56,8 +63,7 @@ export default function Add({axiosJWT}) {
             })
             // add notification
             const days = createDaysArray(res.data.daysToComplete)
-            addNotification(days, axiosJWT, habit, user)
-
+            addNotification(days, axiosJWT, res.data, user)
             dispatch({type: "ADD_HABIT", payload: res.data})
             navigate(`/${res.data._id}`)
             alert('Habit added', 3000)
@@ -155,6 +161,22 @@ export default function Add({axiosJWT}) {
                     value={habit.intentions || ''}
                     onChange={(e) => setHabit({...habit, intentions: e.target.value})}
                     required />
+
+                {/* <FormControl fullWidth>
+                    <InputLabel id="notif-time-label">Time</InputLabel>
+                    <Select
+                        lableId="notif-time-label"
+                        id="notif-time-select"
+                        label="Time"
+                        value={time}
+                        onChange={(e) => setTime(e.target.value)}
+                    >
+                        <MenuItem value={"10:00"}>Morning</MenuItem>
+                        <MenuItem value={"14:00"}>Afternoon</MenuItem>
+                        <MenuItem value={"17:00"}>Evening</MenuItem>
+                        <MenuItem value={"21:00"}>Night</MenuItem>
+                    </Select>
+                </FormControl> */}
 
                 <div>
                     <ButtonStyled id="add-btn">Add habit</ButtonStyled>

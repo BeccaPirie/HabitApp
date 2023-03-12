@@ -82,6 +82,7 @@ router.post('/login', async(req, res) => {
             email: loginUser.email,
             token: token,
             refreshToken: refreshToken
+            // messages: loginUser.messages || []
         })
     } catch (err) {
         res.status(500).json(err)
