@@ -20,7 +20,7 @@ router.put('/update-password', protect, async(req, res) => {
             const newPassword = await bcrypt.hash(req.body.newPassword, bcryptPass)
 
             // update user account with new password
-            await User.findByIdAndUpdate(req.params.id, {
+            await User.findByIdAndUpdate(req.user._id, {
                 $set: {password: newPassword}
             })
             res.status(200).json(newPassword)
@@ -62,34 +62,31 @@ router.put('/message', protect, async(req, res) => {
             messages: {
                 message: req.body.message,
                 habitId: req.body.habitId,
+                userId: req.user._id,
                 read:false
             }
         }})
-        res.status(200).send(updatedMessage)
+        const updatedUser = await User.findById(req.user._id)
+        res.status(200).json(user.messages)
     } catch (err) {
-        res.status(500).send(err)
+        res.status(500).json(err)
     }
 })
 
 // update message
-// router.put('/update-message', protect, async(req, res) => {
-//     try{
-//         console.log(req.body.read)
-//         const user = await User.findOneAndUpdate({
-//             _id: req.user._id,
-//             'messages._id': req.body.id
-//         },
-//         {$set: {'messages.$.read': req.body.read}},
-//         {new:false})
-
-//         console.log(user)
-
-//         console.log("message updated")
-//         res.status(200).send("Message updated")
-//     } catch(err) {
-//         res.status(500).send(err)
-//     }
-// })
+router.put('/update-message', protect, async(req, res) => {
+    try{
+        await User.findOneAndUpdate({
+            _id: req.user._id,
+            'messages._id': req.body.id
+        },
+        {$set: {'messages.$.read': req.body.read}},
+        {new:false})
+        res.status(200).send("Message updated")
+    } catch(err) {
+        res.status(500).send(err)
+    }
+})
 
 // remove message
 router.put('/remove-message', protect, async(req, res) => {
@@ -99,9 +96,9 @@ router.put('/remove-message', protect, async(req, res) => {
             'messages._id': req.body.id
         },
         {$pull: {messages: {_id: req.body.id}}})
-        res.status(200).send("Message removed")
+        res.send("Message removed")
     } catch (err) {
-        res.status(500).send(err)
+        res.status(500).json(err)
     }
 })
 export default router

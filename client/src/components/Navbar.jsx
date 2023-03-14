@@ -12,22 +12,29 @@ import ListItem from '@mui/material/ListItem';
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function Navbar({text, axiosJWT}) {
-    // const [showMessages, setShowMessages] = useState(false)
+    const [showMessages, setShowMessages] = useState(true)
     const { user, dispatch } = useContext(UserContext)
-    // const [messages, setMessages] = useState(user.messages.reverse())
-    // const [showBadge, setShowBadge] = useState(!user.messages.every(message => message.read === true))
+    const [messages, setMessages] = useState(user.messages.reverse())
+    const [showBadge, setShowBadge] = useState(true)
 
+    console.log(messages)
 
-    // const deleteMessage = async(id) => {
-    //     await axiosJWT.put('http://localhost:5000/server/user/remove-message', {id:id}, {
-    //         headers: {authorization:'Bearer ' + user.token}
-    //     })
-    //     dispatch({type: "DELETE_MESSAGE", payload: id})
-    // }
+    const deleteMessage = async(id) => {
+        try {
+            await axiosJWT.put(`http://localhost:5000/server/user/remove-message/`,{id:id}, {
+                headers: {authorization:'Bearer ' + user.token}
+            })
+            dispatch({type: "DELETE_MESSAGE", payload: id})
+            console.log("deleted from db")  
+        } catch (err) {
+            console.error(err.response.data)
+        }  
+    }
 
-    // const openNotifications = async() => {
-    //     setShowMessages(!showMessages)
-    // }
+    const openNotifications = async() => {
+        setShowBadge(false)
+        setShowMessages(!showMessages)
+    }
 
     // const openNotifications = async() => {
     //     if(!showMessages) {
@@ -74,16 +81,16 @@ export default function Navbar({text, axiosJWT}) {
         // setShowMessages(!showMessages)
     // }
 
-    // useEffect(() => {
-    //     setMessages(user.messages.reverse())
-    //     if(user.messages.every(message => message.read === true)) {
-    //         console.log("Dont show badge")
-    //         setShowBadge(false)
-    //     } else {
-    //         console.log("show badge")
-    //         setShowBadge(true)
-    //     }
-    // },[user, user.messages])
+    useEffect(() => {
+        setMessages(user.messages.reverse())
+        if(user.messages.every(message => message.read === true)) {
+            console.log("Dont show badge")
+            setShowBadge(false)
+        } else {
+            console.log("show badge")
+            setShowBadge(true)
+        }
+    },[user, user.messages])
     
     return(
         <StyledNavbar>
@@ -96,11 +103,10 @@ export default function Navbar({text, axiosJWT}) {
                     {/* <Link to="/about">
                         <li>About</li>
                     </Link> */}
-                    {/* <div>
+                    <div>
                     <IconButton
                         aria-label={`__ notifications`}
-                        onClick={openNotifications}
-                        >
+                        onClick={openNotifications}>
                         {showBadge ?
                         <Badge variant="dot" color="primary">
                             <NotificationsOutlinedIcon />
@@ -130,7 +136,7 @@ export default function Navbar({text, axiosJWT}) {
                             })}
                         </List>
                     </Paper>}
-                    </div> */}
+                    </div>
 
                     <Link to="/profile">
                         <IconButton aria-label="">

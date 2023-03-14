@@ -125,14 +125,14 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispat
             updateHabit()
         }
         const msg = `Try a different event cue to help integrate ${habit.name} into your routine!`
-        // addMessage(axiosJWT, user, habit, msg, userDispatch)
+        addMessage(axiosJWT, user, habit, msg, userDispatch)
         alert(msg, 6000)
     }
 
     // else if notification frequency === 1 after two weeks send alert to change event cue
     else if((createdAt > twoWeeks) && habit.notificationFrequency === 1) {
         const msg = `Try a different event cue to help integrate ${habit.name} into your routine!`
-        // addMessage(axiosJWT, user, habit, msg, userDispatch)
+        addMessage(axiosJWT, user, habit, msg, userDispatch)
         alert(msg, 6000)
     }
 }
@@ -193,14 +193,21 @@ export const deleteNotification = async (axiosJWT, habit, user) => {
 }
 
 // ******************** CALL API TO SHOW ALERTS AND NOTIFICATIONS IN MESSAGES ********************
-// const addMessage = async (axiosJWT, user, habit, message, dispatch) => {
-//     const newMessage = {
-//         message: message,
-//         habitId: habit._id,
-//         read: false
-//     }
-//     const res = await axiosJWT.put('http://localhost:5000/server/user/message/', newMessage, {
-//         headers: {authorization: 'Bearer ' + user.token}
-//     })
-//     dispatch({type: "ADD_MESSAGE", payload: res.data})
-// }
+const addMessage = async (axiosJWT, user, habit, message, dispatch) => {
+    try {
+        const newMessage = {
+            message: message,
+            userId: user._id,
+            habitId: habit._id,
+            read: false
+        }
+        const res = await axiosJWT.put('http://localhost:5000/server/user/message/', newMessage, {
+            headers: {authorization: 'Bearer ' + user.token}
+        })
+        console.log(res.data)
+        dispatch({type: "ADD_MESSAGE", payload: res.data})  
+        } catch (err) {
+        console.error(err.response.data)
+    }
+    
+}

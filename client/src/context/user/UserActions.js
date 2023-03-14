@@ -36,17 +36,17 @@ export const DeleteUser = () => ({
     type: "DELETE_USER"
 })
 
-// export const AddMessage = (messages) => ({
-//     type: "ADD_MESSAGE",
-//     payload: messages
-// })
+export const AddMessage = (messages) => ({
+    type: "ADD_MESSAGE",
+    payload: messages
+})
 
-// export const UpdateMessage = (message) => ({
-//     type: "UPDATE_MESSAGE",
-//     payload: message
-// })
+export const UpdateMessage = (message) => ({
+    type: "UPDATE_MESSAGE",
+    payload: message
+})
 
-// export const DeleteMessage = (messageId) => ({
-//     type: "DELETE_MESSAGE",
-//     payload: messageId
-// })
+export const DeleteMessage = (messageId) => ({
+    type: "DELETE_MESSAGE",
+    payload: messageId
+})

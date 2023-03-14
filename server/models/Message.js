@@ -5,6 +5,10 @@ const MessageSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userId: {
+        type: String,
+        required: true
+    },
     habitId: {
         type: String,
         required: true
@@ -14,6 +18,6 @@ const MessageSchema = new mongoose.Schema({
         required: true,
         default: false
     }
-}, {timestamp: true})
+})
 
 export default MessageSchema

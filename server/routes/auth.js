@@ -30,8 +30,8 @@ router.post('/signup', async(req, res) => {
         const user = await createUser.save()
 
         // generate JWT tokens
-        const token = generateToken(user._id)
-        const refreshToken = generateRefreshToken(user._id)
+        const token = generateToken(user._id).toString()
+        const refreshToken = generateRefreshToken(user._id).toString()
 
         // update user with JWT tokens
         await user.updateOne({
@@ -81,8 +81,8 @@ router.post('/login', async(req, res) => {
             username: loginUser.username,
             email: loginUser.email,
             token: token,
-            refreshToken: refreshToken
-            // messages: loginUser.messages || []
+            refreshToken: refreshToken,
+            messages: loginUser.messages
         })
     } catch (err) {
         res.status(500).json(err)

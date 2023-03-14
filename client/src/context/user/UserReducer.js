@@ -61,35 +61,34 @@ const UserReducer = (state, action) => {
                 user: null
             }
 
-            // case "ADD_MESSAGE":
-            // return {
-            //     ...state,
-            //     user: {
-            //         ...state.user,
-            //         messages: [...state.user.messages, action.payload]
-            //     }
-            // }
+            case "ADD_MESSAGE":
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    messages: action.payload
+                }
+            }
 
-            // case "UPDATE_MESSAGE":
-            // return {
-            //     ...state,
-            //     user: {
-            //         ...state.user,
-            //         messages: [...state.user.messages.map(message => message._id === action.payload.id ?
-            //             {...message, read: action.payload.read} : message
-            //         )]
-            //     }
-            // }
+            case "UPDATE_MESSAGE":
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    messages: [...state.user.messages.map(message => message._id === action.payload.id ?
+                        {...message, read: action.payload.read} : message
+                    )]
+                }
+            }
 
-            // case "DELETE_MESSAGE":
-            // return {
-            //     ...state,
-            //     user: {
-            //         ...state.user,
-            //         messages: [...state.user.messages.filter(message => message._id !== action.payload)]
-            //     }
-            // }
-
+            case "DELETE_MESSAGE":
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    messages: [...state.user.messages.filter(message => message._id !== action.payload)]
+                }
+            }
             
         default:
             return state
