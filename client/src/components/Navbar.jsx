@@ -12,12 +12,10 @@ import ListItem from '@mui/material/ListItem';
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function Navbar({text, axiosJWT}) {
-    const [showMessages, setShowMessages] = useState(true)
+    const [showMessages, setShowMessages] = useState(false)
     const { user, dispatch } = useContext(UserContext)
     const [messages, setMessages] = useState(user.messages.reverse())
     const [showBadge, setShowBadge] = useState(true)
-
-    console.log(messages)
 
     const deleteMessage = async(id) => {
         try {
@@ -25,69 +23,39 @@ export default function Navbar({text, axiosJWT}) {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: "DELETE_MESSAGE", payload: id})
-            console.log("deleted from db")  
         } catch (err) {
             console.error(err.response.data)
         }  
     }
 
     const openNotifications = async() => {
-        setShowBadge(false)
+        if(!showMessages) {
+            const unreadMessages = user.messages.filter(message => message.read === false)
+            for(const message of unreadMessages) {
+                const update = {
+                    id: message._id,
+                    read: true
+                }
+                await axiosJWT.put('http://localhost:5000/server/user/update-message', update, {
+                    headers: {authorization:'Bearer ' + user.token}
+                })
+                await dispatch({type:"UPDATE_MESSAGE", payload: update})
+                setShowBadge(false)
+            }
+        }
         setShowMessages(!showMessages)
     }
 
-    // const openNotifications = async() => {
-    //     if(!showMessages) {
-    //         console.log("away to show messages ...")
-    //         const filteredMsgs = user.messages.filter(message => message.read === false)
-    //         console.log(filteredMsgs)
-    //         for(const message of filteredMsgs) {
-    //             console.log(message.read)
-    //             const update = {
-    //                 id: message._id,
-    //                 read: true
-    //             }
-    //             // console.log("sending to server to update ...")
-    //             await axiosJWT.put('http://localhost:5000/server/user/update-message', update, {
-    //                 headers: {authorization:'Bearer ' + user.token}
-    //             })
-    //             console.log("updated server side")
-                // console.log("now updating context")
-                // await dispatch({type:"UPDATE_MESSAGE", payload: update})
-                // console.log("updated client side:")
-                // console.log(user.messages)
-        //     }
-        // }
-
-        // setShowMessages(!showMessages)
-        // console.log("Show messages: " + showMessages)
-        // if(!showMessages && showBadge) {
-        //     const filtered = messages.filter(message => message.read === false)
-        //     // messages.filter(message => message.read === false).forEach(async(message) => {
-        //     for(const message of filtered) {
-        //         const update = {
-        //             id: message._id,
-        //             read: true
-        //         }
-        //         console.log("time to update...")
-        //         await axiosJWT.put('http://localhost:5000/server/user/update-message', update, {
-        //             headers: {authorization:'Bearer ' + user.token}
-        //         })
-        //         dispatch({type: "UPDATE_MESSAGE", payload: update})
-        //         console.log("message.read now: " + message.read)
-        //     }
-        //     // setShowBadge(false)      
-        // }
-        // setShowMessages(!showMessages)
-    // }
-
     useEffect(() => {
         setMessages(user.messages.reverse())
-        if(user.messages.every(message => message.read === true)) {
-            console.log("Dont show badge")
+        if(user.messages.length === 0) {
+            setShowMessages(false)
             setShowBadge(false)
-        } else {
-            console.log("show badge")
+        }
+        else if(user.messages.every(message => message.read === true)) {
+            setShowBadge(false)
+        }
+        else {
             setShowBadge(true)
         }
     },[user, user.messages])

@@ -67,7 +67,7 @@ router.put('/message', protect, async(req, res) => {
             }
         }})
         const updatedUser = await User.findById(req.user._id)
-        res.status(200).json(user.messages)
+        res.status(200).json(updatedUser.messages)
     } catch (err) {
         res.status(500).json(err)
     }

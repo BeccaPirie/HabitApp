@@ -76,7 +76,6 @@ export default function Index({lg, axiosJWT}) {
             }
         }
         fetchUserHabits()
-        console.log("fetching habits")
     },[user._id, dispatch, user.token, axiosJWT])
 
     // handle alert display
