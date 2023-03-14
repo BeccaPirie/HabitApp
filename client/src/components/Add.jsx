@@ -54,7 +54,6 @@ export default function Add({axiosJWT}) {
             preventingActions: habit.preventingActions,
             intentions: habit.intentions,
             habitCompleted: false,
-            // messages: []
         }
 
         try {

@@ -4,10 +4,12 @@ import { ButtonStyled } from "./styles/Button.styled"
 import { useState, useContext } from "react"
 import { UserContext } from '../context/user/UserContext'
 import { notificationSettings } from "../notifications"
+import { useOutletContext } from "react-router-dom"
 
 export default function CalendarComponent({axiosJWT, habit, dispatch}) {
     const [date, setDate] = useState(new Date())
     const { user, dispatch:userDispatch } = useContext(UserContext)
+    const alert = useOutletContext()
 
     // disable future dates on calendar
     const disableFutureDates = ({date, view}) => {
@@ -39,7 +41,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'REMOVE_FROM_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
-                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch)
+                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch, alert)
             } catch (err) {
                 console.error(err.response.data)
             }
@@ -53,7 +55,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'UPDATE_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
-                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch)
+                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch, alert)
             } catch (err) {
                 console.error(err.response.data)
             }
@@ -67,7 +69,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'ADD_TO_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
-                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch)
+                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch, alert)
             } catch (err) {
                 console.error(err.response.data)
             }

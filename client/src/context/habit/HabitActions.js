@@ -59,3 +59,18 @@ export const RemoveFromCalendar = ( habits ) => ({
     type: "REMOVE_FROM_CALENDAR",
     payload: habits
 })
+
+export const AddTodo = (todos) => ({
+    type: "ADD_TODO",
+    payload: todos
+})
+
+export const UpdateTodo = (todo) => ({
+    type: "UPDATE_TODO",
+    payload: todo
+})
+
+export const DeleteTodo = (todoId) => ({
+    type: "DELETE_TODO",
+    payload: todoId
+})

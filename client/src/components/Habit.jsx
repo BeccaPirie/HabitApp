@@ -100,7 +100,10 @@ export default function Habit({axiosJWT}) {
                 dispatch={dispatch}
             />
 
-            <Todos />
+            <Todos
+                todos={habit.todos}
+                axiosJWT={axiosJWT}
+            />
 
             <form onSubmit={(e)=> journalButtonClick(e)}>
                 <label htmlFor="journal">

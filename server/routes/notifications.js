@@ -32,9 +32,9 @@ router.get('/', protect, async(req, res) => {
 
         let schedules = await Notification.find({userId: req.user._id})
         
-        schedules = schedules.filter((item) =>
-            keys.includes(item._id.toString()))
-        console.log(schedules)
+        // schedules = schedules.filter((item) =>
+        //     keys.includes(item._id.toString()))
+        // console.log(schedules)
 
         res.status(200).json(schedules)
     } catch (e) {
@@ -69,11 +69,11 @@ router.delete('/', protect, async(req, res) => {
         const list = schedule.getJobs()
 
         notificationIds.forEach(async (n) => {
-            const current = list[n]
-            console.log(current)
-            if(!current) throw new Error("Notification not found")
+            // const current = list[n]
+            // console.log(current)
+            // if(!current) throw new Error("Notification not found")
             await Notification.findByIdAndDelete(n)
-            n.cancel()
+            // n.cancel()
         })
         res.status(200).json("Notification deleted")
     } catch (e) {

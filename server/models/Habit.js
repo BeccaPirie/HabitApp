@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import HabitDaysSchema from "./HabitDays.js"
 import CalendarSchema from "./Calendar.js"
+import TodoSchema from "./Todo.js"
 
 // habit details
 const HabitSchema = new mongoose.Schema({
@@ -69,8 +70,11 @@ const HabitSchema = new mongoose.Schema({
         type:Boolean,
         default:false,
         required:true
-    }    
+    },
+
+    // todos
+    todos: [TodoSchema]
 },
-{timestamp: true})
+{timestamps: true})
 
 export default mongoose.model("Habit", HabitSchema)

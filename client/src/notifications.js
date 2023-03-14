@@ -3,10 +3,10 @@ import moment from "moment"
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 // ******************** UPDATE NOTIFICATION FREQUENCY ********************
-export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispatch) => {
+export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispatch, alert) => {
     // TODO dont send notification if already calendar data for current day (not sure how to do this)
-    // TODO dont change notifications if habit created in past 5 days
     // TODO take skips into consideration
+    // TODO only call function if notifications are on?
 
     let newNotificationFrequency = 0
 
@@ -76,11 +76,18 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispat
     const isAllMissed = dates.every(date => date.status === 'Missed' || date.status === 'No data')
     const isTwoWeeksMissed = datesTenDays.every(date => date.status === "Missed" || date.status === "No data")
     const createdAt = moment(habit.createdAt).format('YYYY-M-D')
-    const twoWeeks = moment().subtract(14, 'days').format('YYYY-M-DD')
+    const fiveDays = moment().subtract(5, 'days').format('YYYY-M-D')
+    const twoWeeks = moment().subtract(14, 'days').format('YYYY-M-D')
 
-    // if all days completed half the amount of notifications received
+    // don't change notification settings if habit has been due for less than 5 days since created
+    if(fiveDays > createdAt) {
+        console.log("< 5 days")
+        return
+    }
+
+    // if the past 5 days the habit is due are completed, reduce the amount of notifications received
     if(isAllCompleted) {
-        console.log("all days completed")
+        console.log("completed 5 days in a row")
         // delete current notification
         deleteNotification(axiosJWT, habit, user)
 
@@ -91,13 +98,15 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispat
             notifDays = days.filter((d, i) => i % 2 === 1)  
             newNotificationFrequency++    
         }
-        else if(habit.notificationFrequency === 2) {            
-          notifDays = notifDays.filter((d, i) => i % 3 === 2)
-          newNotificationFrequency++
+        else if(habit.notificationFrequency === 2) {   
+            // send every 4 days         
+            notifDays = notifDays.filter((d, i) => i % 4 === 3)
+            newNotificationFrequency++
         }
         else if(habit.notificationFrequency === 3) {
             // eventually stop notifications
-        } 
+            deleteNotification()
+        }
 
         // add notification and update habit
         addNotification(notifDays, axiosJWT, habit, user)
@@ -112,7 +121,7 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispat
 
     // else if 5 days missed, start daily notifications and suggest changing event cue
     else if(isAllMissed) {
-        console.log('All days missed')
+        console.log('5 days in a row missed')
         if(habit.notificationFrequency > 1) {
             deleteNotification(axiosJWT, habit, user)
             newNotificationFrequency = 1
@@ -173,23 +182,29 @@ export const addNotification = async (days, axiosJWT, habit, user) => {
 // ******************** CALL API TO DELETE NOTIFICATION ********************
 // FIXME
 export const deleteNotification = async (axiosJWT, habit, user) => {
-    const res = await axiosJWT.get(`http://localhost:5000/server/notification/${habit._id}`, {
-        headers: {authorization:'Bearer ' + user.token}
-    })
-
-    let ids = []
-    if(res.data) {
-        res.data.forEach(n => {
-            ids.push(n._id)
+    try {
+        const res = await axiosJWT.get(`http://localhost:5000/server/notification/${habit._id}`, {
+            headers: {authorization:'Bearer ' + user.token}
         })
-    }
 
-    if(ids.length > 0) {
-        await axiosJWT.delete('http://localhost:5000/server/notification', {ids: ids}, {
-            headers: {authorization: 'Bearer ' + user.token}
-        })
-        console.log("notification deleted")
+        let ids = []
+        if(res.data) {
+            res.data.forEach(n => {
+                ids.push(n._id)
+            })
+        }
+
+        if(ids.length > 0) {
+            console.log("away to delete notification")
+            await axiosJWT.delete('http://localhost:5000/server/notification', {ids: ids}, {
+                headers: {authorization: 'Bearer ' + user.token}
+            })
+            console.log("notification deleted")
+        }  
+    } catch (err) {
+        console.error(err.response.data)
     }
+    
 }
 
 // ******************** CALL API TO SHOW ALERTS AND NOTIFICATIONS IN MESSAGES ********************

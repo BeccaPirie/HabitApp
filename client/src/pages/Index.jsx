@@ -98,7 +98,7 @@ export default function Index({lg, axiosJWT}) {
                            <Outlet context={alert}/>
                     </MainContainer>
                 {/* </Main> */}
-                {lg && <Rightbar />}
+                {lg && <Rightbar axiosJWT={axiosJWT}/>}
             </PageContainer>
         </>
     )

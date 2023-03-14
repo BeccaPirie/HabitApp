@@ -49,6 +49,7 @@ router.put('/update', protect, async(req, res) => {
 router.delete('/', protect, async(req, res) => {
     try {
         await User.findByIdAndDelete(req.user._id)
+        res.status(200).json("User deleted")
     } catch (err) {
         res.status(500).json(err)
     }

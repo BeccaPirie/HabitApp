@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react"
+import { useContext, useRef, useState, useEffect } from "react"
 import { UserContext } from "../context/user/UserContext"
 import { EditProfileStyled } from "./styles/EditProfile.styled";
 import { ButtonStyled } from "./styles/Button.styled";
@@ -15,7 +15,7 @@ export default function Profile({axiosJWT}) {
     const [username, setUsername] = useState(user.username)
     const [email, setEmail] = useState(user.email)
     const [notifSettings, setNotifSettings] = useState(user.notifications)
-    const [notifications, setNotifications] = useState('')
+    const [notifications, setNotifications] = useState([])
     const [openAlert, setOpenAlert] = useState(false)
     const oldPass = useRef()
     const newPass = useRef()
@@ -46,7 +46,7 @@ export default function Profile({axiosJWT}) {
         console.log("update password")
 
         if(newPass.current.value !== confirmPass.current.value) {
-            confirmPass.current.setCustomerValidity("Passwords don't match")
+            confirmPass.current.setCustomValidity("Passwords don't match")
             return
         }
 
@@ -67,7 +67,7 @@ export default function Profile({axiosJWT}) {
 
     const updateNotifications = async(e) => {
         e.preventDefault()
-        console.log("update notifications")
+        console.log("updating notifications")
         setNotifSettings(!user.notifications)
 
         const updatedUser = {
@@ -86,28 +86,42 @@ export default function Profile({axiosJWT}) {
             console.error(err.response.data)
         }
 
-        if(notifSettings) {
-            // set notifications
+        // if notifications are currently switched off, set schedules for notifications
+        if(!user.notifications) {
             try {
+                console.log(notifications)
                 notifications.forEach(async(n) => {
-                    await axiosJWT.post('http://localhost:5000/server/notification/set-notification', n, {
+                    const data = {
+                        title: n.notification.title,
+                        body: n.notification.body,
+                        days: n.days,
+                        time: n.time,
+                        userId: n.userId,
+                        habitId: n.habitId
+                    }
+                    console.log(n)
+                    await axiosJWT.post('http://localhost:5000/server/notification/set-notification', data, {
                     headers: {authorization:'Bearer ' + user.token}
                     })
                 })
+                // call notification settings?
                 console.log("notifications turned on")
             } catch(err) {
                 console.error(err.response.data)
             }
         }
         else {
-            //delete notifications
+            // delete scheduled notifications as notifications have been switched off
             try {
-                notifications.forEach(async(n) => {
-                    await axiosJWT.delete('http://localhost:5000/server/notification/', n, {
-                        headers: {authorization:'Bearer ' + user.token}
+                const ids = notifications.map(n => n._id)
+                console.log(ids)
+
+                if(ids.length > 0) {
+                    await axiosJWT.delete('http://localhost:5000/server/notification', {ids: ids}, {
+                        headers: {authorization: 'Bearer ' + user.token}
                     })
-                })
-                console.log("notifications turned off")
+                    console.log("notification turned off")
+                }
             } catch(err) {
                 console.error(err.response.data)
             }
@@ -178,19 +192,7 @@ export default function Profile({axiosJWT}) {
                 <ButtonStyled>Update Password</ButtonStyled>
             </form>
 
-            {/* <form className="notif-form">
-                <span id="notif-header">Allow Notifications?</span>
-                <label className="notif-switch">
-                    <input
-                        type="checkbox"
-                        checked={notifSettings}
-                        onChange={updateNotifications}       
-                    />
-                    <span className="slider"></span>
-                </label>
-            </form> */}
-
-            <FormGroup>
+            {/* <FormGroup>
                 <FormControlLabel
                 label={"Notifications"}
                 control={
@@ -199,7 +201,7 @@ export default function Profile({axiosJWT}) {
                         onChange={updateNotifications}
                     />}
                 />
-            </FormGroup>
+            </FormGroup> */}
 
 
             <div className="delete-acc">

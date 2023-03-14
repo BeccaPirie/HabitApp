@@ -140,4 +140,54 @@ router.put('/:id/add-calendar-data', protect, async (req, res) => {
     }
 })
 
+// add todo
+router.put('/add-todo', protect, async(req, res) => {
+    try {
+        const user = User.findById(req.user._id)
+        user.updateOne({$push: {
+                todos: {
+                    todo: req.body.todo,
+                    isComplete: false
+                }
+            }})
+        const updatedUser = User.findById(req.user._id)
+        res.status(200).json(updatedUser.todos)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
+// update todo
+router.put('/update-todo', protect, async(req, res) => {
+    try {
+        User.findOneAndUpdate({
+            id: req.user._id,
+            'todos._id': req.body.id
+        }, 
+        {$set: {
+            'todos.$.todo': req.body.todo,
+            'todos.$.isComplete': req.body.isComplete
+        }},
+        {new:false})
+        res.status(200).json("Todo updated")
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
+// delete todo
+router.put('/remove-todo', protect, async(req, res) => {
+    try {
+        User.findOneAndUpdate({
+            id: req.user._id,
+            'todos._id': req.body.id
+        }, 
+        {$pull: {_id: req.body.id}},
+        {new:false})
+        res.status(200).json("Todo removed")
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
 export default router

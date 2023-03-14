@@ -77,6 +77,32 @@ const HabitReducer = (state, action) => {
                     ...habit, calendarData: habit.calendarData.filter(data => data.date !== action.payload.date)
                 } : habit)
             }
+            case "ADD_TODO":
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        todos: action.payload
+                    }
+                }
+            case "UPDATE_TODO":
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        todos: [...state.user.todos.map(todo => todo._id === action.payload.id ?
+                            {...todo, todo: action.payload.todo} : todo
+                        )]
+                    }
+                }
+            case "DELETE_TODO":
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        todos: [...state.user.todos.filter(todo => todo._id !== action.payload)]
+                    }
+                }
         default:
             return state
     }
