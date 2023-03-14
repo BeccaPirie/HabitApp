@@ -33,45 +33,45 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
         const dataExists = habit.calendarData.find(data => data.date === dateString)
         if(dataMatches) {
             try {
-                await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/remove-calendar-data`, {
+                const res = await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/remove-calendar-data`, {
                     date: dateString,
                 }, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'REMOVE_FROM_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
+                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch)
             } catch (err) {
                 console.error(err.response.data)
             }
         }
         else if(dataExists) {
             try {
-                await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/update-calendar-data`, {
+                const res = await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/update-calendar-data`, {
                     date: dateString,
                     status:  e.target.id
                 }, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'UPDATE_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
+                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch)
             } catch (err) {
                 console.error(err.response.data)
             }
         }
         else {
             try {
-                await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/add-calendar-data`, {
+                const res = await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/add-calendar-data`, {
                     date: dateString,
                     status: e.target.id
                 }, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'ADD_TO_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
+                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch)
             } catch (err) {
                 console.error(err.response.data)
             }
         }
-
-        // check if notification frequency needs to be updated
-        notificationSettings(habit, dispatch, axiosJWT, user, userDispatch)
     }
 
     return(

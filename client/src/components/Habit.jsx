@@ -98,7 +98,6 @@ export default function Habit({axiosJWT}) {
                 axiosJWT={axiosJWT}
                 habit={habit}
                 dispatch={dispatch}
-                alert={alert}
             />
 
             <Todos />
