@@ -80,28 +80,26 @@ const HabitReducer = (state, action) => {
             case "ADD_TODO":
                 return {
                     ...state,
-                    user: {
-                        ...state.user,
-                        todos: action.payload
-                    }
+                    userHabits: state.userHabits.map(habit => habit._id === action.payload.id ? {
+                        ...habit, todos: action.payload
+                    } : habit)
                 }
             case "UPDATE_TODO":
                 return {
                     ...state,
-                    user: {
-                        ...state.user,
-                        todos: [...state.user.todos.map(todo => todo._id === action.payload.id ?
-                            {...todo, todo: action.payload.todo} : todo
-                        )]
-                    }
+                    userHabits: state.userHabits.map(habit => habit._id === action.payload.id ? {
+                        ...habit, todos: [{
+                            ...habit.todos.map(todo => todo._id === action.payload.todo._id ? 
+                                action.payload.todo : todo)
+                        }]
+                    } : habit)
                 }
             case "DELETE_TODO":
                 return {
                     ...state,
-                    user: {
-                        ...state.user,
-                        todos: [...state.user.todos.filter(todo => todo._id !== action.payload)]
-                    }
+                    userHabits: state.userHabits.map(habit => habit._id === action.payload.id ? {
+                        ...habit, todos: habit.todos.filter(todo => todo._id !== action.payload.todoId)
+                    }: habit)
                 }
         default:
             return state

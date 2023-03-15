@@ -141,28 +141,28 @@ router.put('/:id/add-calendar-data', protect, async (req, res) => {
 })
 
 // add todo
-router.put('/add-todo', protect, async(req, res) => {
+router.put('/:id/add-todo', protect, async(req, res) => {
     try {
-        const user = User.findById(req.user._id)
-        user.updateOne({$push: {
+        const habit = await Habit.findById(req.params.id)
+        await habit.updateOne({$push: {
                 todos: {
                     todo: req.body.todo,
-                    isComplete: false
+                    isComplete: req.body.isComplete
                 }
             }})
-        const updatedUser = User.findById(req.user._id)
-        res.status(200).json(updatedUser.todos)
+        const updatedHabit = await Habit.findById(req.params.id)
+        res.status(200).json(updatedHabit.todos)
     } catch (err) {
         res.status(500).json(err)
     }
 })
 
 // update todo
-router.put('/update-todo', protect, async(req, res) => {
+router.put('/:id/update-todo', protect, async(req, res) => {
     try {
-        User.findOneAndUpdate({
-            id: req.user._id,
-            'todos._id': req.body.id
+        await Habit.findOneAndUpdate({
+            _id: req.params.id,
+            'todos._id': req.body._id
         }, 
         {$set: {
             'todos.$.todo': req.body.todo,
@@ -176,13 +176,13 @@ router.put('/update-todo', protect, async(req, res) => {
 })
 
 // delete todo
-router.put('/remove-todo', protect, async(req, res) => {
+router.put('/:id/remove-todo', protect, async(req, res) => {
     try {
-        User.findOneAndUpdate({
-            id: req.user._id,
+        await Habit.findOneAndUpdate({
+            _id: req.params.id,
             'todos._id': req.body.id
         }, 
-        {$pull: {_id: req.body.id}},
+        {$pull: {todos: {_id: req.body.id}}},
         {new:false})
         res.status(200).json("Todo removed")
     } catch (err) {

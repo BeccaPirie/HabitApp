@@ -15,21 +15,29 @@ import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { TodoList } from './styles/Todo.styled';
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { UserContext } from '../context/user/UserContext'
 import { Tooltip } from '@mui/material';
+import { HabitContext } from '../context/habit/HabitContext';
 
-export default function Todos({todos, axiosJWT}) {
+export default function Todos({habit, axiosJWT}) {
     const [showForm, setShowForm] = useState(false)
-    const { user, dispatch } = useContext(UserContext)
+    const { user } = useContext(UserContext)
+    const { dispatch} = useContext(HabitContext)
     const [todo, setTodo] = useState('')
+    const [todoList, setTodoList] = useState(habit.todos)
+    const [formSetting, setFormSetting] = useState('add')
+
+    useEffect(() => {
+        setTodoList(habit.todos)
+    }, [habit, habit.todos])
 
     const deleteTodo = async(id) => {
         try {
-            await axiosJWT.put('http://localhost:5000/server/habit/remove-todo', {id:id}, {
+            await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/remove-todo`, {id:id}, {
                 headers: {authorization:'Bearer ' + user.token}
             })
-            dispatch({type:"DELETE_TODO", payload: id})
+            dispatch({type:"DELETE_TODO", payload: {id:habit._id, todoId:id}})
             console.log("todo deleted")
         } catch (err) {
             console.error(err.response.data)
@@ -37,46 +45,65 @@ export default function Todos({todos, axiosJWT}) {
     }
 
     const addTodo = async(e) => {
-        const newTodo = {
-            todo: '',
-            isComplete: false
-        }
+        e.preventDefault()
+
         try {
-            const res = await axiosJWT.put('http://localhost:5000/server/habit/add-todo', newTodo, {
+            if(formSetting === 'add') {
+                const newTodo = {
+                    todo: todo.todo,
+                    isComplete: false
+                }
+                const res = await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/add-todo`, newTodo, {
+                    headers: {authorization:'Bearer ' + user.token}
+                })
+                dispatch({type:"ADD_TODO", payload: res.data})
+            }
+
+            else if(formSetting === 'edit') {
+                await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/update-todo`, todo, {
                 headers: {authorization:'Bearer ' + user.token}
             })
-            dispatch({type:"ADD_TODO", payload: res.data})
+            dispatch({type:"UPDATE_TODO", payload: {id: habit._id, todo:todo}})
+            setFormSetting('add')
+            }
+            setTodo('')
         } catch (err) {
             console.error(err.response.data)
         }
     }
 
-    const updateTodo = async(e) => {
-        try {
-            await axiosJWT.put('http://localhost:5000/server/habit/update-todo', todo, {
+    const updateChecked = async(todo) => {
+        const updatedTodo= {
+            ...todo,
+            isComplete: !todo.isComplete
+        }
+        await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/update-todo`, updatedTodo, {
                 headers: {authorization:'Bearer ' + user.token}
             })
-            dispatch({type:"UPDATE_TODO", payload: todo})
-        } catch (err) {
-            console.error(err.response.data)
-        }
+            dispatch({type:"UPDATE_TODO", payload: {id: habit._id, todo:updatedTodo}})
+    }
+
+    const editClick = (todo) => {
+        setTodo(todo)
+        setFormSetting('edit')
+        setShowForm(showForm)
     }
 
     return(
         <TodoList>
             <div>Todos</div>
             <List>
-                {todos !== undefined && todos.map(todo => {
+                {todoList && todoList.map(todo => {
                     return (
-                        <ListItem secondaryAction={
+                        <ListItem key={todo._id} secondaryAction={
                             <>
                                 <Tooltip title="Edit">
-                                    <IconButton edge="end" aria-label="edit" onClick={() => setShowForm(!showForm)}>
+                                    <IconButton edge="end" aria-label="edit" onClick={() => editClick(todo)}>
                                         <EditIcon />
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Delete">
-                                    <IconButton edge="end" aria-label="delete" onClick={deleteTodo}>
+                                    <IconButton edge="end" aria-label="delete" onClick={() => deleteTodo(todo._id)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </Tooltip>
@@ -86,9 +113,11 @@ export default function Todos({todos, axiosJWT}) {
                                     <Checkbox
                                         icon={<CheckCircleOutlinedIcon />}
                                         checkedIcon={<CheckCircleIcon />}
+                                        checked={todo.isComplete}
+                                        onChange={() => updateChecked(todo)}
                                     />
                             </ListItemAvatar>
-                            <ListItemText primary={todo.name}/>
+                            <ListItemText primary={todo.todo}/>
                         </ListItem>
                     )
                 })}
@@ -98,12 +127,12 @@ export default function Todos({todos, axiosJWT}) {
             <form onSubmit={addTodo}>
                 <TextField
                     id="outlined-basic"
-                    label="Add new todo"
+                    label={formSetting === 'add' ? 'Add new todo' : ''}
                     variant="outlined"
-                    value={todo || ''}
-                    onChange={(e) => setTodo(e.target.value)}
+                    value={todo.todo || ''}
+                    onChange={(e) => setTodo({...todo, todo:e.target.value})}
                 />
-                <Button variant="text">add to list</Button>
+                <Button type="submit" variant="text">add to list</Button>
             </form>
              :  <Fab onClick={() => setShowForm(!showForm)} color="primary" size="medium" aria-label="add">
                     <AddIcon />

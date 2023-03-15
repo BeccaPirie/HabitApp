@@ -101,7 +101,7 @@ export default function Habit({axiosJWT}) {
             />
 
             <Todos
-                todos={habit.todos}
+                habit={habit}
                 axiosJWT={axiosJWT}
             />
 
