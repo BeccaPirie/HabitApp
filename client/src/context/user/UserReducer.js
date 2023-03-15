@@ -21,6 +21,13 @@ const UserReducer = (state, action) => {
                 error: action.payload
             }
 
+            case "LOGOUT":
+            return {
+                user: null,
+                isFetching: false,
+                error: false
+            }
+
             case "UPDATE_USER":
             return {
                 ...state,

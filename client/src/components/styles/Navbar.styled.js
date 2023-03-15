@@ -25,31 +25,8 @@ margin: auto;
         list-style-type: none;
         display: flex;
         padding-left: 0;
-        // padding-right: 50px;
         margin: 0;
     }
-
-    // a li {
-    //     align-items: center;
-    //     height: 35px;
-    //     width: 60px;
-    //     margin: 10px;
-    //     line-height: 35px;
-    //     padding: 0 15px;
-    //     border-radius: 20px;
-    //     border: 3px solid #d1ed8a;
-    //     text-align: center;
-    //     // color: #d1ed8a;
-    //     font-weight: bold;
-    //     background-color: #d1ed8a;
-    //     color: white;
-
-    //     :hover {
-    //         // background-color: #d1ed8a;
-    //         // color: white;
-    //         // background-color: ;
-    //     }
-    // }
 
     .notif-list {
         position: absolute;
@@ -57,24 +34,35 @@ margin: auto;
         top: 45px;
         right: 70px;
         z-index: 100;
+        max-height: 300px;
+        overflow: auto;
 
         ul {
             display: block;
             padding: 0;
-
-            a li {
-                color: black;
-            }
-
-            // li {
-            //     // different styling for read/unread
-            // }
         }
     }
-}
 
-a {
-    text-decoration: none;
+    .menu-list {
+        position: absolute;
+        top: 50px;
+        right: 40px;
+        z-index: 100;
+
+        ul {
+            display: block;
+            padding: 0;
+        }
+
+        li {
+            padding: 8px 40px;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
 }
 
 @media (min-width: 500px) {

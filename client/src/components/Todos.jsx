@@ -17,6 +17,7 @@ import Button from '@mui/material/Button';
 import { TodoList } from './styles/Todo.styled';
 import { useState, useContext } from "react"
 import { UserContext } from '../context/user/UserContext'
+import { Tooltip } from '@mui/material';
 
 export default function Todos({todos, axiosJWT}) {
     const [showForm, setShowForm] = useState(false)
@@ -69,12 +70,16 @@ export default function Todos({todos, axiosJWT}) {
                     return (
                         <ListItem secondaryAction={
                             <>
-                                <IconButton edge="end" aria-label="edit" onClick={() => setShowForm(!showForm)}>
-                                    <EditIcon />
-                                </IconButton>
-                                <IconButton edge="end" aria-label="delete" onClick={deleteTodo}>
-                                    <DeleteIcon />
-                                </IconButton>
+                                <Tooltip title="Edit">
+                                    <IconButton edge="end" aria-label="edit" onClick={() => setShowForm(!showForm)}>
+                                        <EditIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Delete">
+                                    <IconButton edge="end" aria-label="delete" onClick={deleteTodo}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </>
                           }>
                             <ListItemAvatar>

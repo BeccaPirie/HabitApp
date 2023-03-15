@@ -10,12 +10,17 @@ import { UserContext } from "../context/user/UserContext"
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import CloseIcon from '@mui/icons-material/Close';
+import ClickAwayListener from "@mui/base/ClickAwayListener";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import Stack from "@mui/material/Stack";
 
 export default function Navbar({text, axiosJWT}) {
     const [showMessages, setShowMessages] = useState(false)
     const { user, dispatch } = useContext(UserContext)
     const [messages, setMessages] = useState(user.messages.reverse())
     const [showBadge, setShowBadge] = useState(true)
+    const [showMenu, setShowMenu] = useState(false)
 
     const deleteMessage = async(id) => {
         try {
@@ -39,11 +44,15 @@ export default function Navbar({text, axiosJWT}) {
                 await axiosJWT.put('http://localhost:5000/server/user/update-message', update, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
-                await dispatch({type:"UPDATE_MESSAGE", payload: update})
+                dispatch({type:"UPDATE_MESSAGE", payload: update})
                 setShowBadge(false)
             }
         }
         setShowMessages(!showMessages)
+    }
+
+    const logout = () => {
+        dispatch({type:"LOGOUT"})
     }
 
     useEffect(() => {
@@ -72,48 +81,68 @@ export default function Navbar({text, axiosJWT}) {
                         <li>About</li>
                     </Link> */}
                     <div>
-                    <IconButton
-                        aria-label={`__ notifications`}
-                        onClick={openNotifications}>
-                        {showBadge ?
-                        <Badge variant="dot" color="primary">
-                            <NotificationsOutlinedIcon />
-                        </Badge> :
-                        <NotificationsOutlinedIcon />}
-                    </IconButton>
-
+                        <IconButton
+                            aria-label={`__ notifications`}
+                            onClick={openNotifications}>
+                            {showBadge ?
+                            <Badge variant="dot" color="primary">
+                                <NotificationsOutlinedIcon />
+                            </Badge> :
+                            <NotificationsOutlinedIcon />}
+                        </IconButton>
+                        
                     {showMessages && 
-                    <Paper className="notif-list">
-                        <List >
-                            {messages.length > 0 && messages.map((m, index) => {
-                                return(
-                                    <ListItem key={index}
-                                        secondaryAction= {
-                                            <IconButton
-                                                edge="end"
-                                                aria-label="close"
-                                                onClick={() => deleteMessage(m._id)}>
-                                                <CloseIcon />
-                                            </IconButton>
-                                        }>
-                                        <Link to={m.habitId}>
-                                            <Typography>{m.message}</Typography>
-                                        </Link>
-                                    </ListItem>
-                                )
-                            })}
-                        </List>
-                    </Paper>}
+                    <ClickAwayListener onClickAway={() => setShowMessages(false)}>
+                        <Paper className="notif-list">
+                            <List >
+                                {messages.length > 0 && messages.map((m, index) => {
+                                    return(
+                                        <ListItem key={index}
+                                            secondaryAction= {
+                                                <IconButton
+                                                    edge="end"
+                                                    aria-label="close"
+                                                    onClick={() => deleteMessage(m._id)}>
+                                                    <CloseIcon />
+                                                </IconButton>
+                                            }>
+                                            <Link to={m.habitId}>
+                                                <Typography>{m.message}</Typography>
+                                            </Link>
+                                        </ListItem>
+                                    )
+                                })}
+                            </List>
+                        </Paper>
+                    </ClickAwayListener>}
                     </div>
 
-                    <Link to="/profile">
-                        <IconButton aria-label="">
+                    
+                    <Stack direction="row" spacing={2}>
+                        <IconButton
+                            aria-label="account-button"
+                            onClick={() => setShowMenu(!showMenu)}>
                             <Chip
                                 avatar={<Avatar>R</Avatar>}
                                 label={<SettingsIcon />}
                             />
                         </IconButton>
-                    </Link>
+                        <div className="menu-list">
+                        {showMenu &&
+                        <ClickAwayListener onClickAway={() => setShowMenu(false)}>
+                            <Paper>
+                                <MenuList
+                                    id="account-menu"
+                                    aria-labelledby="account-button">
+                                    <Link to='/profile'>
+                                        <MenuItem>Settings</MenuItem>
+                                    </Link>
+                                    <MenuItem onClick={logout}>Logout</MenuItem>
+                                </MenuList>
+                            </Paper>
+                        </ClickAwayListener>}
+                        </div>
+                    </Stack>
                 </ul>
             </div>
         </StyledNavbar>
