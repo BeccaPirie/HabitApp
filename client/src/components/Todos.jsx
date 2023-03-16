@@ -19,6 +19,7 @@ import { useState, useContext, useEffect } from "react"
 import { UserContext } from '../context/user/UserContext'
 import { Tooltip } from '@mui/material';
 import { HabitContext } from '../context/habit/HabitContext';
+import ClickAwayListener from "@mui/base/ClickAwayListener";
 
 export default function Todos({habit, axiosJWT}) {
     const [showForm, setShowForm] = useState(false)
@@ -83,10 +84,16 @@ export default function Todos({habit, axiosJWT}) {
             dispatch({type:"UPDATE_TODO", payload: {id: habit._id, todo:updatedTodo}})
     }
 
+    const addClick = () => {
+        setTodo('')
+        setFormSetting('add')
+        setShowForm(true)
+    }
+
     const editClick = (todo) => {
         setTodo(todo)
         setFormSetting('edit')
-        setShowForm(showForm)
+        setShowForm(true)
     }
 
     return(
@@ -123,18 +130,20 @@ export default function Todos({habit, axiosJWT}) {
                 })}
             </List>
 
-            {showForm ? 
-            <form onSubmit={addTodo}>
-                <TextField
-                    id="outlined-basic"
-                    label={formSetting === 'add' ? 'Add new todo' : ''}
-                    variant="outlined"
-                    value={todo.todo || ''}
-                    onChange={(e) => setTodo({...todo, todo:e.target.value})}
-                />
-                <Button type="submit" variant="text">add to list</Button>
-            </form>
-             :  <Fab onClick={() => setShowForm(!showForm)} color="primary" size="medium" aria-label="add">
+            {showForm ?
+            <ClickAwayListener onClickAway={() => setShowForm(false)}>
+                <form onSubmit={addTodo}>
+                    <TextField
+                        id="outlined-basic"
+                        label={formSetting === 'add' ? 'Add new todo' : ''}
+                        variant="outlined"
+                        value={todo.todo || ''}
+                        onChange={(e) => setTodo({...todo, todo:e.target.value})}
+                    />
+                    <Button type="submit" variant="text">add to list</Button>
+                </form>
+            </ClickAwayListener>
+             :  <Fab onClick={addClick} color="primary" size="medium" aria-label="add">
                     <AddIcon />
                 </Fab>}
 
