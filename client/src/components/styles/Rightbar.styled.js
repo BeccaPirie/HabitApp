@@ -1,24 +1,25 @@
 import styled from "styled-components"
 
 export const StyledRightbar = styled.div`
-background-color: #f7f7f7;
 height: 80vh;
-width: 270px;
-padding: 20px;
 margin-top: 15px;
-border-radius: 10px;
-box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-// position: -webkit-sticky;
-// position: sticky;
 position: relative;
 top: 70px;
 right: 10px;
 display: none;
-overflow: auto;
+
+.paper {
+    height: 100%;
+    width: 270px;
+    padding: 20px;
+    overflow: auto;
+}
 
 .item {
     display: flex;
+    height: 40px;
     padding: 5px 2px;
+    align-items: center;
 }
 
 .item:hover {
@@ -74,9 +75,5 @@ button {
 
 // @media (min-width: 1500px) {
 //     width: 270px;
-// }
-
-// @media (min-width: 1500px) {
-// width: 270px;
 // }
 `

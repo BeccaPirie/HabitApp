@@ -5,7 +5,8 @@ export const StyledHabitList = styled.div`
     height: calc(100vh - 80px);
     padding: 0;
     margin: 0;
-    background-color: #f7f7f7;
+    // background-color: #f7f7f7;
+    background-color: #fff;
     overflow: auto;
 
     .list-header {
@@ -20,7 +21,7 @@ export const StyledHabitList = styled.div`
 
     li {
         padding: 30px;
-        border-bottom: 1px solid #ccc;
+        // border-bottom: 1px solid #ccc;
     }
 
     li:hover {
@@ -43,14 +44,13 @@ export const StyledHabitList = styled.div`
 
     .addBtn {
         background-color: #d1ed8a;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 40px;
         position: absolute;
         bottom: 40px;
         left: 220px;
+
+        :hover {
+            background-color: #c2db7f;
+        }
     }
 
     @media (min-width: 660px) {

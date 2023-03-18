@@ -9,7 +9,11 @@ import { ButtonStyled } from "./styles/Button.styled"
 import { Ideas } from "./styles/Ideas.styled"
 import axios from "axios"
 import { addNotification, createDaysArray } from "../notifications"
-import {Checkbox, FormGroup, FormControlLabel } from '@mui/material'
+import {Checkbox, FormGroup, FormControlLabel, Button, TextField, InputAdornment, Paper } from '@mui/material'
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
 // import InputLabel from '@mui/material/InputLabel';
 // import MenuItem from '@mui/material/MenuItem';
 // import FormControl from '@mui/material/FormControl';
@@ -87,100 +91,111 @@ export default function Add({axiosJWT}) {
     return(
         <>
             <Form onSubmit={submitFunction}>
-                
-                <label htmlFor="habitName">Habit Name</label>
-                <div className="nameContainer">
-                    <input
-                        id="habitName"
-                        type="text"
-                        value={habit.name || ''}
-                        onChange={(e) => setHabit({...habit, name: e.target.value})}
-                        required />
+                <Paper className="paper">
+                    {/* <label htmlFor="habitName">Habit Name</label> */}
+                    <div className="container">
+                        <TextField
+                            id="habitName"
+                            label="Habit name"
+                            variant="standard"
+                            value={habit.name || ''}
+                            onChange={(e) => setHabit({...habit, name: e.target.value})}
+                            required
+                            fullWidth
+                            InputProps={{
+                                endAdornment:<InputAdornment position="end">
+                                    <Button
+                                        className="ideasBtn"
+                                        onClick={()=> setShowIdeas(!showIdeas)}>
+                                        Ideas
+                                    </Button>
+                                </InputAdornment>
+                            }} />
+                    
+                    {showIdeas && <Ideas>
+                        <List>
+                            {ideas.map((idea, index) => {
+                                return <ListItem
+                                        key={index}
+                                        className="ideaItem"
+                                        onClick={() => handleIdeaClick(idea.name)}>
+                                            <ListItemText primary={idea.name}/>
+                                        </ListItem>
+                            })}
+                        </List>
+                    </Ideas>}
 
-                    <ButtonStyled
-                        type="button"
-                        onClick={() => setShowIdeas(!showIdeas)}
-                        className="ideasBtn">
-                            Ideas
-                    </ButtonStyled>   
-                </div>
-                
-                {showIdeas && <Ideas>
-                    <ul>
-                        {ideas.map((idea, index) => {
-                            return <li
-                                    key={index}
-                                    className="ideaItem"
-                                    onClick={() => handleIdeaClick(idea.name)}>
-                                        {idea.name}
-                                    </li>
+                    <label htmlFor="eventCues">Event-based cue</label>
+                    <TextField
+                        id="eventCues"
+                        multiline
+                        fullWidth
+                        minRows={5}
+                        value={habit.eventCues || ''}
+                        onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
+                        required />
+                        
+                    <p>Select days of the week to complete the habit</p>
+                    <ul className="daysOfWeek">
+                        {daysToComplete.map(({dayOfWeek, toComplete}) => {
+                            return(
+                                <li key={dayOfWeek}>
+                                    <input 
+                                        type="checkbox"
+                                        className="formCheckbox"
+                                        id={dayOfWeek}
+                                        name={dayOfWeek}
+                                        value={dayOfWeek}
+                                        checked={toComplete}
+                                        onChange={() => onChangeFunction(dayOfWeek)}
+                                    />
+                                    <label htmlFor={dayOfWeek}>{dayOfWeek}</label>
+                                </li>
+                            )
                         })}
                     </ul>
-                </Ideas>}
 
-                <label htmlFor="eventCues">Event-based cue</label>
-                <TextareaAutosize
-                    id="eventCues"
-                    rows={5}
-                    value={habit.eventCues || ''}
-                    onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
-                    required />
-                    
-                <p>Select days of the week to complete the habit</p>
-                <ul>
-                    {daysToComplete.map(({dayOfWeek, toComplete}) => {
-                        return(
-                            <li key={dayOfWeek}>
-                                <input 
-                                    type="checkbox"
-                                    className="formCheckbox"
-                                    id={dayOfWeek}
-                                    name={dayOfWeek}
-                                    value={dayOfWeek}
-                                    checked={toComplete}
-                                    onChange={() => onChangeFunction(dayOfWeek)}
-                                />
-                                <label htmlFor={dayOfWeek}>{dayOfWeek}</label>
-                            </li>
-                        )
-                    })}
-                </ul>
+                    <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
+                    <TextField
+                        id="preventingActions"
+                        minRows={10}
+                        multiline
+                        fullWidth
+                        value={habit.preventingActions || ''}
+                        onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
+                        required />
 
-                <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
-                <TextareaAutosize
-                    id="preventingActions"
-                    rows={10}
-                    value={habit.preventingActions || ''}
-                    onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
-                    required />
+                    <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
+                    <TextField
+                        id="intention"
+                        minRows={10}
+                        multiline
+                        fullWidth
+                        value={habit.intentions || ''}
+                        onChange={(e) => setHabit({...habit, intentions: e.target.value})}
+                        required />
 
-                <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
-                <TextareaAutosize
-                    id="intention"
-                    rows={10}
-                    value={habit.intentions || ''}
-                    onChange={(e) => setHabit({...habit, intentions: e.target.value})}
-                    required />
+                    {/* <FormControl fullWidth>
+                        <InputLabel id="notif-time-label">Time</InputLabel>
+                        <Select
+                            lableId="notif-time-label"
+                            id="notif-time-select"
+                            label="Time"
+                            value={time}
+                            onChange={(e) => setTime(e.target.value)}
+                        >
+                            <MenuItem value={"10:00"}>Morning</MenuItem>
+                            <MenuItem value={"14:00"}>Afternoon</MenuItem>
+                            <MenuItem value={"17:00"}>Evening</MenuItem>
+                            <MenuItem value={"21:00"}>Night</MenuItem>
+                        </Select>
+                    </FormControl> */}
 
-                {/* <FormControl fullWidth>
-                    <InputLabel id="notif-time-label">Time</InputLabel>
-                    <Select
-                        lableId="notif-time-label"
-                        id="notif-time-select"
-                        label="Time"
-                        value={time}
-                        onChange={(e) => setTime(e.target.value)}
-                    >
-                        <MenuItem value={"10:00"}>Morning</MenuItem>
-                        <MenuItem value={"14:00"}>Afternoon</MenuItem>
-                        <MenuItem value={"17:00"}>Evening</MenuItem>
-                        <MenuItem value={"21:00"}>Night</MenuItem>
-                    </Select>
-                </FormControl> */}
-
-                <div>
-                    <ButtonStyled id="add-btn">Add habit</ButtonStyled>
-                </div>
+                    <div>
+                        <Button variant="contained" id="add-btn">Add habit</Button>
+                    </div>
+                    </div>
+                </Paper>
             </Form>
         </>
     )

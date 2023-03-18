@@ -35,7 +35,7 @@ export default function Signup() {
     }
 
     return(
-        <PageContainer>
+        <PageContainer style={{backgroundColor: "#fff"}}>
             <ImageStyled src={LoginPageImage} />
 
             <LoginStyled>

@@ -29,7 +29,7 @@ export default function Login() {
         }
     }
     return(
-        <PageContainer>
+        <PageContainer style={{backgroundColor: "#fff"}}>
             <ImageStyled src={LoginPageImage}/>
 
             <LoginStyled>

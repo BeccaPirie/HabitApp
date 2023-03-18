@@ -3,11 +3,6 @@ import styled from "styled-components"
 export const StyledHabit = styled.div`
 width: 90%;
 margin: 15px auto;
-padding: 10px;
-overflow: auto;
-background-color: #f7f7f7;
-box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-border-radius: 10px;
 
 .habit-top {
     width: 80%;
@@ -15,13 +10,30 @@ border-radius: 10px;
     padding: 10px;
     margin: 10px auto;
 
-    h2 {
+    .title-div {
         flex: 9;
+        display: flex;
+        align-items: center;
+
+        h2{
+            float: left;
+            margin: 5px;
+        }
     }
 
-    button {
-        width: 130px;
+    .title-form {
+        flex: 9;
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    #habit-completed-btn {
+        width: 80px;
         background-color: #d1ed8a;
+        border-radius: 7px;
+        height: 50px;
+        display: flex;
 
         :hover {
             background-color: #c2db7f;
@@ -35,9 +47,9 @@ border-radius: 10px;
     text-align: center;
 
     button {
-        display: inline-block;
         margin: 8px;
         width: 95px;
+        border-radius: 7px;
     }
 
     #Completed {
@@ -71,23 +83,24 @@ label {
 
 form {
     width: 85%;
-    margin: 30px auto;
+    margin: 20px auto 50px;
     padding: 0;
 
-    #journal {
-        width: 100%;
-        margin-bottom: 10px;
-        background-color: #f5f5f5;
-        padding: 10px;
-        border: none;
-        border-radius:12px;
-        -webkit-border-radius:12px;
-        resize: none;
-        outline: 3px solid #d4f08c;
-    }
+    // #journal {
+    //     width: 100%;
+    //     margin-bottom: 10px;
+    //     background-color: #f5f5f5;
+    //     padding: 10px;
+    //     border: none;
+    //     border-radius:12px;
+    //     -webkit-border-radius:12px;
+    //     resize: none;
+    //     outline: 3px solid #d4f08c;
+    // }
 
     button {
         background-color: #9ed6f0;
+        margin-top: 10px;
 
         :hover {
             background-color: #91c4db;

@@ -6,6 +6,9 @@ import { HabitContext } from "../context/habit/HabitContext"
 import { UserContext } from "../context/user/UserContext"
 import { ButtonStyled } from "./styles/Button.styled"
 import { addNotification, createDaysArray, deleteNotification } from "../notifications"
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { TextField, Paper } from "@mui/material"
 
 export default function Details({axiosJWT}) {
     const habitId = useParams().id
@@ -73,65 +76,86 @@ export default function Details({axiosJWT}) {
 
     return(
         <Form onSubmit={onSubmitClick}>
-            <label htmlFor="habitName">Habit Name</label>
-            <input
-                id="habitName"
-                type="text"
-                value={habit.name || ''}
-                onChange={(e) => setHabit({...habit, name: e.target.value})}
-                required>
-            </input>
+            <Paper className="paper">
+                {/* <label htmlFor="habitName">Habit Name</label> */}
+                <TextField
+                    id="edit-name"
+                    label="Habit name"
+                    value={habit.name || ''}
+                    onChange={(e) => setHabit({...habit, name: e.target.value})}
+                    required
+                    fullWidth>
+                </TextField>
 
-            <label htmlFor="eventCues">Event-based cue</label>
-            <TextareaAutosize
-                id="eventCues"
-                rows={5}
-                value={habit.eventCues || ''}
-                onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
-                required />
+                <label htmlFor="eventCues">Event-based cue</label>
+                <TextField
+                    id="eventCues"
+                    multiline
+                    fullWidth
+                    minRows={5}
+                    value={habit.eventCues || ''}
+                    onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
+                    required />
 
-            <p>Select days of the week to complete the habit</p>
-            <ul>
-                {habit.daysToComplete && habit.daysToComplete.map(({dayOfWeek, toComplete}) => {
-                    return(
-                        <li key={dayOfWeek}>
-                            <input
-                                type="checkbox"
-                                className="formCheckbox"
-                                id={dayOfWeek}
-                                name={dayOfWeek}
-                                value={dayOfWeek}
-                                checked={toComplete}
-                                onChange={() => updateDaysToComplete(dayOfWeek)}
-                            />
-                            <label htmlFor={`${dayOfWeek}`}>{dayOfWeek}</label>
-                        </li>
-                    )
-                })}
-            </ul>
+                <p>Select days of the week to complete the habit</p>
+                <ul className="daysOfWeek">
+                    {habit.daysToComplete && habit.daysToComplete.map(({dayOfWeek, toComplete}) => {
+                        return(
+                            <li key={dayOfWeek}>
+                                <input
+                                    type="checkbox"
+                                    className="formCheckbox"
+                                    id={dayOfWeek}
+                                    name={dayOfWeek}
+                                    value={dayOfWeek}
+                                    checked={toComplete}
+                                    onChange={() => updateDaysToComplete(dayOfWeek)}
+                                />
+                                <label htmlFor={`${dayOfWeek}`}>{dayOfWeek}</label>
+                            </li>
+                        )
+                    })}
+                </ul>
 
-            <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
-            <TextareaAutosize
-                id="preventingActions"
-                rows={10}
-                value={habit.preventingActions || ''}
-                onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
-                required />
+                <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
+                <TextField
+                    id="preventingActions"
+                    minRows={10}
+                    multiline
+                    fullWidth
+                    value={habit.preventingActions || ''}
+                    onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
+                    required />
 
-            <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
-            <TextareaAutosize
-                id="intention"
-                rows={10}
-                value={habit.intentions || ''}
-                onChange={(e) => setHabit({...habit, intentions: e.target.value})}
-                required />
+                <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
+                <TextField
+                    id="intention"
+                    minRows={10}
+                    multiline
+                    fullWidth
+                    value={habit.intentions || ''}
+                    onChange={(e) => setHabit({...habit, intentions: e.target.value})}
+                    required />
 
-            <div className="submit-div">
-                <ButtonStyled type="submit" id="save-btn">Save</ButtonStyled>
-            </div>    
-            <div>         
-                <ButtonStyled type="button" id="delete-btn" onClick={deleteHabit}>Delete Habit</ButtonStyled>
-            </div> 
+                <div className="submit-div">
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        id="save-btn">
+                            Save
+                    </Button>
+                </div>    
+                <div>         
+                    <Button
+                        variant="contained"
+                        startIcon={<DeleteIcon/>}
+                        type="button"
+                        id="delete-btn"
+                        onClick={deleteHabit}>
+                            Delete Habit
+                    </Button>
+                </div> 
+            </Paper>
         </Form>
     )
 }

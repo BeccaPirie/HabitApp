@@ -4,6 +4,12 @@ import { HabitContext } from "../context/habit/HabitContext"
 import { Link } from "react-router-dom"
 import { UserContext } from "../context/user/UserContext"
 import { notificationSettings } from "../notifications"
+import IconButton from '@mui/material/IconButton';
+import DoneIcon from '@mui/icons-material/Done';
+import BlockIcon from '@mui/icons-material/Block';
+import ClearIcon from '@mui/icons-material/Clear';
+import Tooltip from '@mui/material/Tooltip';
+import Paper from '@mui/material/Paper';
 
 export default function Rightbar({axiosJWT}) {
     const [habitsDue, setHabitsDue] = useState([])
@@ -44,6 +50,7 @@ export default function Rightbar({axiosJWT}) {
 
     return(
         <StyledRightbar>
+            <Paper className="paper">
             <div>Have you completed these habits today?</div>
             <div>
                 {habitsDue ?
@@ -53,14 +60,27 @@ export default function Rightbar({axiosJWT}) {
                             <span className="name">{habit.name}</span>
                         </Link>
                         <div className="btn-div">
-                            <button id="Completed" onClick={((e) => buttonClick(habit._id, e))}>Yes</button>
-                            <button id="Skipped" onClick={((e) => buttonClick(habit._id, e))}>Skip</button>
-                            <button id="Missed" onClick={((e) => buttonClick(habit._id, e))}>No</button>
+                            <Tooltip title="Missed">
+                                <IconButton id="Missed" onClick={((e) => buttonClick(habit._id, e))}>
+                                    <ClearIcon/>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Skipped">
+                               <IconButton id="Skipped" onClick={((e) => buttonClick(habit._id, e))}>
+                                    <BlockIcon/>
+                                </IconButton> 
+                            </Tooltip>
+                            <Tooltip title="Completed">
+                                <IconButton id="Completed" onClick={((e) => buttonClick(habit._id, e))}>
+                                    <DoneIcon/>
+                                </IconButton>
+                            </Tooltip>
                         </div>
                     </div>
                 ))
                 : <div>No habits due today</div>}
             </div>
+            </Paper>
         </StyledRightbar>
     )
 }

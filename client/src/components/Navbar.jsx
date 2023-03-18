@@ -52,6 +52,7 @@ export default function Navbar({text, axiosJWT}) {
     }
 
     const logout = () => {
+        setShowMenu(false)
         dispatch({type:"LOGOUT"})
     }
 
@@ -82,7 +83,7 @@ export default function Navbar({text, axiosJWT}) {
                     </Link> */}
                     <div>
                         <IconButton
-                            aria-label={`__ notifications`}
+                            aria-label={`notifications`}
                             onClick={openNotifications}>
                             {showBadge ?
                             <Badge variant="dot" color="primary">
@@ -134,7 +135,7 @@ export default function Navbar({text, axiosJWT}) {
                                 <MenuList
                                     id="account-menu"
                                     aria-labelledby="account-button">
-                                    <Link to='/profile'>
+                                    <Link to='/profile' onClick={()=> setShowMenu(false)}>
                                         <MenuItem>Settings</MenuItem>
                                     </Link>
                                     <MenuItem onClick={logout}>Logout</MenuItem>

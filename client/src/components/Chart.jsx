@@ -4,6 +4,8 @@ import _ from "lodash"
 import { useState, useEffect } from "react"
 import { ButtonStyled } from "./styles/Button.styled"
 import { StyledChart } from "./styles/Chart.styled"
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 const weeks = [0, 1, 2, 3]
 const months = [0, 1, 2, 3, 4, 5]
@@ -141,9 +143,11 @@ export default function Chart({data}) {
         <StyledChart>
             <ReactEcharts option={option} />
             <div className="chart-btns">
-                <ButtonStyled onClick={() => setView('week')}>Past 4 Weeks</ButtonStyled>
-                <ButtonStyled onClick={() => setView('month')}>Past 6 Months</ButtonStyled>
-                <ButtonStyled onClick={() => setView('year')}>Past Year</ButtonStyled>
+            <ButtonGroup variant="contained" aria-label="calendar button group">
+                <Button onClick={() => setView('week')}>Past 4 Weeks</Button>
+                <Button onClick={() => setView('month')}>Past 6 Months</Button>
+                <Button onClick={() => setView('year')}>Past Year</Button>
+            </ButtonGroup>
             </div>
         </StyledChart>
     )

@@ -9,6 +9,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Paper from '@mui/material/Paper';
 
 export default function Profile({axiosJWT}) {
     const {user, dispatch} = useContext(UserContext)
@@ -152,85 +155,92 @@ export default function Profile({axiosJWT}) {
 
     return (     
         <EditProfileStyled>
-            <form className="form" onSubmit={onSubmit}>
-                <label htmlFor="username">Username:</label>
-                <input
-                    type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <ButtonStyled id="update-btn">Save Changes</ButtonStyled>
-            </form>
+            <Paper className="paper">
+                <form className="form" onSubmit={onSubmit}>
+                    <TextField
+                        fullWidth
+                        label="Username"
+                        variant="outlined"
+                        margin="normal"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}/>
 
-            <form  className="password-form" onSubmit={updatePassword}>
-                <label htmlFor="old-pass">Old Password:</label>
-                <input
-                    type="password"
-                    id="old-pass"
-                    ref={oldPass}
-                />
-                <label htmlFor="new-pass">New Password:</label>
-                <input
-                    type="password"
-                    id="new-pass"
-                    ref={newPass}
-                />
-                <label htmlFor="confirm-pass">Confirm New Password:</label>
-                <input
-                    type="password"
-                    id="confirm-pass"
-                    ref={confirmPass}
-                />
-                <ButtonStyled>Update Password</ButtonStyled>
-            </form>
+                    <TextField
+                        fullWidth
+                        type="email"
+                        label="Email"
+                        variant="outlined"
+                        margin="normal"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}/>
+                    <Button variant="contained" id="update-btn">Save</Button>
+                </form>
 
-            {/* <FormGroup>
-                <FormControlLabel
-                label={"Notifications"}
-                control={
-                    <Switch
-                        checked={notifSettings}
-                        onChange={updateNotifications}
-                    />}
-                />
-            </FormGroup> */}
+                <form  className="password-form" onSubmit={updatePassword}>
+                    <TextField
+                        fullWidth
+                        type="password"
+                        label="Current Password"
+                        variant="outlined"
+                        margin="normal"
+                        ref={oldPass}/>
 
+                    <TextField
+                        fullWidth
+                        type="password"
+                        label="New Password"
+                        variant="outlined"
+                        margin="normal"
+                        ref={newPass}/>
 
-            <div className="delete-acc">
-                <ButtonStyled onClick={() => setOpenAlert(true)}>
-                    Delete Account
-                </ButtonStyled>
+                    <TextField
+                        fullWidth
+                        type="password"
+                        label="Confirm New Password"
+                        variant="outlined"
+                        margin="normal"
+                        ref={confirmPass}/>
+                    <Button variant="contained">Update Password</Button>
+                </form>
 
-                <Dialog
-                    open={openAlert}
-                    onClose={() => setOpenAlert(false)}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">
-                        {"Are you sure you want to delete your account?"}
+                {/* <FormGroup>
+                    <FormControlLabel
+                    label={"Notifications"}
+                    control={
+                        <Switch
+                            checked={notifSettings}
+                            onChange={updateNotifications}
+                        />}
+                    />
+                </FormGroup> */}
+
+                <div className="delete-acc">
+                    <Button
+                        variant="contained"
+                        startIcon={<DeleteIcon/>}
+                        onClick={() => setOpenAlert(true)}>
+                        Delete Account
+                    </Button>
+
+                    <Dialog
+                        open={openAlert}
+                        onClose={() => setOpenAlert(false)}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                        <DialogTitle id="alert-dialog-title">
+                            {"Are you sure you want to delete your account?"}
                         </DialogTitle>
                         <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            
-                        </DialogContentText>
+                            <DialogContentText id="alert-dialog-description">
+                            </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                        <Button onClick={() => setOpenAlert(false)}>No</Button>
-                        <Button onClick={deleteAccount} autoFocus>
-                            Yes
-                        </Button>
+                            <Button onClick={() => setOpenAlert(false)}>No</Button>
+                            <Button onClick={deleteAccount} autoFocus>Yes</Button>
                         </DialogActions>
                     </Dialog>
-            </div>
+                </div>
+            </Paper>
         </EditProfileStyled>
     )
 }

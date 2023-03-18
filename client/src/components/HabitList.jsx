@@ -4,17 +4,17 @@ import { StyledHabitList } from "./styles/HabitList.styled"
 import { HabitContext } from "../context/habit/HabitContext"
 import { Fab } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 // import { styled, useTheme } from '@mui/material/styles';
 // import Drawer from '@mui/material/Drawer';
 // import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 // import IconButton from '@mui/material/IconButton';
 // import MenuIcon from '@mui/icons-material/Menu';
 // import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 // import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
 // import ListItemButton from '@mui/material/ListItemButton';
 // import ListItemIcon from '@mui/material/ListItemIcon';
 // import ListItemText from '@mui/material/ListItemText';
@@ -88,20 +88,18 @@ export default function HabitList() {
                 </IconButton>
             </DrawerHeader> */}
 
-            <Divider />
-
             <Link to={'/'}>
                 <h2 className="list-header">Habit App</h2>
             </Link>
 
-            <Divider />
-
             <List>
+                <Divider/>
             {sortedHabits.length > 0 && sortedHabits.map((habit) => (
                 <Link key={habit._id} to={`/${habit._id}`}>
-                <ListItem className={`habitListItem-${habit.habitCompleted}`}>
-                    <span>{habit.name}</span>
-                </ListItem>
+                    <ListItem className={`habitListItem-${habit.habitCompleted}`}>
+                        <ListItemText primary={habit.name}/>
+                    </ListItem>
+                    <Divider/>
                 </Link>
             ))}
             </List>
@@ -117,13 +115,9 @@ export default function HabitList() {
             </ul> */}
 
             <Link to={'/add'}>
-                <div className="addBtn">
-                    {/* <span>+</span> */}
-                    <Fab aria-label="add">
+                    <Fab aria-label="add" className="addBtn">
                         <AddIcon />
-                    </Fab>
-                </div>
-                
+                    </Fab>                
             </Link>
 
             {/* </Drawer> */}

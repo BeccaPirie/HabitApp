@@ -1,5 +1,3 @@
-// import { styled } from '@mui/material/styles';
-// import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -20,6 +18,8 @@ import { UserContext } from '../context/user/UserContext'
 import { Tooltip } from '@mui/material';
 import { HabitContext } from '../context/habit/HabitContext';
 import ClickAwayListener from "@mui/base/ClickAwayListener";
+import InputAdornment from '@mui/material/InputAdornment';
+import Divider from '@mui/material/Divider';
 
 export default function Todos({habit, axiosJWT}) {
     const [showForm, setShowForm] = useState(false)
@@ -45,9 +45,7 @@ export default function Todos({habit, axiosJWT}) {
         }
     }
 
-    const addTodo = async(e) => {
-        e.preventDefault()
-
+    const addTodo = async() => {
         try {
             if(formSetting === 'add') {
                 const newTodo = {
@@ -68,6 +66,7 @@ export default function Todos({habit, axiosJWT}) {
             setFormSetting('add')
             }
             setTodo('')
+            // setShowForm(false)
         } catch (err) {
             console.error(err.response.data)
         }
@@ -102,52 +101,64 @@ export default function Todos({habit, axiosJWT}) {
             <List>
                 {todoList && todoList.map(todo => {
                     return (
-                        <ListItem key={todo._id} secondaryAction={
-                            <>
-                                <Tooltip title="Edit">
-                                    <IconButton edge="end" aria-label="edit" onClick={() => editClick(todo)}>
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Delete">
-                                    <IconButton edge="end" aria-label="delete" onClick={() => deleteTodo(todo._id)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </>
-                          }>
-                            <ListItemAvatar>
-                                    <Checkbox
-                                        icon={<CheckCircleOutlinedIcon />}
-                                        checkedIcon={<CheckCircleIcon />}
-                                        checked={todo.isComplete}
-                                        onChange={() => updateChecked(todo)}
-                                    />
-                            </ListItemAvatar>
-                            <ListItemText primary={todo.todo}/>
-                        </ListItem>
+                        <>
+                            <ListItem key={todo._id} secondaryAction={
+                                <>
+                                    <Tooltip title="Edit">
+                                        <IconButton edge="end" aria-label="edit" onClick={() => editClick(todo)}>
+                                            <EditIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Delete">
+                                        <IconButton edge="end" aria-label="delete" onClick={() => deleteTodo(todo._id)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </>
+                            }>
+                                <ListItemAvatar>
+                                        <Checkbox
+                                            icon={<CheckCircleOutlinedIcon />}
+                                            checkedIcon={<CheckCircleIcon />}
+                                            checked={todo.isComplete}
+                                            onChange={() => updateChecked(todo)}
+                                        />
+                                </ListItemAvatar>
+                                <ListItemText primary={todo.todo}/>
+                            </ListItem>
+                            <Divider />
+                        </>
                     )
                 })}
             </List>
 
             {showForm ?
             <ClickAwayListener onClickAway={() => setShowForm(false)}>
-                <form onSubmit={addTodo}>
-                    <TextField
-                        id="outlined-basic"
-                        label={formSetting === 'add' ? 'Add new todo' : ''}
-                        variant="outlined"
-                        value={todo.todo || ''}
-                        onChange={(e) => setTodo({...todo, todo:e.target.value})}
-                    />
-                    <Button type="submit" variant="text">add to list</Button>
-                </form>
+                <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label={formSetting === 'add' ? 'Add new todo' : ''}
+                    variant="outlined"
+                    value={todo.todo || ''}
+                    onChange={(e) => setTodo({...todo, todo:e.target.value})}
+                    InputProps={{
+                        endAdornment:
+                            <InputAdornment position="end">
+                                <Button onClick={addTodo}>
+                                    {formSetting === 'add' ? 'Add' : 'Save'}
+                                </Button>
+                            </InputAdornment>
+                    }}
+                />
             </ClickAwayListener>
-             :  <Fab onClick={addClick} color="primary" size="medium" aria-label="add">
+             :  <Fab
+                    onClick={addClick}
+                    color="primary"
+                    size="medium"
+                    aria-label="add"
+                    className="todo-add">
                     <AddIcon />
                 </Fab>}
-
-            
         </TodoList>
     )
 }

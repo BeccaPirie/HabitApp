@@ -3,72 +3,82 @@ import styled from "styled-components"
 export const Form = styled.form`
 width: 90%;
 margin: 15px auto;
-padding-left: 15px;
-padding-right: 5px;
-background-color: #f7f7f7;
-box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-border-radius: 10px;
-overflow: auto;
+// background-color: #f7f7f7;
+// box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+// border-radius: 10px;
+// overflow: auto;
+
+.container {
+    padding: 0 20px;
+}
+
+// .nameContainer {
+//     display: flex;
+
+//     input[type="text"] {
+        // width: calc(70% - 65px);
+//         padding-right: 65px;
+//         background-color: #f7f7f7;
+//     }
+    
+//     .ideasBtn {
+//         margin-left: -60px;
+//         background: none;
+//         padding: none;
+//         color: #87b512;
+//     }
+// }
 
 .nameContainer {
-    display: flex;
-
-    input[type="text"] {
-        width: calc(70% - 65px);
-        padding-right: 65px;
-        background-color: #f7f7f7;
-    }
-    
-    .ideasBtn {
-        margin-left: -60px;
-        background: none;
-        padding: none;
-        color: #87b512;
-    }
+    width: calc(90% - 65px);
 }
 
-input[type="text"] {
-    width: 70%;
+.ideasBtn {
+    color: #87b512;
 }
 
-label:not(li label) {
-    display: block;
-    margin-top: 20px;
-}
+// input[type="text"] {
+//     width: 70%;
+// }
 
-input:not(li input) {
-    width: 100%;
-    padding: 5px 0;
-    border: none;
-	border-bottom:3px solid #000;
+// label:not(li label) {
+//     display: block;
+//     margin-top: 20px;
+// }
 
-    :focus {
-        outline: none;
-        border-bottom:3px solid #d4f08c;
-    }
-}
+// input:not(li input) {
+//     width: 100%;
+//     padding: 5px 0;
+//     border: none;
+// 	border-bottom:3px solid #000;
 
-textarea {
-    width: 95%;
-    background-color: #f1f1f1;
-	padding: 10px;
-    border: none;
-    border-radius:12px;
-	-webkit-border-radius:12px;
-    resize: none;
+//     :focus {
+//         outline: none;
+//         border-bottom:3px solid #d4f08c;
+//     }
+// }
 
-    :focus {
-        outline: 3px solid #d4f08c;
-    }
-}
+// textarea {
+//     width: 95%;
+//     background-color: #f1f1f1;
+// 	padding: 10px;
+//     border: none;
+//     border-radius:12px;
+// 	-webkit-border-radius:12px;
+//     resize: none;
 
-ul {
+//     :focus {
+//         outline: 3px solid #d4f08c;
+//     }
+// }
+
+.daysOfWeek {
     list-style-type: none;
-}
 
-li {
-    margin-left: -30px;
-    padding: 8px;
+    li {
+        margin-left: -30px;
+        padding: 8px;
+    }
 }
 
 .submit-div {

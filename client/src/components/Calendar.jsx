@@ -5,6 +5,12 @@ import { useState, useContext } from "react"
 import { UserContext } from '../context/user/UserContext'
 import { notificationSettings } from "../notifications"
 import { useOutletContext } from "react-router-dom"
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import DoneIcon from '@mui/icons-material/Done';
+import BlockIcon from '@mui/icons-material/Block';
+import ClearIcon from '@mui/icons-material/Clear';
+import Tooltip from '@mui/material/Tooltip';
 
 export default function CalendarComponent({axiosJWT, habit, dispatch}) {
     const [date, setDate] = useState(new Date())
@@ -87,9 +93,22 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
             </StyledCalendar>
 
             <div className="calendar-btns">
-                <ButtonStyled id="Missed" onClick={((e) => calendarButtonClick(e))}>Missed</ButtonStyled>
-                <ButtonStyled id="Skipped" onClick={((e) => calendarButtonClick(e))}>Skipped</ButtonStyled>
-                <ButtonStyled id="Completed" onClick={((e) => calendarButtonClick(e))}>Completed</ButtonStyled>
+                <div>{date.toDateString()}</div>
+                <Tooltip title="Missed">
+                    <IconButton variant="contained" id="Missed" onClick={((e) => calendarButtonClick(e))}>
+                        <ClearIcon/>
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Skipped">
+                    <IconButton variant="contained" id="Skipped" onClick={((e) => calendarButtonClick(e))}>
+                        <BlockIcon/>
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Completed">
+                    <IconButton variant="contained" id="Completed" onClick={((e) => calendarButtonClick(e))}>
+                        <DoneIcon/>
+                    </IconButton>
+                </Tooltip> 
             </div>
         </>
     )   
