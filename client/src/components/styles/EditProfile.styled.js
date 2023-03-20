@@ -10,6 +10,17 @@ margin: 15px auto;
 // box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 // border-radius: 10px;
 
+.alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+
+    button {
+        margin-right: 40px;
+    }
+}
+
 form {
     width: 90%;
     margin: 20px auto 10px;

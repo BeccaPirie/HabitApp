@@ -9,6 +9,11 @@ import { addNotification, createDaysArray, deleteNotification } from "../notific
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { TextField, Paper } from "@mui/material"
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 export default function Details({axiosJWT}) {
     const habitId = useParams().id
@@ -17,6 +22,7 @@ export default function Details({axiosJWT}) {
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
     const alert = useOutletContext()
+    const [openAlert, setOpenAlert] = useState(false)
 
     // get habit
     useEffect(() => {
@@ -84,8 +90,8 @@ export default function Details({axiosJWT}) {
                     value={habit.name || ''}
                     onChange={(e) => setHabit({...habit, name: e.target.value})}
                     required
-                    fullWidth>
-                </TextField>
+                    fullWidth
+                    error={habit.name === ""} />
 
                 <label htmlFor="eventCues">Event-based cue</label>
                 <TextField
@@ -95,7 +101,8 @@ export default function Details({axiosJWT}) {
                     minRows={5}
                     value={habit.eventCues || ''}
                     onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
-                    required />
+                    required
+                    error={habit.eventCues === ''}/>
 
                 <p>Select days of the week to complete the habit</p>
                 <ul className="daysOfWeek">
@@ -125,7 +132,8 @@ export default function Details({axiosJWT}) {
                     fullWidth
                     value={habit.preventingActions || ''}
                     onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
-                    required />
+                    required
+                    error={habit.preventingActions === ''}/>
 
                 <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
                 <TextField
@@ -135,7 +143,8 @@ export default function Details({axiosJWT}) {
                     fullWidth
                     value={habit.intentions || ''}
                     onChange={(e) => setHabit({...habit, intentions: e.target.value})}
-                    required />
+                    required
+                    error={habit.intentions === ''}/>
 
                 <div className="submit-div">
                     <Button
@@ -151,9 +160,28 @@ export default function Details({axiosJWT}) {
                         startIcon={<DeleteIcon/>}
                         type="button"
                         id="delete-btn"
-                        onClick={deleteHabit}>
+                        onClick={() => setOpenAlert(true)}>
                             Delete Habit
                     </Button>
+
+                    <Dialog
+                        open={openAlert}
+                        onClose={() => setOpenAlert(false)}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                        <DialogTitle id="alert-dialog-title">
+                            {`Are you sure you want to delete ${habit.name}?`}
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                This action can't be undone
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => setOpenAlert(false)}>No</Button>
+                            <Button onClick={deleteHabit} autoFocus>Yes</Button>
+                        </DialogActions>
+                    </Dialog>
                 </div> 
             </Paper>
         </Form>

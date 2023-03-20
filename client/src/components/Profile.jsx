@@ -12,6 +12,10 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Paper from '@mui/material/Paper';
+import Alert from '@mui/material/Alert';
+import { useOutletContext } from "react-router-dom"
+
+const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
 export default function Profile({axiosJWT}) {
     const {user, dispatch} = useContext(UserContext)
@@ -20,14 +24,30 @@ export default function Profile({axiosJWT}) {
     const [notifSettings, setNotifSettings] = useState(user.notifications)
     const [notifications, setNotifications] = useState([])
     const [openAlert, setOpenAlert] = useState(false)
-    const oldPass = useRef()
-    const newPass = useRef()
-    const confirmPass = useRef()
+    const [oldPass, setOldPass] = useState('')
+    const [newPass, setNewPass] = useState('')
+    const [confirmPass, setConfirmPass] = useState('')
+    const [passError, setPassError] = useState(false)
+    const [passLength, setPassLength] = useState(false)
+    const [usernameError, setUsernameError] = useState(false)
+    const [emailError, setEmailError] = useState(false)
+    const [alertText, setAlertText] = useState('')
+    const alert = useOutletContext()
 
     const onSubmit = async(e) => {
         e.preventDefault()
-        console.log("on submit")
+        
+        // client validation
+        const checkUsername = username.length < 3 || username.length > 20
+        const checkEmail = regex.test(email)
 
+        setUsernameError(checkUsername)
+        setEmailError(checkEmail)
+
+        // return from function if error exists
+        if(checkUsername || checkEmail) return
+
+        // if no error, send to server
         const updatedUser = {
             ...user,
             username: username,
@@ -39,32 +59,41 @@ export default function Profile({axiosJWT}) {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type:"UPDATE_USER", payload: updatedUser})
+            alert('Updated account', 3000)
         } catch (err) {
-            console.error(err.response.data)
+            setAlertText(err.response.data)
         }
     }
 
     const updatePassword = async(e) => {
         e.preventDefault()
-        console.log("update password")
 
-        if(newPass.current.value !== confirmPass.current.value) {
-            confirmPass.current.setCustomValidity("Passwords don't match")
-            return
-        }
+        // client side validation
+        const checkPassLength = newPass.length < 6
+        const checkPassMatch = confirmPass !== newPass
 
+        // save state for display error on text fields
+        setPassLength(checkPassLength)
+        setPassError(checkPassMatch)
+
+        // return from function if errors exist
+        if(checkPassLength || checkPassMatch) return
+        
+        // if no errors, send to server  
         const passwords = {
-            oldPassword: oldPass.current.value,
-            newPassword: newPass.current.value
+            oldPassword: oldPass,
+            newPassword: newPass,
+            confirmPassword: confirmPass
         }
 
         try {
-           const res = await axiosJWT.put('http://localhost:5000/server/user/update-password', passwords, {
-            headers: {authorization:'Bearer ' + user.token}
-        }) 
-        dispatch({type:"UPDATE_PASSWORD", payload: res.data})
+            const res = await axiosJWT.put('http://localhost:5000/server/user/update-password', passwords, {
+                headers: {authorization:'Bearer ' + user.token}
+            }) 
+            dispatch({type:"UPDATE_PASSWORD", payload: res.data})
+            alert('Updated password', 3000)
         } catch (err) {
-            console.error(err.response.data)
+            setAlertText(err.response.data)
         } 
     }
 
@@ -155,6 +184,11 @@ export default function Profile({axiosJWT}) {
 
     return (     
         <EditProfileStyled>
+            {alertText.length > 0 &&
+                    <Alert className="alert" severity="error" onClose={() => {setAlertText('')}}>
+                        {alertText}
+                    </Alert>}
+
             <Paper className="paper">
                 <form className="form" onSubmit={onSubmit}>
                     <TextField
@@ -163,8 +197,10 @@ export default function Profile({axiosJWT}) {
                         variant="outlined"
                         margin="normal"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}/>
-
+                        onChange={(e) => setUsername(e.target.value)}
+                        error={usernameError}
+                        helperText={usernameError ? "Username must be between 3-20 characters long" : ""}
+                        />
                     <TextField
                         fullWidth
                         type="email"
@@ -172,8 +208,10 @@ export default function Profile({axiosJWT}) {
                         variant="outlined"
                         margin="normal"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}/>
-                    <Button variant="contained" id="update-btn">Save</Button>
+                        onChange={(e) => setEmail(e.target.value)}
+                        error={emailError}
+                        helperText={emailError ? "Please enter a valid email" : ""}/>
+                    <Button type="submit" variant="contained" id="update-btn">Save</Button>
                 </form>
 
                 <form  className="password-form" onSubmit={updatePassword}>
@@ -183,24 +221,32 @@ export default function Profile({axiosJWT}) {
                         label="Current Password"
                         variant="outlined"
                         margin="normal"
-                        ref={oldPass}/>
-
+                        value={oldPass || ''}
+                        onChange={(e) => setOldPass(e.target.value)}
+                    />
                     <TextField
                         fullWidth
                         type="password"
                         label="New Password"
                         variant="outlined"
                         margin="normal"
-                        ref={newPass}/>
-
+                        value={newPass || ''}
+                        onChange={(e) => setNewPass(e.target.value)}
+                        error={passLength}
+                        helperText={passLength ? "Password must contain at leasr six characters" : ""}
+                    />
                     <TextField
                         fullWidth
                         type="password"
                         label="Confirm New Password"
                         variant="outlined"
                         margin="normal"
-                        ref={confirmPass}/>
-                    <Button variant="contained">Update Password</Button>
+                        value={confirmPass || ''}
+                        onChange={(e) => setConfirmPass(e.target.value)}
+                        error={passError}
+                        helperText={passError ? "Passwords don't match" : ""}
+                    />
+                    <Button type="submit" variant="contained">Update Password</Button>
                 </form>
 
                 {/* <FormGroup>
@@ -232,6 +278,7 @@ export default function Profile({axiosJWT}) {
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
+                                This action can't be undone
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>

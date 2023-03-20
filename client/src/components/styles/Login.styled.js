@@ -1,17 +1,30 @@
 import styled from 'styled-components'
 
 export const LoginStyled = styled.div`
-display: table;
 margin: auto;
 margin-top: 0;
 width: 100vw;
 height: 100vh;
 text-align: center;
 background-color: #e8ffaf;
+display: flex;
+align-content: center;
+
+.alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+
+    button {
+        margin-right: 40px;
+    }
+}
 
 form {
-    display: table-cell;
+    margin: auto;
     vertical-align: middle;
+    width: 350px;
 }
 
 h3 {
@@ -19,23 +32,22 @@ h3 {
     margin-top: 0;
 }
 
-input {
+.loginInput {
     display: block;
-    width: 50%;
-    margin: auto;
-    padding: 10px 5px;
-    margin-bottom: 35px;
-    border: none;
-    border-radius: 10px;
-    border: 1px solid gray;
-
-    :focus {
-        outline: none;
-    }
+    width: 100%;
+    margin: 20px auto;
+    // padding: 10px 5px;
+    // margin-bottom: 35px;
+    // border: none;
+    // border-radius: 10px;
+    // border: 1px solid gray;
+    // :focus {
+    //     outline: none;
+    // }
 }
 
-button {
-    width: 40%;
+.submit-btn {
+    width: 350px;
     padding: 10px;
     border-radius: 10px;
     border: none;

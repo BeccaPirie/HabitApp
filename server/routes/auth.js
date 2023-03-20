@@ -4,6 +4,7 @@ import User from '../models/User.js'
 import { generateToken, generateRefreshToken } from '../services/jwt-token.js'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
+import EmailValidator from 'email-validator'
 dotenv.config()
 
 const router = express.Router()
@@ -12,9 +13,25 @@ const router = express.Router()
 router.post('/signup', async(req, res) => {
     try {
 
-        // check all inputs are valid
+        // check password is valid
+        if(req.body.password.length < 6) {
+            return res.status(400).json("Password must contain at least 6 characters")
+        }
+        if(req.body.password !== req.body.confirmPassword) {
+            return res.status(400).json("Passwords don't match")
+        }
+
+        // check if email is valid
+        if(!EmailValidator.validate(req.body.email)) {
+            return res.status(400).json("Not a valid email address")
+        }
 
         // check if user exists
+        const checkUsername = await User.findOne({username: req.body.username})
+        if(checkUsername) return res.status(409).json("Username is taken!")
+
+        const checkEmail = await User.findOne({email: req.body.email})
+        if(checkEmail) return res.status(409).json("Account already exists!")
 
         // create password
         const salt = await bcrypt.genSalt(10)
@@ -56,13 +73,10 @@ router.post('/signup', async(req, res) => {
 // login
 router.post('/login', async(req, res) => {
     try {
-        // find user
+        // check for user
         const loginUser = await User.findOne({email: req.body.email})
-        if(!loginUser) return res.status(404).json("User not found")
-
-        // check password
         const isValid = await bcrypt.compare(req.body.password, loginUser.password)
-        if(!isValid) return res.status(400).json("Incorrect password")
+        if(!loginUser || !isValid) return res.status(404).json("Username or password is incorrect")
 
         // generate new JWT tokens
         const token = await generateToken(loginUser._id)

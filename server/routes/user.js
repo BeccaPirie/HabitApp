@@ -2,29 +2,35 @@ import express from 'express'
 import User from '../models/User.js'
 import bcrypt from 'bcrypt'
 import protect from '../middleware/auth.js'
+import EmailValidator from 'email-validator'
 
 const router = express.Router()
 
 // update password
 router.put('/update-password', protect, async(req, res) => {
     try {
-        const password = await bcrypt.compare(req.user.password, req.body.oldPassword)
+        // check if old password is correct
+        const currentUser = await User.findById(req.user._id)
+        const password = await bcrypt.compare(req.body.oldPassword, currentUser.password)
+        if(!password) return res.status(400).json("Incorrect password")
 
-        if(!password) {
-            res.status(400).json("Incorrect password")
+        // check password is valid
+        if(req.body.newPassword.length < 6) {
+            return res.status(400).json("Password must contain at least 6 characters")
+        }
+        if(req.body.newPassword !== req.body.confirmPassword) {
+            return res.status(400).json("Passwords don't match")
         }
 
-        else {
-            // create new password
-            const bcryptPass = await bcrypt.genSalt(10)
-            const newPassword = await bcrypt.hash(req.body.newPassword, bcryptPass)
+        // create new password
+        const bcryptPass = await bcrypt.genSalt(10)
+        const newPassword = await bcrypt.hash(req.body.newPassword, bcryptPass)
 
-            // update user account with new password
-            await User.findByIdAndUpdate(req.user._id, {
-                $set: {password: newPassword}
-            })
-            res.status(200).json(newPassword)
-        }
+        // update user account with new password
+        await User.findByIdAndUpdate(req.user._id, {
+            $set: {password: newPassword}
+        })
+        res.status(200).json(newPassword)
     } catch (err) {
         res.status(500).json(err)
     }
@@ -33,13 +39,29 @@ router.put('/update-password', protect, async(req, res) => {
 // update user
 router.put('/update', protect, async(req, res) => {
     try {
-    await User.findByIdAndUpdate(req.user._id, {
-        $set: {
-            username: req.body.username,
-            email: req.body.email
+        const currentUser = await User.findById(req.user._id)
+        
+        // if username is changed, check if username is taken
+        if(currentUser.username !== req.body.username) {
+            const checkUsername = await User.findOne({username: req.body.username})
+            if(checkUsername) return res.status(409).json("Username is taken!")
         }
-    })
-    res.status(200).json("User updated successfully")
+        
+        // if email is changed, check it is valid and that it's not already in use
+        if(currentUser.email !== req.body.email) {
+            if(!EmailValidator.validate(req.body.email)) return res.status(400).json("Not a valid email address")
+            
+            const checkEmail = await User.findOne({email: req.body.email})
+            if(checkEmail) return res.status(409).json("Select a different email address")
+        }
+
+        await User.findByIdAndUpdate(req.user._id, {
+            $set: {
+                username: req.body.username,
+                email: req.body.email
+            }
+        })
+        res.status(200).json("User updated successfully")
     } catch (err) {
         res.status(500).json(err)
     } 

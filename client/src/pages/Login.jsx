@@ -1,4 +1,4 @@
-import { useRef, useContext } from 'react'
+import { useContext, useState } from 'react'
 import axios from 'axios'
 import { UserContext } from '../context/user/UserContext'
 import { PageContainer } from '../components/styles/PageContainer.styled'
@@ -6,26 +6,31 @@ import { LoginStyled } from '../components/styles/Login.styled'
 import LoginPageImage from '../images/healthy-habits.avif'
 import { ImageStyled } from '../components/styles/Image.styled'
 import { Link } from "react-router-dom"
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 export default function Login() {
-    const email = useRef()
-    const password = useRef()
     const { dispatch } = useContext(UserContext)
+    const [error, setError] = useState(false)
+    const[email, setEmail] = useState('')
+    const[password, setPassword] = useState('')
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const userCredentials = {
-            email: email.current.value,
-            password: password.current.value
+            email: email,
+            password: password
         }
         dispatch({ type: "LOGIN_START" });
         try {
             const res = await axios.post("http://localhost:5000/server/auth/login", userCredentials)
             dispatch({ type:"LOGIN_SUCCESS", payload: res.data });
+            setError(false)
         }
         catch(err) {
             dispatch({ type:"LOGIN_FAILURE", payload: err });
             console.error(err.response.data)
+            setError(true)
         }
     }
     return(
@@ -35,22 +40,29 @@ export default function Login() {
             <LoginStyled>
                 <form onSubmit={handleSubmit}>
                     <h3>Habit App</h3>
-                    <input
+                    <TextField
                         type="email"
                         required
+                        error={error}
                         placeholder="Email"
                         className="loginInput"
-                        ref={email}
+                        value={email || ''}
+                        onChange={(e) => setEmail(e.target.value)}
+                        fullWidth
                     />
-                    <input
+                    <TextField
                         type="password"
                         required
+                        error={error}
                         minLength="6"
                         placeholder="Password"
                         className="loginInput"
-                        ref={password}
+                        value={password || ''}
+                        onChange={(e) => setPassword(e.target.value)}
+                        helperText={error ? "Username or password is incorrect" : ""}
+                        fullWidth
                     />
-                    <button>Login</button>
+                    <Button type="submit" className="submit-btn">Login</Button>
 
                     <div>
                        <span>Don't have an account? </span>

@@ -14,6 +14,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
+import Alert from '@mui/material/Alert';
 // import InputLabel from '@mui/material/InputLabel';
 // import MenuItem from '@mui/material/MenuItem';
 // import FormControl from '@mui/material/FormControl';
@@ -28,6 +29,7 @@ export default function Add({axiosJWT}) {
     const [showIdeas, setShowIdeas] = useState(false)
     const [ideas, setIdeas] = useState({})
     const alert = useOutletContext()
+    const [alertText, setAlertText] = useState('')
     // const[time, setTime] = useState('')
 
     useEffect(() => {
@@ -72,7 +74,7 @@ export default function Add({axiosJWT}) {
             navigate(`/${res.data._id}`)
             alert('Habit added', 3000)
         } catch (err) {
-            console.error(err.response.data)
+            setAlertText(err.response.data)
         }
     }
 
@@ -91,8 +93,11 @@ export default function Add({axiosJWT}) {
     return(
         <>
             <Form onSubmit={submitFunction}>
+                {alertText.length > 0 &&
+                    <Alert className="alert" severity="error" onClose={() => {setAlertText('')}}>
+                        {alertText}
+                    </Alert>}
                 <Paper className="paper">
-                    {/* <label htmlFor="habitName">Habit Name</label> */}
                     <div className="container">
                         <TextField
                             id="habitName"
@@ -192,7 +197,7 @@ export default function Add({axiosJWT}) {
                     </FormControl> */}
 
                     <div>
-                        <Button variant="contained" id="add-btn">Add habit</Button>
+                        <Button type="submit" variant="contained" id="add-btn">Add habit</Button>
                     </div>
                     </div>
                 </Paper>
