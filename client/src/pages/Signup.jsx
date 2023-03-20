@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 
-const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+const regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
 export default function Signup() {
     const [username, setUsername] = useState('')
@@ -28,7 +28,7 @@ export default function Signup() {
 
         // client validation
         const checkUsername = username.length < 3 || username.length > 20
-        const checkEmail = regex.test(email)
+        const checkEmail = !regex.test(email)
         const checkPassLength = password.length < 6
         const checkPassMatch = confirmPassword !== password
         

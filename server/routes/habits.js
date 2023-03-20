@@ -65,6 +65,16 @@ router.delete('/delete/:id', protect, async(req, res) => {
 // update habit
 router.put('/update/:habitId', protect, async(req, res) => {
     try {
+        const name = req.body.name
+        const eventCues = req.body.eventCues
+        const preventingActions = req.body.preventingActions
+        const intentions = req.body.intentions
+
+        // server validation
+        if(name.length < 0 || eventCues.length < 0 || preventingActions.length < 0 || intentions.length < 0) {
+            return res.status(400).json("All fields must be filled")
+        }
+        
         await Habit.findByIdAndUpdate(req.params.habitId, {$set: req.body})
         res.json("habit updated")
     } catch (err) {

@@ -29,7 +29,6 @@ export default function Add({axiosJWT}) {
     const [showIdeas, setShowIdeas] = useState(false)
     const [ideas, setIdeas] = useState({})
     const alert = useOutletContext()
-    const [alertText, setAlertText] = useState('')
     // const[time, setTime] = useState('')
 
     useEffect(() => {
@@ -72,9 +71,9 @@ export default function Add({axiosJWT}) {
             addNotification(days, axiosJWT, res.data, user)
             dispatch({type: "ADD_HABIT", payload: res.data})
             navigate(`/${res.data._id}`)
-            alert('Habit added', 3000)
+            alert('Habit added', 3000, 'success')
         } catch (err) {
-            setAlertText(err.response.data)
+            alert(err.response.data, 3000, 'error')
         }
     }
 
@@ -93,10 +92,6 @@ export default function Add({axiosJWT}) {
     return(
         <>
             <Form onSubmit={submitFunction}>
-                {alertText.length > 0 &&
-                    <Alert className="alert" severity="error" onClose={() => {setAlertText('')}}>
-                        {alertText}
-                    </Alert>}
                 <Paper className="paper">
                     <div className="container">
                         <TextField

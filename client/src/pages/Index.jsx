@@ -6,10 +6,11 @@ import HabitList from "../components/HabitList"
 import { useEffect, useContext, useState } from "react"
 import { HabitContext } from "../context/habit/HabitContext"
 import { UserContext } from "../context/user/UserContext"
-import Alert from "../components/Alert"
+// import Alert from "../components/Alert"
 import Navbar from "../components/Navbar"
 import { getFirebaseToken } from "../firebaseAdmin"
 import axios from "axios"
+import Alert from '@mui/material/Alert';
 
 // const drawerWidth = 270;
 
@@ -38,6 +39,7 @@ export default function Index({lg, axiosJWT}) {
     const { dispatch } = useContext(HabitContext)
     const { user } = useContext(UserContext)
     const [showAlert, setShowAlert] = useState(false)
+    const [severity, setSeverity] = useState('')
     const [alertMessage, setAlertMessage] = useState('')
     const [firebaseToken, setToken] = useState('')
     // const [open, setOpen] = useState(false)
@@ -79,9 +81,10 @@ export default function Index({lg, axiosJWT}) {
     },[user._id, dispatch, user.token, axiosJWT])
 
     // handle alert display
-    const alert = (message, timeout) => {
-        setShowAlert(true)
+    const alert = (message, timeout, severity) => {
         setAlertMessage(message)
+        setSeverity(severity)
+        setShowAlert(true)
         setTimeout(() => {
             setShowAlert(false)
         }, timeout);
@@ -90,12 +93,16 @@ export default function Index({lg, axiosJWT}) {
     return(
         <>
             <PageContainer> 
+            
                 {lg && <HabitList />}
                 {/* <Main open={open}> */}
                     <MainContainer>
+                        {showAlert && <Alert className="alert" severity={severity} onClose={() => {setShowAlert(false)}}>
+                            {alertMessage}
+                        </Alert>}
                         <Navbar text={`Welcome back ${user.username}!`} axiosJWT={axiosJWT}/>
-                        {showAlert && <Alert message={alertMessage}/>}
-                           <Outlet context={alert}/>
+                        {/* {showAlert && <Alert message={alertMessage}/>} */}
+                        <Outlet context={alert}/>
                     </MainContainer>
                 {/* </Main> */}
                 {lg && <Rightbar axiosJWT={axiosJWT}/>}

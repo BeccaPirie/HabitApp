@@ -57,7 +57,7 @@ export default function Details({axiosJWT}) {
             addNotification(days, axiosJWT, habit, user)
 
             navigate(`/${habit._id}`)
-            alert("Habit updated", 3000)
+            alert("Habit updated", 3000, 'success')
         } catch (err) {
             console.error(err.response.data)
         }
@@ -76,7 +76,7 @@ export default function Details({axiosJWT}) {
         })
         dispatch({type: "DELETE_HABIT", payload: habitId})
         navigate('/')
-        alert("Habit deleted", 3000)
+        alert("Habit deleted", 3000, 'info')
         deleteNotification(axiosJWT, habit, user)
     }
 

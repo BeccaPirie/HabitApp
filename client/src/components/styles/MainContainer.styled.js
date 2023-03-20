@@ -3,6 +3,18 @@ import styled from "styled-components";
 export const MainContainer = styled.div`
     display: block;
 
+    .alert {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        z-index: 1000;
+    
+        button {
+            margin-right: 40px;
+        }
+    }
+
     .paper {
         width: 100%;
         padding: 10px;

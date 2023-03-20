@@ -109,7 +109,7 @@ export default function Habit({axiosJWT}) {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: 'UPDATE_JOURNAL', payload: {id: habit._id, journal: journal}})
-            alert("Journal updated", 3000)
+            alert("Journal updated", 3000, 'success')
         } catch (err) {
             console.error(err.response.data)
         }

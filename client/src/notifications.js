@@ -142,7 +142,7 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispat
     else if((createdAt > twoWeeks) && habit.notificationFrequency === 1) {
         const msg = `Try a different event cue to help integrate ${habit.name} into your routine!`
         addMessage(axiosJWT, user, habit, msg, userDispatch)
-        alert(msg, 6000)
+        alert(msg, 6000, 'info')
     }
 }
 

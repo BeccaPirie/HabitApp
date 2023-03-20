@@ -31,7 +31,6 @@ export default function Profile({axiosJWT}) {
     const [passLength, setPassLength] = useState(false)
     const [usernameError, setUsernameError] = useState(false)
     const [emailError, setEmailError] = useState(false)
-    const [alertText, setAlertText] = useState('')
     const alert = useOutletContext()
 
     const onSubmit = async(e) => {
@@ -39,7 +38,7 @@ export default function Profile({axiosJWT}) {
         
         // client validation
         const checkUsername = username.length < 3 || username.length > 20
-        const checkEmail = regex.test(email)
+        const checkEmail = !regex.test(email)
 
         setUsernameError(checkUsername)
         setEmailError(checkEmail)
@@ -59,9 +58,9 @@ export default function Profile({axiosJWT}) {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type:"UPDATE_USER", payload: updatedUser})
-            alert('Updated account', 3000)
+            alert('Updated account', 3000, 'success')
         } catch (err) {
-            setAlertText(err.response.data)
+            alert(err.response.data, 3000, 'error')
         }
     }
 
@@ -89,11 +88,11 @@ export default function Profile({axiosJWT}) {
         try {
             const res = await axiosJWT.put('http://localhost:5000/server/user/update-password', passwords, {
                 headers: {authorization:'Bearer ' + user.token}
-            }) 
+            })
             dispatch({type:"UPDATE_PASSWORD", payload: res.data})
             alert('Updated password', 3000)
         } catch (err) {
-            setAlertText(err.response.data)
+            alert(err.response.data, 300, 'error')
         } 
     }
 
@@ -184,10 +183,10 @@ export default function Profile({axiosJWT}) {
 
     return (     
         <EditProfileStyled>
-            {alertText.length > 0 &&
+            {/* {alertText.length > 0 &&
                     <Alert className="alert" severity="error" onClose={() => {setAlertText('')}}>
                         {alertText}
-                    </Alert>}
+                    </Alert>} */}
 
             <Paper className="paper">
                 <form className="form" onSubmit={onSubmit}>
