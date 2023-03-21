@@ -54,7 +54,6 @@ export default function Details({axiosJWT}) {
             // delete current notification
             deleteNotification(axiosJWT, habit, user)
             // create new notification
-            console.log(habit)
             const days = createDaysArray(habit.daysToComplete)
             addNotification(days, axiosJWT, habit, user)
 
