@@ -76,7 +76,7 @@ export default function Details({axiosJWT}) {
         })
         dispatch({type: "DELETE_HABIT", payload: habitId})
         navigate('/')
-        alert("Habit deleted", 3000, 'info')
+        alert("Habit deleted", 3000, 'success')
         deleteNotification(axiosJWT, habit, user)
     }
 

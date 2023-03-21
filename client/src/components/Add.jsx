@@ -114,7 +114,7 @@ export default function Add({axiosJWT}) {
                     
                     {showIdeas && <Ideas>
                         <List>
-                            {ideas.map((idea, index) => {
+                            {ideas.length > 0 && ideas.map((idea, index) => {
                                 return <ListItem
                                         key={index}
                                         className="ideaItem"

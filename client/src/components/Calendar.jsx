@@ -96,17 +96,17 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                 <div>{date.toDateString()}</div>
                 <Tooltip title="Missed">
                     <IconButton variant="contained" id="Missed" onClick={((e) => calendarButtonClick(e))}>
-                        <ClearIcon/>
+                        <ClearIcon id="Missed"/>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Skipped">
                     <IconButton variant="contained" id="Skipped" onClick={((e) => calendarButtonClick(e))}>
-                        <BlockIcon/>
+                        <BlockIcon id="Skipped"/>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Completed">
                     <IconButton variant="contained" id="Completed" onClick={((e) => calendarButtonClick(e))}>
-                        <DoneIcon/>
+                        <DoneIcon id="Completed"/>
                     </IconButton>
                 </Tooltip> 
             </div>

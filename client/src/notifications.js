@@ -5,7 +5,6 @@ const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 // ******************** UPDATE NOTIFICATION FREQUENCY ********************
 export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispatch, alert) => {
     // TODO dont send notification if already calendar data for current day (not sure how to do this)
-    // TODO take skips into consideration
     // TODO only call function if notifications are on?
 
     let newNotificationFrequency = 0
@@ -72,21 +71,20 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispat
         else return date.status = "No data"
     })
     
-    const isAllCompleted = dates.every(date => date.status === 'Completed')
+    const isAllCompleted = dates.every(date => date.status === 'Completed' || date.status === 'Skipped')
     const isAllMissed = dates.every(date => date.status === 'Missed' || date.status === 'No data')
-    const isTwoWeeksMissed = datesTenDays.every(date => date.status === "Missed" || date.status === "No data")
+    const isTenDaysMissed = datesTenDays.every(date => date.status === "Missed" || date.status === "No data")
     const createdAt = moment(habit.createdAt).format('YYYY-M-D')
     const fiveDays = moment().subtract(5, 'days').format('YYYY-M-D')
-    const twoWeeks = moment().subtract(14, 'days').format('YYYY-M-D')
+    const tenDays = moment().subtract(10, 'days').format('YYYY-M-D')
 
     // don't change notification settings if habit has been due for less than 5 days since created
-    if(fiveDays > createdAt) {
+    if(fiveDays < createdAt) {
         console.log("< 5 days")
-        return
     }
 
     // if the past 5 days the habit is due are completed, reduce the amount of notifications received
-    if(isAllCompleted) {
+    else if(isAllCompleted) {
         console.log("completed 5 days in a row")
         // delete current notification
         deleteNotification(axiosJWT, habit, user)
@@ -114,7 +112,7 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispat
     }    
 
     // else if 10 days missed delete notification
-    else if(isTwoWeeksMissed) {
+    else if(isTenDaysMissed) {
         console.log("10 days missed, stopping notifications")
         deleteNotification(axiosJWT, habit, user)
     }
@@ -135,11 +133,11 @@ export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispat
         }
         const msg = `Try a different event cue to help integrate ${habit.name} into your routine!`
         addMessage(axiosJWT, user, habit, msg, userDispatch)
-        alert(msg, 6000)
+        alert(msg, 6000, 'info')
     }
 
-    // else if notification frequency === 1 after two weeks send alert to change event cue
-    else if((createdAt > twoWeeks) && habit.notificationFrequency === 1) {
+    // else if notification frequency === 1 after ten days send alert to change event cue
+    else if((createdAt > tenDays) && habit.notificationFrequency === 1) {
         const msg = `Try a different event cue to help integrate ${habit.name} into your routine!`
         addMessage(axiosJWT, user, habit, msg, userDispatch)
         alert(msg, 6000, 'info')
@@ -180,7 +178,6 @@ export const addNotification = async (days, axiosJWT, habit, user) => {
 }
 
 // ******************** CALL API TO DELETE NOTIFICATION ********************
-// FIXME
 export const deleteNotification = async (axiosJWT, habit, user) => {
     try {
         const res = await axiosJWT.get(`http://localhost:5000/server/notification/${habit._id}`, {
@@ -194,13 +191,11 @@ export const deleteNotification = async (axiosJWT, habit, user) => {
             })
         }
 
-        if(ids.length > 0) {
-            console.log("away to delete notification")
-            await axiosJWT.delete('http://localhost:5000/server/notification', {ids: ids}, {
+        for(const id of ids) {
+            await axiosJWT.delete(`http://localhost:5000/server/notification/${id}`, {
                 headers: {authorization: 'Bearer ' + user.token}
             })
-            console.log("notification deleted")
-        }  
+        }
     } catch (err) {
         console.error(err.response.data)
     }

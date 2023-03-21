@@ -1,8 +1,6 @@
-import { useContext, useRef, useState, useEffect } from "react"
+import { useContext, useState } from "react"
 import { UserContext } from "../context/user/UserContext"
 import { EditProfileStyled } from "./styles/EditProfile.styled";
-import { ButtonStyled } from "./styles/Button.styled";
-import { FormGroup, FormControlLabel, Switch } from '@mui/material'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -12,7 +10,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Paper from '@mui/material/Paper';
-import Alert from '@mui/material/Alert';
 import { useOutletContext } from "react-router-dom"
 
 const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -90,9 +87,9 @@ export default function Profile({axiosJWT}) {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type:"UPDATE_PASSWORD", payload: res.data})
-            alert('Updated password', 3000)
+            alert('Updated password', 3000, 'success')
         } catch (err) {
-            alert(err.response.data, 300, 'error')
+            alert(err.response.data, 3000, 'error')
         } 
     }
 
@@ -183,11 +180,6 @@ export default function Profile({axiosJWT}) {
 
     return (     
         <EditProfileStyled>
-            {/* {alertText.length > 0 &&
-                    <Alert className="alert" severity="error" onClose={() => {setAlertText('')}}>
-                        {alertText}
-                    </Alert>} */}
-
             <Paper className="paper">
                 <form className="form" onSubmit={onSubmit}>
                     <TextField

@@ -32,12 +32,16 @@ router.get('/get-habits', protect, async(req, res) => {
 
 // add habit
 router.post('/add', protect, async(req, res) => {
+    // check if user has exceeded max number of habits
+    const habits = await Habit.find({userId: req.user._id})
+    if(habits.length >= 50) return res.status(400).json("Exceeded maximum number of habits")
+
+    // server validation
     const name = req.body.name
     const eventCues = req.body.eventCues
     const preventingActions = req.body.preventingActions
     const intentions = req.body.intentions
 
-    // server validation
     if(name.length < 0 || eventCues.length < 0 || preventingActions.length < 0 || intentions.length < 0) {
         return res.status(400).json("All fields must be filled")
     }

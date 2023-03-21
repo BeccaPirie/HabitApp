@@ -62,22 +62,17 @@ router.get('/:habitId', protect, async(req, res) => {
     }
 })
 
-// delete notifications
-router.delete('/', protect, async(req, res) => {
+// delete notification
+router.delete('/:id', protect, async(req, res) => {
     try {
-        const notificationIds = req.body.ids
-        const list = schedule.getJobs()
-
-        notificationIds.forEach(async (n) => {
-            // const current = list[n]
-            // console.log(current)
-            // if(!current) throw new Error("Notification not found")
-            await Notification.findByIdAndDelete(n)
-            // n.cancel()
-        })
+         const list = schedule.getJobs()
+         const current = list[req.params.id]
+         if(!current) throw new Error("Notification not found")
+        await Notification.findByIdAndDelete(req.params.id)
+        current.cancel()
         res.status(200).json("Notification deleted")
-    } catch (e) {
-        res.status(400).json({ message: e.message })
+    } catch (err) {
+        res.status(400).json(err)
     }
 })
 
