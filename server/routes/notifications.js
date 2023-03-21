@@ -2,16 +2,18 @@ import express from 'express'
 import schedule from '../services/schedule.js'
 import Notification from '../models/Notification.js'
 import protect from '../middleware/auth.js'
+import { notificationSettings, deleteNotification, createDaysArray } from '../services/notifications.js'
 
 const router = express.Router()
 
 // create notification
 router.post('/set-notification', protect, async(req, res) => {
     try {
+        const days = createDaysArray(req.body.days)
         const notificationData = {
             title: req.body.title,
             body: req.body.body,
-            days: req.body.days,
+            days: days,
             time: req.body.time,
             userId: req.user._id,
             habitId: req.body.habitId
@@ -62,14 +64,20 @@ router.get('/:habitId', protect, async(req, res) => {
     }
 })
 
+// update notification settings for a habit
+router.put('/update', protect, async(req, res) => {
+    try {
+        await notificationSettings(req.user._id, req.body.id)
+        res.status(200).json("Notification settings updated")
+    } catch (err) {
+        res.status(400).json(err)
+    }
+})
+
 // delete notification
 router.delete('/:id', protect, async(req, res) => {
     try {
-         const list = schedule.getJobs()
-         const current = list[req.params.id]
-         if(!current) throw new Error("Notification not found")
-        await Notification.findByIdAndDelete(req.params.id)
-        current.cancel()
+        await deleteNotification(req.user._id, req.params.id)
         res.status(200).json("Notification deleted")
     } catch (err) {
         res.status(400).json(err)

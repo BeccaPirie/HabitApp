@@ -3,7 +3,6 @@ import Calendar from "react-calendar"
 import { ButtonStyled } from "./styles/Button.styled"
 import { useState, useContext } from "react"
 import { UserContext } from '../context/user/UserContext'
-import { notificationSettings } from "../notifications"
 import { useOutletContext } from "react-router-dom"
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -47,7 +46,9 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'REMOVE_FROM_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
-                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch, alert)
+                await axiosJWT.put(`http://localhost:5000/server/notification/update`, {id:habit._id}, {
+                    headers: {authorization:'Bearer ' + user.token}
+                })
             } catch (err) {
                 console.error(err.response.data)
             }
@@ -61,7 +62,9 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'UPDATE_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
-                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch, alert)
+                await axiosJWT.put(`http://localhost:5000/server/notification/update`, {id:habit._id}, {
+                    headers: {authorization:'Bearer ' + user.token}
+                })
             } catch (err) {
                 console.error(err.response.data)
             }
@@ -75,7 +78,9 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'ADD_TO_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
-                notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch, alert)
+                await axiosJWT.put(`http://localhost:5000/server/notification/update/`, {id:habit._id}, {
+                    headers: {authorization:'Bearer ' + user.token}
+                })
             } catch (err) {
                 console.error(err.response.data)
             }

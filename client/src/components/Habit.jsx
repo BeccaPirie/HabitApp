@@ -2,12 +2,11 @@ import { useState, useEffect, useContext } from "react"
 import { Link, useOutletContext } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import { StyledHabit } from "./styles/Habit.styled"
-import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
 import Chart from "./Chart"
 import { UserContext } from '../context/user/UserContext'
 import CalendarComponent from "./Calendar"
-import { addNotification, createDaysArray, deleteNotification } from "../notifications"
+import { createDaysArray } from "../notifications"
 import Todos from "./Todos"
 import Paper from '@mui/material/Paper';
 import Button from "@mui/material/Button"
@@ -78,6 +77,7 @@ export default function Habit({axiosJWT}) {
     // handle complete button click
     const completeButtonClick = async () => {
         try {
+            // update habit
             const updatedHabit = {...habit, habitCompleted: !isComplete}
             await axiosJWT.put(`http://localhost:5000/server/habit/update/${habit._id}`, updatedHabit, {
                 headers: {authorization:'Bearer ' + user.token}
@@ -85,12 +85,24 @@ export default function Habit({axiosJWT}) {
             dispatch({type: 'COMPLETE_HABIT', payload: {id: habit._id, complete: !isComplete}})
 
             if(!isComplete) {
-                deleteNotification(axiosJWT, habit, user)              
+                // delete notifications
+                await axiosJWT.delete(`http://localhost:5000/server/notification/${habit._id}`, {
+                    headers: {authorization:'Bearer ' + user.token}
+                })            
             }
             else {
                 // start notifications
-                const days = createDaysArray(habit.daysToComplete)
-                addNotification(days, axiosJWT, habit, user)
+                // const days = createDaysArray(habit.daysToComplete)
+                await axiosJWT.post(`http://localhost:5000/server/notification/set-notification`, {
+                    title: habit.name,
+                    body: `Have you completed ${habit.name} today?`,
+                    days: habit.daysToComplete,
+                    time: habit.time,
+                    habitId: habit._id
+                }, {
+                    headers: {authorization:'Bearer ' + user.token}
+                })
+                console.log("notification created")
             }
 
         } catch (err) {

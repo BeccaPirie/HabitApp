@@ -6,7 +6,7 @@ import { checkboxes } from "../checkboxes"
 import { UserContext } from "../context/user/UserContext"
 import { Ideas } from "./styles/Ideas.styled"
 import axios from "axios"
-import { addNotification, createDaysArray } from "../notifications"
+import { createDaysArray } from "../notifications"
 import { Button, TextField, InputAdornment, Paper } from '@mui/material'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -59,12 +59,23 @@ export default function Add({axiosJWT}) {
         }
 
         try {
+            // add habit
             const res = await axiosJWT.post("http://localhost:5000/server/habit/add", newHabit, {
                 headers: {authorization:'Bearer ' + user.token}
             })
+
             // add notification
-            const days = createDaysArray(res.data.daysToComplete)
-            addNotification(days, axiosJWT, res.data, user)
+            // const days = createDaysArray(res.data.daysToComplete)
+            await axiosJWT.post(`http://localhost:5000/server/notification/set-notification`, {
+                title: res.data.name,
+                body: `Have you completed ${habit.name} today?`,
+                days: res.data.daysToComplete,
+                time: res.data.time,
+                habitId: res.data._id
+            }, {
+                headers: {authorization:'Bearer ' + user.token}
+            })
+            console.log("notification created")
             dispatch({type: "ADD_HABIT", payload: res.data})
             navigate(`/${res.data._id}`)
             alert('Habit added', 3000, 'success')

@@ -51,11 +51,22 @@ export default function Details({axiosJWT}) {
             })
             dispatch({type: "UPDATE_HABIT", payload: habit})
             
-            // delete current notification
-            deleteNotification(axiosJWT, habit, user)
+            // delete notifications
+            await axiosJWT.delete(`http://localhost:5000/server/notification/${habit._id}`, {
+                headers: {authorization:'Bearer ' + user.token}
+            }) 
+
             // create new notification
-            const days = createDaysArray(habit.daysToComplete)
-            addNotification(days, axiosJWT, habit, user)
+            // const days = createDaysArray(habit.daysToComplete)
+            await axiosJWT.post(`http://localhost:5000/server/notification/set-notification`, {
+                title: habit.name,
+                body: `Have you completed ${habit.name} today?`,
+                days: habit.daysToComplete,
+                time: habit.time,
+                habitId: habit._id
+            }, {
+                headers: {authorization:'Bearer ' + user.token}
+            })
 
             navigate(`/${habit._id}`)
             alert("Habit updated", 3000, 'success')
@@ -72,13 +83,17 @@ export default function Details({axiosJWT}) {
     }
 
     const deleteHabit = async() => {
+        // delete habit
         await axiosJWT.delete(`http://localhost:5000/server/habit/delete/${habitId}`, {
             headers: {authorization:'Bearer ' + user.token}
         })
         dispatch({type: "DELETE_HABIT", payload: habitId})
         navigate('/')
         alert("Habit deleted", 3000, 'success')
-        deleteNotification(axiosJWT, habit, user)
+        // delete notification associated with habit
+        await axiosJWT.delete(`http://localhost:5000/server/notification/${habitId}`, {
+            headers: {authorization:'Bearer ' + user.token}
+        })
     }
 
     return(
