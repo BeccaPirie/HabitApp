@@ -146,7 +146,7 @@ export const createDaysArray = (daysToComplete) => {
 }
 
 // ******************** REFORMAT DATE ********************
-const reformatDate = (date) => {
+export const reformatDate = (date) => {
     const tmp = date.split('-')
     tmp[1] = parseInt(tmp[1]) + 1
     const newDate = `${tmp[0]}-${tmp[1]}-${tmp[2]}`
@@ -154,7 +154,7 @@ const reformatDate = (date) => {
 }
 
 // ************ GET DATES HABIT IS DUE FOR N AMOUNT OF DAYS ************
-const getDates = (days, n, t) => {
+export const getDates = (days, n, t) => {
     // get past dates for when habit was due
     let dates = []
     // iterate through past n days
@@ -171,7 +171,7 @@ const getDates = (days, n, t) => {
 }
 
 // ******************** ADD NOTIFICATION ********************
-const addNotification = async (days, habit) => {
+export const addNotification = async (days, habit) => {
     try{
       const notificationData = {
         title: habit.name,
@@ -221,7 +221,7 @@ export const deleteNotification = async (userId, habitId) => {
 }
 
 // ******************** SHOW ALERTS AND NOTIFICATIONS IN MESSAGES ********************
-const addMessage = async (user, habitId, message) => {
+export const addMessage = async (user, habitId, message) => {
     try {
         const newMessage = {
             message: message,

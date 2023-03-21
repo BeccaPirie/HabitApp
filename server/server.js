@@ -5,6 +5,7 @@ import userRoute from './routes/user.js'
 import habitRoute from './routes/habits.js'
 import notificationRoute from './routes/notifications.js'
 import ideasRoute from './routes/ideas.js'
+import schedule from './services/schedule.js'
 
 const app = express()
 
@@ -20,5 +21,8 @@ app.use("/server/idea", ideasRoute)
 app.use('*', (req, res)=>{
     res.status(404).json({error: "not found"})
 })
+
+schedule.reSchedule()
+schedule.dailyCheck()
 
 export default app
