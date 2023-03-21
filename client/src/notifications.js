@@ -5,7 +5,6 @@ const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 // ******************** UPDATE NOTIFICATION FREQUENCY ********************
 export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispatch, alert) => {
     // TODO dont send notification if already calendar data for current day (not sure how to do this)
-    // TODO only call function if notifications are on?
 
     let newNotificationFrequency = 0
 
@@ -164,7 +163,7 @@ export const addNotification = async (days, axiosJWT, habit, user) => {
         title: habit.name,
         body: `Have you completed ${habit.name} today?`,
         days: days,
-        time: '18:00', // TODO let users select morning/afternoon/evening
+        time: habit.time,
         habitId: habit._id
     }, {
         headers: {authorization:'Bearer ' + user.token}

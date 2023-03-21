@@ -41,8 +41,9 @@ router.post('/add', protect, async(req, res) => {
     const eventCues = req.body.eventCues
     const preventingActions = req.body.preventingActions
     const intentions = req.body.intentions
+    const time = req.body.time
 
-    if(name.length < 0 || eventCues.length < 0 || preventingActions.length < 0 || intentions.length < 0) {
+    if(name.length < 0 || eventCues.length < 0 || preventingActions.length < 0 || intentions.length < 0 || time === undefined) {
         return res.status(400).json("All fields must be filled")
     }
 

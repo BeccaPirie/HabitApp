@@ -1,24 +1,20 @@
 import { useContext, useState, useEffect } from "react"
 import { Form } from "./styles/Form.styled"
-import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
 import { useNavigate, useOutletContext } from "react-router-dom"
 import { checkboxes } from "../checkboxes"
 import { UserContext } from "../context/user/UserContext"
-import { ButtonStyled } from "./styles/Button.styled"
 import { Ideas } from "./styles/Ideas.styled"
 import axios from "axios"
 import { addNotification, createDaysArray } from "../notifications"
-import {Checkbox, FormGroup, FormControlLabel, Button, TextField, InputAdornment, Paper } from '@mui/material'
+import { Button, TextField, InputAdornment, Paper } from '@mui/material'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
-import Alert from '@mui/material/Alert';
-// import InputLabel from '@mui/material/InputLabel';
-// import MenuItem from '@mui/material/MenuItem';
-// import FormControl from '@mui/material/FormControl';
-// import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 export default function Add({axiosJWT}) {
     const [habit, setHabit] = useState({})
@@ -29,7 +25,6 @@ export default function Add({axiosJWT}) {
     const [showIdeas, setShowIdeas] = useState(false)
     const [ideas, setIdeas] = useState({})
     const alert = useOutletContext()
-    // const[time, setTime] = useState('')
 
     useEffect(() => {
         const fetchIdeas = async () => {
@@ -59,6 +54,7 @@ export default function Add({axiosJWT}) {
             preventingActions: habit.preventingActions,
             intentions: habit.intentions,
             habitCompleted: false,
+            time: habit.time || "18:00",
             todos: []
         }
 
@@ -175,21 +171,21 @@ export default function Add({axiosJWT}) {
                         onChange={(e) => setHabit({...habit, intentions: e.target.value})}
                         required />
 
-                    {/* <FormControl fullWidth>
+                    <FormControl fullWidth required>
                         <InputLabel id="notif-time-label">Time</InputLabel>
                         <Select
                             lableId="notif-time-label"
                             id="notif-time-select"
                             label="Time"
-                            value={time}
-                            onChange={(e) => setTime(e.target.value)}
+                            value={habit.time || "18:00"}
+                            onChange={(e) => setHabit({...habit, time: e.target.value})}
                         >
                             <MenuItem value={"10:00"}>Morning</MenuItem>
                             <MenuItem value={"14:00"}>Afternoon</MenuItem>
-                            <MenuItem value={"17:00"}>Evening</MenuItem>
+                            <MenuItem value={"18:00"}>Evening</MenuItem>
                             <MenuItem value={"21:00"}>Night</MenuItem>
                         </Select>
-                    </FormControl> */}
+                    </FormControl>
 
                     <div>
                         <Button type="submit" variant="contained" id="add-btn">Add habit</Button>

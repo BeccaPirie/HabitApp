@@ -72,6 +72,11 @@ const HabitSchema = new mongoose.Schema({
         required:true
     },
 
+    time: {
+        type: String,
+        required: true
+    },
+
     // todos
     todos: [TodoSchema]
 },

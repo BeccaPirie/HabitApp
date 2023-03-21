@@ -1,10 +1,8 @@
 import { useState, useEffect, useContext } from "react"
 import { useParams, useNavigate, useOutletContext } from "react-router-dom"
 import { Form } from "./styles/Form.styled"
-import TextareaAutosize from "react-autosize-textarea"
 import { HabitContext } from "../context/habit/HabitContext"
 import { UserContext } from "../context/user/UserContext"
-import { ButtonStyled } from "./styles/Button.styled"
 import { addNotification, createDaysArray, deleteNotification } from "../notifications"
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -14,6 +12,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 export default function Details({axiosJWT}) {
     const habitId = useParams().id
@@ -145,6 +147,22 @@ export default function Details({axiosJWT}) {
                     onChange={(e) => setHabit({...habit, intentions: e.target.value})}
                     required
                     error={habit.intentions === ''}/>
+
+                <FormControl fullWidth required>
+                    <InputLabel id="notif-time-label">Time</InputLabel>
+                    <Select
+                        lableId="notif-time-label"
+                        id="notif-time-select"
+                        label="Time"
+                        value={habit.time || "18:00"}
+                        onChange={(e) => setHabit({...habit, time: e.target.value})}
+                    >
+                        <MenuItem value={"10:00"}>Morning</MenuItem>
+                        <MenuItem value={"14:00"}>Afternoon</MenuItem>
+                        <MenuItem value={"18:00"}>Evening</MenuItem>
+                        <MenuItem value={"21:00"}>Night</MenuItem>
+                    </Select>
+                </FormControl>
 
                 <div className="submit-div">
                     <Button
