@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 export default function CalendarComponent({axiosJWT, habit, dispatch}) {
     const [date, setDate] = useState(new Date())
-    const { user, dispatch:userDispatch } = useContext(UserContext)
+    const { user } = useContext(UserContext)
     const alert = useOutletContext()
 
     // disable future dates on calendar
@@ -40,47 +40,57 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
         const dataExists = habit.calendarData.find(data => data.date === dateString)
         if(dataMatches) {
             try {
-                const res = await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/remove-calendar-data`, {
+                await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/remove-calendar-data`, {
                     date: dateString,
                 }, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'REMOVE_FROM_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
-                await axiosJWT.put(`http://localhost:5000/server/notification/update`, {id:habit._id}, {
+
+                // check if notification settings need to be updated
+                const res = await axiosJWT.put(`http://localhost:5000/server/notification/update`, {id:habit._id}, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
+                console.log(res.data)
+                if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)
             } catch (err) {
                 console.error(err.response.data)
             }
         }
         else if(dataExists) {
             try {
-                const res = await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/update-calendar-data`, {
+                await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/update-calendar-data`, {
                     date: dateString,
                     status:  e.target.id
                 }, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'UPDATE_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
-                await axiosJWT.put(`http://localhost:5000/server/notification/update`, {id:habit._id}, {
+
+                // check if notification settings need to be updated
+                const res = await axiosJWT.put(`http://localhost:5000/server/notification/update`, {id:habit._id}, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
+                if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)
             } catch (err) {
                 console.error(err.response.data)
             }
         }
         else {
             try {
-                const res = await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/add-calendar-data`, {
+                await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/add-calendar-data`, {
                     date: dateString,
                     status: e.target.id
                 }, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({ type: 'ADD_TO_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
-                await axiosJWT.put(`http://localhost:5000/server/notification/update/`, {id:habit._id}, {
+                
+                // check if notification settings need to be updated
+                const res = await axiosJWT.put(`http://localhost:5000/server/notification/update/`, {id:habit._id}, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
+                if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)
             } catch (err) {
                 console.error(err.response.data)
             }

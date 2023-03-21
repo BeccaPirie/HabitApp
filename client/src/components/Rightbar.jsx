@@ -3,7 +3,6 @@ import { StyledRightbar } from "./styles/Rightbar.styled"
 import { HabitContext } from "../context/habit/HabitContext"
 import { Link } from "react-router-dom"
 import { UserContext } from "../context/user/UserContext"
-import { notificationSettings } from "../notifications"
 import IconButton from '@mui/material/IconButton';
 import DoneIcon from '@mui/icons-material/Done';
 import BlockIcon from '@mui/icons-material/Block';
@@ -35,14 +34,19 @@ export default function Rightbar({axiosJWT}) {
     // add data for current day
     const buttonClick = async (habitId, e) => {
         try {
-            const res = await axiosJWT.put(`http://localhost:5000/server/habit/${habitId}/add-calendar-data`, {
+            await axiosJWT.put(`http://localhost:5000/server/habit/${habitId}/add-calendar-data`, {
                 date: dateString,
                 status: e.target.id
             }, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({ type: 'ADD_TO_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
-            notificationSettings(res.data, dispatch, axiosJWT, user, userDispatch, alert)
+
+            // check if notification settings need to be updated
+            const res = await axiosJWT.put(`http://localhost:5000/server/notification/update/`, {id:habitId}, {
+                headers: {authorization:'Bearer ' + user.token}
+            })
+            if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)
         } catch (err) {
             console.error(err)
         }

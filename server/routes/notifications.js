@@ -67,8 +67,11 @@ router.get('/:habitId', protect, async(req, res) => {
 // update notification settings for a habit
 router.put('/update', protect, async(req, res) => {
     try {
-        await notificationSettings(req.user._id, req.body.id)
-        res.status(200).json("Notification settings updated")
+        const alert = await notificationSettings(req.user._id, req.body.id)
+        if(alert === undefined || alert.message !== '') {
+           res.status(200).json(alert) 
+        }
+        else res.status(200).json("Notification successfully updated")
     } catch (err) {
         res.status(400).json(err)
     }

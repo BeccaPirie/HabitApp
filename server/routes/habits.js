@@ -125,9 +125,7 @@ router.put('/:id/update-calendar-data', protect, async (req, res) => {
         },
         {$set: {'calendarData.$.status': req.body.status}},
         {new: true})
-
-        const updatedHabit = await Habit.findById(req.params.id)
-        res.json(updatedHabit)
+        res.status(200).json("calendar data updated")
     } catch (err) {
         res.status(500).json(err)
     }
@@ -141,9 +139,7 @@ router.put('/:id/remove-calendar-data', protect, async(req, res) => {
             'calendarData.date': req.body.date
         },
         {$pull: {calendarData: {date: req.body.date}}})
-
-        const updatedHabit = await Habit.findById(req.params.id)
-        res.json(updatedHabit)
+        res.status(200).json("calendar data removed")
     } catch (err) {
         res.status(500).json(err)
     }
@@ -159,8 +155,7 @@ router.put('/:id/add-calendar-data', protect, async (req, res) => {
                 status: req.body.status 
             }
             }})
-        const updatedHabit = await Habit.findById(req.params.id)
-        res.json(updatedHabit)
+        res.status(200).json("calendar data added")
     } catch (err) {
         res.status(500).json(err)
     }

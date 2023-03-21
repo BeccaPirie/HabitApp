@@ -1,11 +1,11 @@
+// TODO delete
+
 import moment from "moment"
 
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 // ******************** UPDATE NOTIFICATION FREQUENCY ********************
 export const notificationSettings = (habit, dispatch, axiosJWT, user, userDispatch, alert) => {
-    // TODO dont send notification if already calendar data for current day (not sure how to do this)
-
     let newNotificationFrequency = 0
 
     // reformat date function

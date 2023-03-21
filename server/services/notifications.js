@@ -1,5 +1,4 @@
 import moment from "moment"
-import scheduleLib from "node-schedule"
 import Notification from "../models/Notification.js"
 import Habit from "../models/Habit.js"
 import User from "../models/User.js"
@@ -13,6 +12,7 @@ export const notificationSettings = async(userId, habitId) => {
     const user = await User.findById(userId)
     const habit = await Habit.findById(habitId)
     let newNotificationFrequency = 0
+    let message = ''
 
     // reformat calendarData dates
     const reformatData = habit.calendarData.map(({date, ...data}) => ({
@@ -48,12 +48,20 @@ export const notificationSettings = async(userId, habitId) => {
     const tenDays = moment().subtract(10, 'days').format('YYYY-M-D')
 
     // don't change notification settings if habit has been due for less than 5 days since created
-    // if(fiveDays < createdAt) {
-    //     console.log("< 5 days")
-    // }
+    // or if notifications have been faded out
+    if(fiveDays < createdAt || user.notificationFrequency === 3) {
+        console.log("No updates required")
+    }
+
+    // if notifications had been turned off, start daily notifications and update habit
+    else if(habit.notificationFrequency === 0) {
+        addNotification(days, habit)
+        const updatedHabit = {...habit, notificationFrequency: 1}
+        await Habit.findByIdAndUpdate(habit._id, {$set: updatedHabit})
+    }
 
     // if the past 5 days the habit is due are completed, reduce the amount of notifications received
-     if(isAllCompleted) {
+    else if(isAllCompleted) {
         console.log("completed 5 days in a row")
         // delete current notification
         deleteNotification(userId, habitId)
@@ -63,7 +71,7 @@ export const notificationSettings = async(userId, habitId) => {
         if(habit.notificationFrequency === 1) {
             // send every second day (every second element in array)
             notifDays = days.filter((d, i) => i % 2 === 1)  
-            newNotificationFrequency++    
+            newNotificationFrequency++
         }
         else if(habit.notificationFrequency === 2) {   
             // send every 4 days         
@@ -86,6 +94,8 @@ export const notificationSettings = async(userId, habitId) => {
     else if(isTenDaysMissed) {
         console.log("10 days missed, stopping notifications")
         deleteNotification(userId, habitId)
+        const updatedHabit = {...habit, notificationFrequency: 0}
+        await Habit.findByIdAndUpdate(habit._id, {$set: updatedHabit})
     }
 
     // else if 5 days missed, start daily notifications and suggest changing event cue
@@ -104,17 +114,22 @@ export const notificationSettings = async(userId, habitId) => {
             const updatedHabit = {...habit, notificationFrequency: newNotificationFrequency}
             await Habit.findByIdAndUpdate(habit._id, {$set: updatedHabit})
         }
-        const msg = `Try a different event cue to help integrate ${habit.name} into your routine!`
-        addMessage(user, habitId, msg)
-        // alert(msg, 6000, 'info')
+        message = `Try a different event cue to help integrate ${habit.name} into your routine!`
+        addMessage(user, habitId, message)
     }
 
     // else if notification frequency === 1 after ten days send alert to change event cue
     else if((createdAt > tenDays) && habit.notificationFrequency === 1) {
-        const msg = `Try a different event cue to help integrate ${habit.name} into your routine!`
-        addMessage(user, habitId, msg)
-        // alert(msg, 6000, 'info')
+        message = `Try a different event cue to help integrate ${habit.name} into your routine!`
+        addMessage(user, habitId, message)
     }
+
+    const messageAlert = {
+        message: message,
+        timeout: 6000,
+        type:"info"
+    }
+    return messageAlert
 }
 
 // ******************** CREATE DAYS ARRAY ********************

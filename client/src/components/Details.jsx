@@ -57,7 +57,6 @@ export default function Details({axiosJWT}) {
             }) 
 
             // create new notification
-            // const days = createDaysArray(habit.daysToComplete)
             await axiosJWT.post(`http://localhost:5000/server/notification/set-notification`, {
                 title: habit.name,
                 body: `Have you completed ${habit.name} today?`,
