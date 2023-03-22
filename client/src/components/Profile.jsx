@@ -51,7 +51,7 @@ export default function Profile({axiosJWT}) {
         }
 
         try {
-            await axiosJWT.put('http://localhost:5000/server/user/update', updatedUser,{
+            await axiosJWT.put('/user/update', updatedUser,{
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type:"UPDATE_USER", payload: updatedUser})
@@ -83,7 +83,7 @@ export default function Profile({axiosJWT}) {
         }
 
         try {
-            const res = await axiosJWT.put('http://localhost:5000/server/user/update-password', passwords, {
+            const res = await axiosJWT.put('/user/update-password', passwords, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type:"UPDATE_PASSWORD", payload: res.data})
@@ -105,7 +105,7 @@ export default function Profile({axiosJWT}) {
 
         // get user notifications
         try {
-            const res = await axiosJWT.get('http://localhost:5000/server/notification/', {
+            const res = await axiosJWT.get('/notification/', {
                 headers: {authorization:'Bearer ' + user.token}
             })
             console.log(res.data)
@@ -128,7 +128,7 @@ export default function Profile({axiosJWT}) {
                         habitId: n.habitId
                     }
                     console.log(n)
-                    await axiosJWT.post('http://localhost:5000/server/notification/set-notification', data, {
+                    await axiosJWT.post('/notification/set-notification', data, {
                     headers: {authorization:'Bearer ' + user.token}
                     })
                 })
@@ -145,7 +145,7 @@ export default function Profile({axiosJWT}) {
                 console.log(ids)
 
                 if(ids.length > 0) {
-                    await axiosJWT.delete('http://localhost:5000/server/notification', {ids: ids}, {
+                    await axiosJWT.delete('/notification', {ids: ids}, {
                         headers: {authorization: 'Bearer ' + user.token}
                     })
                     console.log("notification turned off")
@@ -157,7 +157,7 @@ export default function Profile({axiosJWT}) {
 
         // update user
         try {
-            await axiosJWT.put('http://localhost:5000/server/user/update', updatedUser, {
+            await axiosJWT.put('/user/update', updatedUser, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: "UPDATE_USER", payload: updatedUser})
@@ -169,7 +169,7 @@ export default function Profile({axiosJWT}) {
     const deleteAccount = async() => {
         console.log("delete account")
         try {
-            await axiosJWT.delete('http://localhost:5000/server/user', {
+            await axiosJWT.delete('/user', {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type:"DELETE_USER"})

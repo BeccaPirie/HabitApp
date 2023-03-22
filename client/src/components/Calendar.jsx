@@ -48,7 +48,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                 dispatch({ type: 'REMOVE_FROM_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
 
                 // check if notification settings need to be updated
-                const res = await axiosJWT.put(`http://localhost:5000/server/notification/update`, {id:habit._id}, {
+                const res = await axiosJWT.put(`/notification/update`, {id:habit._id}, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 console.log(res.data)
@@ -59,7 +59,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
         }
         else if(dataExists) {
             try {
-                await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/update-calendar-data`, {
+                await axiosJWT.put(`/habit/${habit._id}/update-calendar-data`, {
                     date: dateString,
                     status:  e.target.id
                 }, {
@@ -68,7 +68,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                 dispatch({ type: 'UPDATE_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
 
                 // check if notification settings need to be updated
-                const res = await axiosJWT.put(`http://localhost:5000/server/notification/update`, {id:habit._id}, {
+                const res = await axiosJWT.put(`/notification/update`, {id:habit._id}, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)
@@ -78,7 +78,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
         }
         else {
             try {
-                await axiosJWT.put(`http://localhost:5000/server/habit/${habit._id}/add-calendar-data`, {
+                await axiosJWT.put(`/habit/${habit._id}/add-calendar-data`, {
                     date: dateString,
                     status: e.target.id
                 }, {
@@ -87,7 +87,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                 dispatch({ type: 'ADD_TO_CALENDAR', payload: {id: habit._id, date: dateString, status: e.target.id}})
                 
                 // check if notification settings need to be updated
-                const res = await axiosJWT.put(`http://localhost:5000/server/notification/update/`, {id:habit._id}, {
+                const res = await axiosJWT.put(`/notification/update/`, {id:habit._id}, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)

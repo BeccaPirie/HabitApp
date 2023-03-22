@@ -22,7 +22,7 @@ export default function Rightbar({axiosJWT}) {
     useEffect(() => {
         const getDueHabits = async() => {
             try {
-                const res = await axiosJWT.get('http://localhost:5000/server/habit/due-habits', {
+                const res = await axiosJWT.get('/habit/due-habits', {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 setHabitsDue(res.data) 
@@ -36,7 +36,7 @@ export default function Rightbar({axiosJWT}) {
     // add data for current day
     const buttonClick = async (habitId, e) => {
         try {
-            await axiosJWT.put(`http://localhost:5000/server/habit/${habitId}/add-calendar-data`, {
+            await axiosJWT.put(`/habit/${habitId}/add-calendar-data`, {
                 date: dateString,
                 status: e.target.id
             }, {
@@ -45,7 +45,7 @@ export default function Rightbar({axiosJWT}) {
             dispatch({ type: 'ADD_TO_CALENDAR', payload: {id: habitId, date: dateString, status: e.target.id}})
 
             // check if notification settings need to be updated
-            const res = await axiosJWT.put(`http://localhost:5000/server/notification/update/`, {id:habitId}, {
+            const res = await axiosJWT.put(`/notification/update/`, {id:habitId}, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)

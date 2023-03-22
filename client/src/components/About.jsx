@@ -1,18 +1,18 @@
 import HabitList from "./HabitList"
-import { NoSelectionStyled } from "./styles/NoSelection.styled"
+import { AboutStyled } from "./styles/About.styled"
 import Paper from "@mui/material/Paper"
 
 export default function About({lg}){
     return(
         lg ?
-        <NoSelectionStyled>
+        <AboutStyled>
             <Paper className="paper">
                 <div className="content">
                     <p>
                     HabitBuild has been designed as a tool to help aid habit formation, as building and maintaining new habits 
                     can be challenging for many. Other applications designed to support habit formation, although popular, often 
-                    lack the tools to allow integration of new habits into daily routine. Therefore, HabitBuild's goal was to 
-                    provide a way to successfully aid the habit formation process.
+                    aren't backed by research, and can lead to dependency where once the user stops using the app, they stop carrying 
+                    out the habit. Therefore, HabitBuild's goal is to provide a way to successfully aid the habit formation process.
                     </p>
                     
                     <p>
@@ -45,7 +45,7 @@ export default function About({lg}){
                     </p>
                 </div>
             </Paper>
-        </NoSelectionStyled>
+        </AboutStyled>
             : <HabitList />   
     )
 }

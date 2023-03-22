@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Index from './pages/Index'
 import useMediaQuery from "@mui/material/useMediaQuery"
 import Details from './components/Details'
@@ -16,18 +16,17 @@ import Profile from './components/Profile'
 export default function App() {
   const lg = useMediaQuery('(min-width:660px)')
   const { user, dispatch } = useContext(UserContext)
-  const navigate = useNavigate()
 
   // refresh token when token has expired
     const refreshToken = async () => {
         try {
-            const res = await axios.post('http://localhost:5000/server/auth/refresh-token', {token: user.refreshToken, id: user._id})
+            const res = await axios.post('/auth/refresh-token', {token: user.refreshToken, id: user._id})
             dispatch({type:"UPDATE_TOKENS", payload: res.data})
             return res.data
         } catch (err) {
             console.error(err.response.data)
             dispatch({type:"LOGOUT"})
-            navigate('/')
+            window.location.href = "http://localhost:3000"
         }
     }
 
@@ -61,7 +60,7 @@ export default function App() {
           element={user ? <Navigate to='/' replace /> : <Signup />}>
         </Route>
         <Route path='/login'
-          element={user ? <Navigate to='/' replace /> :<Login />}>
+          element={user ? <Navigate to='/' replace /> : <Login />}>
         </Route>
       </Routes>
     </BrowserRouter>

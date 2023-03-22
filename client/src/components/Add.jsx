@@ -28,7 +28,7 @@ export default function Add({axiosJWT}) {
     useEffect(() => {
         const fetchIdeas = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/server/idea/')
+                const res = await axios.get('/idea')
                 setIdeas(res.data)
             } catch (err) {
                 console.error(err.response.data)
@@ -59,12 +59,12 @@ export default function Add({axiosJWT}) {
 
         try {
             // add habit
-            const res = await axiosJWT.post("http://localhost:5000/server/habit/add", newHabit, {
+            const res = await axiosJWT.post("/habit/add", newHabit, {
                 headers: {authorization:'Bearer ' + user.token}
             })
 
             // add notification
-            await axiosJWT.post(`http://localhost:5000/server/notification/set-notification`, {
+            await axiosJWT.post(`/notification/set-notification`, {
                 title: res.data.name,
                 body: `Have you completed ${habit.name} today?`,
                 days: res.data.daysToComplete,

@@ -23,7 +23,7 @@ export default function Index({lg, axiosJWT}) {
         try {
             getFirebaseToken(setToken)
             const setFirebaseToken = async() => {
-                await axios.put('http://localhost:5000/server/auth/firebase-token', {
+                await axios.put('/auth/firebase-token', {
                     userId: user._id,
                     firebaseToken: firebaseToken
                 })
@@ -41,7 +41,7 @@ export default function Index({lg, axiosJWT}) {
         const fetchUserHabits = async () => {
             dispatch({ type: "FETCH_START"})
             try{
-                const res = await axiosJWT.get(`http://localhost:5000/server/habit/get-habits`, {
+                const res = await axiosJWT.get(`/habit/get-habits`, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({type:"FETCH_HABITS", payload:res.data})

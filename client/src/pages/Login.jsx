@@ -23,7 +23,7 @@ export default function Login() {
         }
         dispatch({ type: "LOGIN_START" });
         try {
-            const res = await axios.post("http://localhost:5000/server/auth/login", userCredentials)
+            const res = await axios.post("/auth/login", userCredentials)
             dispatch({ type:"LOGIN_SUCCESS", payload: res.data });
             setError(false)
         }

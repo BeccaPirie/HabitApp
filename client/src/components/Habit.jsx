@@ -33,7 +33,7 @@ export default function Habit({axiosJWT}) {
     useEffect(() => {
         const fetchHabit = async () => {
             try {
-                const res =  await axiosJWT.get(`http://localhost:5000/server/habit/get-habit/${habitId}`, {
+                const res =  await axiosJWT.get(`/habit/get-habit/${habitId}`, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 setHabit(res.data)
@@ -63,7 +63,7 @@ export default function Habit({axiosJWT}) {
     const editTitleClick = async() => {
         try {
             const updatedHabit = {...habit, name: newTitle}
-            await axiosJWT.put(`http://localhost:5000/server/habit/update/${habit._id}`, updatedHabit, {
+            await axiosJWT.put(`/habit/update/${habit._id}`, updatedHabit, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             // dispatch
@@ -78,21 +78,21 @@ export default function Habit({axiosJWT}) {
         try {
             // update habit
             const updatedHabit = {...habit, habitCompleted: !isComplete}
-            await axiosJWT.put(`http://localhost:5000/server/habit/update/${habit._id}`, updatedHabit, {
+            await axiosJWT.put(`/habit/update/${habit._id}`, updatedHabit, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: 'COMPLETE_HABIT', payload: {id: habit._id, complete: !isComplete}})
 
             if(!isComplete) {
                 // delete notifications
-                await axiosJWT.delete(`http://localhost:5000/server/notification/${habit._id}`, {
+                await axiosJWT.delete(`/notification/${habit._id}`, {
                     headers: {authorization:'Bearer ' + user.token}
                 })            
             }
             else {
                 // start notifications
                 // const days = createDaysArray(habit.daysToComplete)
-                await axiosJWT.post(`http://localhost:5000/server/notification/set-notification`, {
+                await axiosJWT.post(`/notification/set-notification`, {
                     title: habit.name,
                     body: `Have you completed ${habit.name} today?`,
                     days: habit.daysToComplete,
@@ -114,7 +114,7 @@ export default function Habit({axiosJWT}) {
     const journalButtonClick = async (e) => {
         e.preventDefault()
         try {
-            await axiosJWT.put(`http://localhost:5000/server/habit/journal/${habit._id}`, {
+            await axiosJWT.put(`/habit/journal/${habit._id}`, {
                 journal: journal
             }, {
                 headers: {authorization:'Bearer ' + user.token}

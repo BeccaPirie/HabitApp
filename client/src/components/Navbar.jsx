@@ -1,5 +1,5 @@
 import { StyledNavbar } from "./styles/Navbar.styled"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import {IconButton, Badge, Chip, Avatar, Typography} from '@mui/material'
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -20,7 +20,6 @@ export default function Navbar({text, axiosJWT}) {
     const [messages, setMessages] = useState(user.messages.reverse())
     const [showBadge, setShowBadge] = useState(true)
     const [showMenu, setShowMenu] = useState(false)
-    const navigate = useNavigate()
 
     const deleteMessage = async(id) => {
         try {
@@ -41,7 +40,7 @@ export default function Navbar({text, axiosJWT}) {
                     id: message._id,
                     read: true
                 }
-                await axiosJWT.put('http://localhost:5000/server/user/update-message', update, {
+                await axiosJWT.put('/user/update-message', update, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({type:"UPDATE_MESSAGE", payload: update})
@@ -54,7 +53,6 @@ export default function Navbar({text, axiosJWT}) {
     const logout = () => {
         setShowMenu(false)
         dispatch({type:"LOGOUT"})
-        navigate('/')
     }
 
     useEffect(() => {
@@ -136,7 +134,9 @@ export default function Navbar({text, axiosJWT}) {
                                     <Link to='/profile' onClick={()=> setShowMenu(false)}>
                                         <MenuItem>Settings</MenuItem>
                                     </Link>
-                                    <MenuItem onClick={logout}>Logout</MenuItem>
+                                    <Link to='/' onClick={logout}>
+                                        <MenuItem>Logout</MenuItem>
+                                    </Link>
                                 </MenuList>
                             </Paper>
                         </ClickAwayListener>}

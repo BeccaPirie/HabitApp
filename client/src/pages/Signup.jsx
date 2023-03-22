@@ -50,7 +50,7 @@ export default function Signup() {
         }
 
         try {
-            await axios.post("http://localhost:5000/server/auth/signup", user)
+            await axios.post("/auth/signup", user)
             setAlertText('')
             navigate('/login')
         } catch(err) {
