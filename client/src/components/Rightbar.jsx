@@ -20,16 +20,18 @@ export default function Rightbar({axiosJWT}) {
 
     // get habits due
     useEffect(() => {
-        if(userHabits) {            
-            const dueHabits = userHabits.filter(habit => {
-                const notComplete = !habit.habitCompleted
-                const toCompleteToday = habit.daysToComplete.find(day => day.dayOfWeek === dayOfWeek && day.toComplete)
-                const data = habit.calendarData.find(data => data.date === dateString)
-                return notComplete && toCompleteToday && !data
-            })
-            setHabitsDue(dueHabits)
+        const getDueHabits = async() => {
+            try {
+                const res = await axiosJWT.get('http://localhost:5000/server/habit/due-habits', {
+                    headers: {authorization:'Bearer ' + user.token}
+                })
+                setHabitsDue(res.data) 
+            } catch (err) {
+                console.error(err.response.data)
+            }
         }
-    }, [dayOfWeek, dateString, userHabits])
+        getDueHabits()
+    }, [dayOfWeek, dateString, userHabits, axiosJWT, user.token])
 
     // add data for current day
     const buttonClick = async (habitId, e) => {

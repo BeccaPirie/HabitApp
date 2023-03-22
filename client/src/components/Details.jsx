@@ -11,7 +11,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -149,7 +148,7 @@ export default function Details({axiosJWT}) {
                         <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
                         <TextField
                             id="preventingActions"
-                            minRows={10}
+                            minRows={5}
                             multiline
                             fullWidth
                             value={habit.preventingActions || ''}
@@ -162,7 +161,7 @@ export default function Details({axiosJWT}) {
                         <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
                         <TextField
                             id="intention"
-                            minRows={10}
+                            minRows={5}
                             multiline
                             fullWidth
                             value={habit.intentions || ''}
@@ -173,7 +172,7 @@ export default function Details({axiosJWT}) {
 
                     <Grid item>
                         <FormControl fullWidth required>
-                            <label htmlFor="notif-time-select">Select a time to receive reminder notifications <b>after</b> the event cue</label>
+                            <label htmlFor="notif-time-select">Select a time of day to receive reminder notifications <b>after</b> the event cue</label>
                             <Select
                                 id="notif-time-select"
                                 value={habit.time || "18:00"}

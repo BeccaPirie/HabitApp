@@ -100,8 +100,8 @@ export default function Todos({habit, axiosJWT}) {
             <List>
                 {todoList && todoList.map(todo => {
                     return (
-                        <>
-                            <ListItem key={todo._id} secondaryAction={
+                        <div key={todo._id}>
+                            <ListItem secondaryAction={
                                 <>
                                     <Tooltip title="Edit">
                                         <IconButton edge="end" aria-label="edit" onClick={() => editClick(todo)}>
@@ -126,7 +126,7 @@ export default function Todos({habit, axiosJWT}) {
                                 <ListItemText primary={todo.todo}/>
                             </ListItem>
                             <Divider />
-                        </>
+                        </div>
                     )
                 })}
             </List>

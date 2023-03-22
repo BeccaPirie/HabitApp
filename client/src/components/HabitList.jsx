@@ -25,7 +25,7 @@ export default function HabitList() {
     return(
         <StyledHabitList>
             <Link to={'/'}>
-                <h2 className="list-header">Habit App</h2>
+                <h2 className="list-header">HabitBuild</h2>
             </Link>
 
             <List>

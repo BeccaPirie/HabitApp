@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import Index from './pages/Index'
 import useMediaQuery from "@mui/material/useMediaQuery"
 import Details from './components/Details'
 import Add from './components/Add'
 import Habit from './components/Habit'
-import NoSelection from './components/NoSelection'
+import About from './components/About'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import { useContext } from 'react'
@@ -16,6 +16,7 @@ import Profile from './components/Profile'
 export default function App() {
   const lg = useMediaQuery('(min-width:660px)')
   const { user, dispatch } = useContext(UserContext)
+  const navigate = useNavigate()
 
   // refresh token when token has expired
     const refreshToken = async () => {
@@ -25,6 +26,8 @@ export default function App() {
             return res.data
         } catch (err) {
             console.error(err.response.data)
+            dispatch({type:"LOGOUT"})
+            navigate('/')
         }
     }
 
@@ -48,7 +51,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path='/' element={user ? <Index lg={lg} axiosJWT={axiosJWT} /> : <Login />}>
-          <Route path='' element={<NoSelection lg={lg} />}></Route>
+          <Route path='' element={<About lg={lg} />}></Route>
           <Route path=':id' element={<Habit axiosJWT={axiosJWT} />}></Route>
           <Route path='add' element={<Add axiosJWT={axiosJWT}/>}></Route>
           <Route path=':id/Details' element={<Details axiosJWT={axiosJWT}/>}></Route>

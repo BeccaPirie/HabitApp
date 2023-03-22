@@ -34,12 +34,20 @@ margin: auto;
         top: 45px;
         right: 70px;
         z-index: 100;
+        min-height: 100px;
         max-height: 300px;
         overflow: auto;
 
         ul {
             display: block;
             padding: 0;
+        }
+
+        .no-msg {
+            width: fit-content;
+            height: 100px;
+            margin: auto;
+            line-height: 70px;
         }
     }
 

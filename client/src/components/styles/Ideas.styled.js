@@ -5,6 +5,10 @@ height: 180px;
 overflow-y: scroll;
 margin-top: 5px;
 
+ul {
+    margin-left: 15px;
+}
+
 li {
     cursor: pointer;  
 

@@ -5,7 +5,7 @@ width: 90%;
 margin: 15px auto;
 
 .container {
-    padding: 0 20px;
+    padding: 20px 20px 10px;
 }
 
 .nameContainer {

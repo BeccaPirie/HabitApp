@@ -1,5 +1,5 @@
 import { StyledNavbar } from "./styles/Navbar.styled"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import {IconButton, Badge, Chip, Avatar, Typography} from '@mui/material'
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -20,6 +20,7 @@ export default function Navbar({text, axiosJWT}) {
     const [messages, setMessages] = useState(user.messages.reverse())
     const [showBadge, setShowBadge] = useState(true)
     const [showMenu, setShowMenu] = useState(false)
+    const navigate = useNavigate()
 
     const deleteMessage = async(id) => {
         try {
@@ -53,6 +54,7 @@ export default function Navbar({text, axiosJWT}) {
     const logout = () => {
         setShowMenu(false)
         dispatch({type:"LOGOUT"})
+        navigate('/')
     }
 
     useEffect(() => {
@@ -92,7 +94,7 @@ export default function Navbar({text, axiosJWT}) {
                     <ClickAwayListener onClickAway={() => setShowMessages(false)}>
                         <Paper className="notif-list">
                             <List >
-                                {messages.length > 0 && messages.map((m, index) => {
+                                {messages.length > 0 ? messages.map((m, index) => {
                                     return(
                                         <ListItem key={index}
                                             secondaryAction= {
@@ -108,7 +110,7 @@ export default function Navbar({text, axiosJWT}) {
                                             </Link>
                                         </ListItem>
                                     )
-                                })}
+                                }) : <div className="no-msg">No new notifications!</div>}
                             </List>
                         </Paper>
                     </ClickAwayListener>}

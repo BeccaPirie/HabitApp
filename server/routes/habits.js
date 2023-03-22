@@ -30,6 +30,28 @@ router.get('/get-habits', protect, async(req, res) => {
     }
 })
 
+// get due habits (for rightbar)
+router.get('/due-habits', protect, async(req, res) => {
+    try {
+        const date = new Date()
+        const dayOfWeek = date.toLocaleString('default', {weekday: 'long'})
+        const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+
+        const user = await User.findById(req.user._id)
+        const habits = await Habit.find({
+            userId: user._id,
+            habitCompleted: false,
+            'daysToComplete.dayOfWeek': dayOfWeek,
+            'calendarData.date': {
+                $ne: dateString
+            }
+        })
+        res.status(200).json(habits)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
 // add habit
 router.post('/add', protect, async(req, res) => {
     // check if user has exceeded max number of habits
