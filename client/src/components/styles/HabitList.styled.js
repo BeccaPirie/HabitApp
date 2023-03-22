@@ -5,7 +5,6 @@ export const StyledHabitList = styled.div`
     height: calc(100vh - 80px);
     padding: 0;
     margin: 0;
-    // background-color: #f7f7f7;
     background-color: #fff;
     overflow: auto;
 
@@ -21,7 +20,6 @@ export const StyledHabitList = styled.div`
 
     li {
         padding: 30px;
-        // border-bottom: 1px solid #ccc;
     }
 
     li:hover {

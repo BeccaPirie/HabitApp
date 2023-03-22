@@ -28,18 +28,18 @@ export default function Signup() {
 
         // client validation
         const checkUsername = username.length < 3 || username.length > 20
-        const checkEmail = !regex.test(email)
+        // const checkEmail = !regex.test(email)
         const checkPassLength = password.length < 6
         const checkPassMatch = confirmPassword !== password
         
         // save state for displaying errors on text fields
         setUsernameError(checkUsername)
-        setEmailError(checkEmail)
+        // setEmailError(checkEmail)
         setPassLength(checkPassLength)
         setPassError(checkPassMatch)
 
         // return from function if errors exist
-        if(checkUsername || checkEmail || checkPassLength || checkPassMatch) return
+        if(checkUsername || checkPassLength || checkPassMatch) return
 
         // if no errors, send to server
         const user = {
@@ -88,8 +88,8 @@ export default function Signup() {
                         fullWidth
                         value={email || ''}
                         onChange={(e) => setEmail(e.target.value)}
-                        error={emailError}
-                        helperText={emailError ? "Please enter a valid email" : ""}
+                        // error={emailError}
+                        // helperText={emailError ? "Please enter a valid email" : ""}
                     />
                     <TextField
                         type="password"

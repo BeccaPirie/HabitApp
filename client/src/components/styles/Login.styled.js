@@ -36,14 +36,6 @@ h3 {
     display: block;
     width: 100%;
     margin: 20px auto;
-    // padding: 10px 5px;
-    // margin-bottom: 35px;
-    // border: none;
-    // border-radius: 10px;
-    // border: 1px solid gray;
-    // :focus {
-    //     outline: none;
-    // }
 }
 
 .submit-btn {

@@ -6,7 +6,6 @@ import { checkboxes } from "../checkboxes"
 import { UserContext } from "../context/user/UserContext"
 import { Ideas } from "./styles/Ideas.styled"
 import axios from "axios"
-import { createDaysArray } from "../notifications"
 import { Button, TextField, InputAdornment, Paper } from '@mui/material'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -15,6 +14,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Grid from '@mui/material/Grid';
 
 export default function Add({axiosJWT}) {
     const [habit, setHabit] = useState({})
@@ -99,108 +99,119 @@ export default function Add({axiosJWT}) {
         <>
             <Form onSubmit={submitFunction}>
                 <Paper className="paper">
-                    <div className="container">
-                        <TextField
-                            id="habitName"
-                            label="Habit name"
-                            variant="standard"
-                            value={habit.name || ''}
-                            onChange={(e) => setHabit({...habit, name: e.target.value})}
-                            required
-                            fullWidth
-                            InputProps={{
-                                endAdornment:<InputAdornment position="end">
-                                    <Button
-                                        className="ideasBtn"
-                                        onClick={()=> setShowIdeas(!showIdeas)}>
-                                        Ideas
-                                    </Button>
-                                </InputAdornment>
-                            }} />
+                    <Grid container direction={"column"} spacing={2} className="container">
+                        <Grid item>
+                            <TextField
+                                id="habitName"
+                                label="Habit name"
+                                variant="standard"
+                                value={habit.name || ''}
+                                onChange={(e) => setHabit({...habit, name: e.target.value})}
+                                required
+                                fullWidth
+                                InputProps={{
+                                    endAdornment:<InputAdornment position="end">
+                                        <Button
+                                            className="ideasBtn"
+                                            onClick={()=> setShowIdeas(!showIdeas)}>
+                                            Ideas
+                                        </Button>
+                                    </InputAdornment>
+                                }} />
+                        </Grid>
                     
-                    {showIdeas && <Ideas>
-                        <List>
-                            {ideas.length > 0 && ideas.map((idea, index) => {
-                                return <ListItem
-                                        key={index}
-                                        className="ideaItem"
-                                        onClick={() => handleIdeaClick(idea.name)}>
-                                            <ListItemText primary={idea.name}/>
-                                        </ListItem>
-                            })}
-                        </List>
-                    </Ideas>}
+                        {showIdeas && <Ideas>
+                            <List>
+                                {ideas.length > 0 && ideas.map((idea, index) => {
+                                    return <ListItem
+                                            key={index}
+                                            className="ideaItem"
+                                            onClick={() => handleIdeaClick(idea.name)}>
+                                                <ListItemText primary={idea.name}/>
+                                            </ListItem>
+                                })}
+                            </List>
+                        </Ideas>}
 
-                    <label htmlFor="eventCues">Event-based cue</label>
-                    <TextField
-                        id="eventCues"
-                        multiline
-                        fullWidth
-                        minRows={5}
-                        value={habit.eventCues || ''}
-                        onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
-                        required />
-                        
-                    <p>Select days of the week to complete the habit</p>
-                    <ul className="daysOfWeek">
-                        {daysToComplete.map(({dayOfWeek, toComplete}) => {
-                            return(
-                                <li key={dayOfWeek}>
-                                    <input 
-                                        type="checkbox"
-                                        className="formCheckbox"
-                                        id={dayOfWeek}
-                                        name={dayOfWeek}
-                                        value={dayOfWeek}
-                                        checked={toComplete}
-                                        onChange={() => onChangeFunction(dayOfWeek)}
-                                    />
-                                    <label htmlFor={dayOfWeek}>{dayOfWeek}</label>
-                                </li>
-                            )
-                        })}
-                    </ul>
+                        <Grid item>
+                            <label htmlFor="eventCues">When do you want to carry out the habit? (Eg. after breakfast)</label>
+                            <TextField
+                                id="eventCues"
+                                multiline
+                                fullWidth
+                                minRows={5}
+                                value={habit.eventCues || ''}
+                                onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
+                                required />
+                        </Grid>
+                            
+                        <Grid item>
+                            <p>Select the days of the week you want to complete this habit</p>
+                            <ul className="daysOfWeek">
+                                {daysToComplete.map(({dayOfWeek, toComplete}) => {
+                                    return(
+                                        <li key={dayOfWeek}>
+                                            <input 
+                                                type="checkbox"
+                                                className="formCheckbox"
+                                                id={dayOfWeek}
+                                                name={dayOfWeek}
+                                                value={dayOfWeek}
+                                                checked={toComplete}
+                                                onChange={() => onChangeFunction(dayOfWeek)}
+                                            />
+                                            <label htmlFor={dayOfWeek}>{dayOfWeek}</label>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </Grid>
 
-                    <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
-                    <TextField
-                        id="preventingActions"
-                        minRows={10}
-                        multiline
-                        fullWidth
-                        value={habit.preventingActions || ''}
-                        onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
-                        required />
+                        <Grid item>
+                            <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
+                            <TextField
+                                id="preventingActions"
+                                minRows={10}
+                                multiline
+                                fullWidth
+                                value={habit.preventingActions || ''}
+                                onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
+                                required />
+                            </Grid>
 
-                    <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
-                    <TextField
-                        id="intention"
-                        minRows={10}
-                        multiline
-                        fullWidth
-                        value={habit.intentions || ''}
-                        onChange={(e) => setHabit({...habit, intentions: e.target.value})}
-                        required />
+                        <Grid item>
+                            <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
+                            <TextField
+                                id="intention"
+                                minRows={10}
+                                multiline
+                                fullWidth
+                                value={habit.intentions || ''}
+                                onChange={(e) => setHabit({...habit, intentions: e.target.value})}
+                                required />
+                        </Grid>
 
-                    <FormControl fullWidth required>
-                        <InputLabel id="notif-time-label">Time</InputLabel>
-                        <Select
-                            lableId="notif-time-label"
-                            id="notif-time-select"
-                            label="Time"
-                            value={habit.time || "18:00"}
-                            onChange={(e) => setHabit({...habit, time: e.target.value})}
-                        >
-                            <MenuItem value={"10:00"}>Morning</MenuItem>
-                            <MenuItem value={"14:00"}>Afternoon</MenuItem>
-                            <MenuItem value={"18:00"}>Evening</MenuItem>
-                            <MenuItem value={"21:00"}>Night</MenuItem>
-                        </Select>
-                    </FormControl>
+                        <Grid item>
+                            <FormControl fullWidth required>
+                                <label htmlFor="notif-time-select">Select a time to receive reminder notifications <b>after</b> the event cue</label>
+                                <Select
+                                    id="notif-time-select"
+                                    margin="normal"
+                                    value={habit.time || "18:00"}
+                                    onChange={(e) => setHabit({...habit, time: e.target.value})}
+                                >
+                                    <MenuItem value={"10:00"}>Morning</MenuItem>
+                                    <MenuItem value={"14:00"}>Afternoon</MenuItem>
+                                    <MenuItem value={"18:00"}>Evening</MenuItem>
+                                    <MenuItem value={"21:00"}>Night</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
 
-                    <div>
-                        <Button type="submit" variant="contained" id="add-btn">Add habit</Button>
-                    </div>
-                    </div>
+                        <div>
+                            <Button type="submit" variant="contained" id="add-btn">Add habit</Button>
+                        </div>
+                    </Grid>
                 </Paper>
             </Form>
         </>

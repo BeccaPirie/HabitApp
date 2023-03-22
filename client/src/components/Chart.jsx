@@ -22,14 +22,14 @@ export default function Chart({data}) {
         legend: {},
         tooltip: {},
         dataset: {
-            dimensions: ['date', 'Completed', 'Skipped', 'Missed'],
+            dimensions: ['date', 'Missed', 'Skipped', 'Completed'],
             source: chartData
         },
         xAxis: {type: 'category', data: xAxis},
         yAxis: {type: 'value', min: 0, max: yAxisMax},
         series: [{
             type: 'bar',
-            itemStyle: {color: '#d1ed8a'}
+            itemStyle: {color: '#f08ca2'}
         },
         {
             type: 'bar',
@@ -37,7 +37,7 @@ export default function Chart({data}) {
         },
         {
             type: 'bar',
-            itemStyle: {color: '#f08ca2'}
+            itemStyle: {color: '#d1ed8a'}
         }]
     }
 
@@ -130,9 +130,9 @@ export default function Chart({data}) {
 
             const chartData = {
                 date: setLabel(label),
-                Completed: chartValues.Completed || 0,
+                Missed: chartValues.Missed || 0,
                 Skipped: chartValues.Skipped || 0,
-                Missed: chartValues.Missed || 0
+                Completed: chartValues.Completed || 0
             }
             setChartData(currentData => [...currentData, chartData])
         })

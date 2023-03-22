@@ -3,7 +3,6 @@ import styled from "styled-components"
 export const StyledCalendar = styled.div`
 .react-calendar {
   width: 300px;
-  // max-width: 100%;
   margin: auto;
   background: #9ed6f0;
   border: 1px solid #a0a096;

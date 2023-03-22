@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import {IconButton, Badge, Chip, Avatar, Typography} from '@mui/material'
 import SettingsIcon from '@mui/icons-material/Settings';
-// import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import { useState, useEffect, useContext } from 'react'
 import { UserContext } from "../context/user/UserContext"
@@ -78,9 +77,6 @@ export default function Navbar({text, axiosJWT}) {
             
             <div className="right">  
                 <ul>
-                    {/* <Link to="/about">
-                        <li>About</li>
-                    </Link> */}
                     <div>
                         <IconButton
                             aria-label={`notifications`}

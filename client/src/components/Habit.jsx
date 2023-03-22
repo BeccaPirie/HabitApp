@@ -6,7 +6,6 @@ import { HabitContext } from "../context/habit/HabitContext"
 import Chart from "./Chart"
 import { UserContext } from '../context/user/UserContext'
 import CalendarComponent from "./Calendar"
-import { createDaysArray } from "../notifications"
 import Todos from "./Todos"
 import Paper from '@mui/material/Paper';
 import Button from "@mui/material/Button"

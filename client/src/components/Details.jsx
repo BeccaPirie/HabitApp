@@ -3,7 +3,6 @@ import { useParams, useNavigate, useOutletContext } from "react-router-dom"
 import { Form } from "./styles/Form.styled"
 import { HabitContext } from "../context/habit/HabitContext"
 import { UserContext } from "../context/user/UserContext"
-import { addNotification, createDaysArray, deleteNotification } from "../notifications"
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { TextField, Paper } from "@mui/material"
@@ -16,6 +15,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Grid from '@mui/material/Grid';
 
 export default function Details({axiosJWT}) {
     const habitId = useParams().id
@@ -98,122 +98,133 @@ export default function Details({axiosJWT}) {
     return(
         <Form onSubmit={onSubmitClick}>
             <Paper className="paper">
-                {/* <label htmlFor="habitName">Habit Name</label> */}
-                <TextField
-                    id="edit-name"
-                    label="Habit name"
-                    value={habit.name || ''}
-                    onChange={(e) => setHabit({...habit, name: e.target.value})}
-                    required
-                    fullWidth
-                    error={habit.name === ""} />
+                <Grid container direction={"column"} spacing={2} className="container">
+                    <Grid item>
+                        <TextField
+                            id="edit-name"
+                            label="Habit name"
+                            value={habit.name || ''}
+                            onChange={(e) => setHabit({...habit, name: e.target.value})}
+                            required
+                            fullWidth
+                            error={habit.name === ""} />
+                    </Grid>
 
-                <label htmlFor="eventCues">Event-based cue</label>
-                <TextField
-                    id="eventCues"
-                    multiline
-                    fullWidth
-                    minRows={5}
-                    value={habit.eventCues || ''}
-                    onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
-                    required
-                    error={habit.eventCues === ''}/>
+                    <Grid item>
+                        <label htmlFor="eventCues">When do you want to carry out the habit? (Eg. after breakfast)</label>
+                        <TextField
+                            id="eventCues"
+                            multiline
+                            fullWidth
+                            minRows={5}
+                            value={habit.eventCues || ''}
+                            onChange={(e) => setHabit({...habit, eventCues: e.target.value})}
+                            required
+                            error={habit.eventCues === ''}/>
+                    </Grid>
 
-                <p>Select days of the week to complete the habit</p>
-                <ul className="daysOfWeek">
-                    {habit.daysToComplete && habit.daysToComplete.map(({dayOfWeek, toComplete}) => {
-                        return(
-                            <li key={dayOfWeek}>
-                                <input
-                                    type="checkbox"
-                                    className="formCheckbox"
-                                    id={dayOfWeek}
-                                    name={dayOfWeek}
-                                    value={dayOfWeek}
-                                    checked={toComplete}
-                                    onChange={() => updateDaysToComplete(dayOfWeek)}
-                                />
-                                <label htmlFor={`${dayOfWeek}`}>{dayOfWeek}</label>
-                            </li>
-                        )
-                    })}
-                </ul>
+                    <Grid item>
+                        <p>Select the days of the week you want to complete this habit</p>
+                        <ul className="daysOfWeek">
+                            {habit.daysToComplete && habit.daysToComplete.map(({dayOfWeek, toComplete}) => {
+                                return(
+                                    <li key={dayOfWeek}>
+                                        <input
+                                            type="checkbox"
+                                            className="formCheckbox"
+                                            id={dayOfWeek}
+                                            name={dayOfWeek}
+                                            value={dayOfWeek}
+                                            checked={toComplete}
+                                            onChange={() => updateDaysToComplete(dayOfWeek)}
+                                        />
+                                        <label htmlFor={`${dayOfWeek}`}>{dayOfWeek}</label>
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    </Grid>
 
-                <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
-                <TextField
-                    id="preventingActions"
-                    minRows={10}
-                    multiline
-                    fullWidth
-                    value={habit.preventingActions || ''}
-                    onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
-                    required
-                    error={habit.preventingActions === ''}/>
+                    <Grid item>
+                        <label htmlFor="preventingActions">What actions or thoughts may prevent you for carrying out this habit?</label>
+                        <TextField
+                            id="preventingActions"
+                            minRows={10}
+                            multiline
+                            fullWidth
+                            value={habit.preventingActions || ''}
+                            onChange={(e) => setHabit({...habit, preventingActions: e.target.value})}
+                            required
+                            error={habit.preventingActions === ''}/>
+                    </Grid>
 
-                <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
-                <TextField
-                    id="intention"
-                    minRows={10}
-                    multiline
-                    fullWidth
-                    value={habit.intentions || ''}
-                    onChange={(e) => setHabit({...habit, intentions: e.target.value})}
-                    required
-                    error={habit.intentions === ''}/>
+                    <Grid item>
+                        <label htmlFor="intention">What can you tell yourself or do to prevent unwanted actions?</label>
+                        <TextField
+                            id="intention"
+                            minRows={10}
+                            multiline
+                            fullWidth
+                            value={habit.intentions || ''}
+                            onChange={(e) => setHabit({...habit, intentions: e.target.value})}
+                            required
+                            error={habit.intentions === ''}/>
+                    </Grid>
 
-                <FormControl fullWidth required>
-                    <InputLabel id="notif-time-label">Time</InputLabel>
-                    <Select
-                        lableId="notif-time-label"
-                        id="notif-time-select"
-                        label="Time"
-                        value={habit.time || "18:00"}
-                        onChange={(e) => setHabit({...habit, time: e.target.value})}
-                    >
-                        <MenuItem value={"10:00"}>Morning</MenuItem>
-                        <MenuItem value={"14:00"}>Afternoon</MenuItem>
-                        <MenuItem value={"18:00"}>Evening</MenuItem>
-                        <MenuItem value={"21:00"}>Night</MenuItem>
-                    </Select>
-                </FormControl>
+                    <Grid item>
+                        <FormControl fullWidth required>
+                            <label htmlFor="notif-time-select">Select a time to receive reminder notifications <b>after</b> the event cue</label>
+                            <Select
+                                id="notif-time-select"
+                                value={habit.time || "18:00"}
+                                onChange={(e) => setHabit({...habit, time: e.target.value})}
+                            >
+                                <MenuItem value={"10:00"}>Morning</MenuItem>
+                                <MenuItem value={"14:00"}>Afternoon</MenuItem>
+                                <MenuItem value={"18:00"}>Evening</MenuItem>
+                                <MenuItem value={"21:00"}>Night</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
 
-                <div className="submit-div">
-                    <Button
-                        variant="contained"
-                        type="submit"
-                        id="save-btn">
-                            Save
-                    </Button>
-                </div>    
-                <div>         
-                    <Button
-                        variant="contained"
-                        startIcon={<DeleteIcon/>}
-                        type="button"
-                        id="delete-btn"
-                        onClick={() => setOpenAlert(true)}>
-                            Delete Habit
-                    </Button>
+                    <div className="submit-div">
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            id="save-btn">
+                                Save
+                        </Button>
+                    </div>    
+                    <div>         
+                        <Button
+                            variant="contained"
+                            startIcon={<DeleteIcon/>}
+                            type="button"
+                            id="delete-btn"
+                            onClick={() => setOpenAlert(true)}>
+                                Delete Habit
+                        </Button>
 
-                    <Dialog
-                        open={openAlert}
-                        onClose={() => setOpenAlert(false)}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description">
-                        <DialogTitle id="alert-dialog-title">
-                            {`Are you sure you want to delete ${habit.name}?`}
-                        </DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                This action can't be undone
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => setOpenAlert(false)}>No</Button>
-                            <Button onClick={deleteHabit} autoFocus>Yes</Button>
-                        </DialogActions>
-                    </Dialog>
-                </div> 
+                        <Dialog
+                            open={openAlert}
+                            onClose={() => setOpenAlert(false)}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description">
+                            <DialogTitle id="alert-dialog-title">
+                                {`Are you sure you want to delete ${habit.name}?`}
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    This action can't be undone
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => setOpenAlert(false)}>No</Button>
+                                <Button onClick={deleteHabit} autoFocus>Yes</Button>
+                            </DialogActions>
+                        </Dialog>
+                    </div>
+                </Grid>
             </Paper>
         </Form>
     )

@@ -3,12 +3,6 @@ import styled from "styled-components"
 export const EditProfileStyled = styled.div`
 width: 90%;
 margin: 15px auto;
-// padding: 10px;
-// padding-top: 40px;
-// overflow: auto;
-// background-color: #f7f7f7;
-// box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-// border-radius: 10px;
 
 .alert {
     position: fixed;
@@ -27,7 +21,6 @@ form {
     overflow: auto;
 
     button {
-        // width: 100px;
         background-color: #9ed6f0;
         margin: 10px 0 10px;
         float: right
@@ -40,17 +33,6 @@ form {
 
 input {
     display: block;
-    // width: 96%;
-    // margin: auto;
-    // padding: 10px 5px;
-    // border: none;
-    // border-radius: 10px;
-    // border: 1px solid gray;
-
-    // :focus {
-    //     outline: none;
-    //     border:3px solid #d4f08c;
-    // }
 }
 
 .delete-acc {
@@ -69,7 +51,6 @@ input {
 .notif-form {
     padding: 10px;    
 }
-
 
 .notif-switch {
     position: relative;

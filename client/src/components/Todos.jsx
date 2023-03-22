@@ -66,7 +66,6 @@ export default function Todos({habit, axiosJWT}) {
             setFormSetting('add')
             }
             setTodo('')
-            // setShowForm(false)
         } catch (err) {
             console.error(err.response.data)
         }

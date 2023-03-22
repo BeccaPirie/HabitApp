@@ -4,9 +4,12 @@ export const NoSelectionStyled = styled.div`
 width: 90%;
 margin: 15px auto;
 
+.content {
+    padding: 30px;
+}
+
 p {
-    width: fit-content;
-    margin: 50px auto;
+    margin: 20px;
 }
 
 `

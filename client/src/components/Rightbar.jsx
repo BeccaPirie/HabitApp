@@ -16,7 +16,7 @@ export default function Rightbar({axiosJWT}) {
     const date = new Date()
     const dayOfWeek = date.toLocaleString('default', {weekday: 'long'})
     const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-    const { user, dispatch:userDispatch } = useContext(UserContext)
+    const { user } = useContext(UserContext)
 
     // get habits due
     useEffect(() => {

@@ -9,18 +9,18 @@ li {
     cursor: pointer;  
 
     :nth-child(odd) {
-    background-color: lightgreen;
+    background-color: #e0fa9d;
 
         :hover {
-            background-color: green;
+            background-color: #d1ed8a;
         }
     }
     
     :nth-child(even) {
-        background-color: #d4f08c;
+        background-color: #e8fab6;
 
         :hover {
-            background-color: green;
+            background-color: #d1ed8a;
         }
     }
 }
