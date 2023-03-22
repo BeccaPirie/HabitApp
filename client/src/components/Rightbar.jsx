@@ -66,17 +66,17 @@ export default function Rightbar({axiosJWT}) {
                         <div className="btn-div">
                             <Tooltip title="Missed">
                                 <IconButton id="Missed" onClick={((e) => buttonClick(habit._id, e))}>
-                                    <ClearIcon/>
+                                    <ClearIcon id="Missed"/>
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Skipped">
                                <IconButton id="Skipped" onClick={((e) => buttonClick(habit._id, e))}>
-                                    <BlockIcon/>
+                                    <BlockIcon id="Skipped"/>
                                 </IconButton> 
                             </Tooltip>
                             <Tooltip title="Completed">
                                 <IconButton id="Completed" onClick={((e) => buttonClick(habit._id, e))}>
-                                    <DoneIcon/>
+                                    <DoneIcon id="Completed"/>
                                 </IconButton>
                             </Tooltip>
                         </div>
