@@ -6,8 +6,7 @@ import { LoginStyled } from '../components/styles/Login.styled'
 import LoginPageImage from '../images/healthy-habits.avif'
 import { ImageStyled } from '../components/styles/Image.styled'
 import { Link } from "react-router-dom"
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import { TextField, Button } from '@mui/material'
 
 export default function Login() {
     const { dispatch } = useContext(UserContext)

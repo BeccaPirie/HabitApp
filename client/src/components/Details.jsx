@@ -3,18 +3,10 @@ import { useParams, useNavigate, useOutletContext } from "react-router-dom"
 import { Form } from "./styles/Form.styled"
 import { HabitContext } from "../context/habit/HabitContext"
 import { UserContext } from "../context/user/UserContext"
-import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { TextField, Paper } from "@mui/material"
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Grid from '@mui/material/Grid';
+import { TextField, Paper, Button, Dialog, DialogActions,
+    DialogContent, DialogContentText, DialogTitle, MenuItem,
+    FormControl, Select, Grid } from "@mui/material"
 
 export default function Details({axiosJWT}) {
     const habitId = useParams().id

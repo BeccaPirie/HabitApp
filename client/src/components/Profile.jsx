@@ -1,15 +1,8 @@
 import { useContext, useState } from "react"
 import { UserContext } from "../context/user/UserContext"
 import { EditProfileStyled } from "./styles/EditProfile.styled";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Paper from '@mui/material/Paper';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TextField, Paper } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { useOutletContext } from "react-router-dom"
 
 const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;

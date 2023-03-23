@@ -3,8 +3,7 @@ import moment from "moment"
 import _ from "lodash"
 import { useState, useEffect } from "react"
 import { StyledChart } from "./styles/Chart.styled"
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import { Button, ButtonGroup } from '@mui/material'
 
 const weeks = [0, 1, 2, 3]
 const months = [0, 1, 2, 3, 4, 5]

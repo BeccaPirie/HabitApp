@@ -1,25 +1,15 @@
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import Checkbox from '@mui/material/Checkbox';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { TodoList } from './styles/Todo.styled';
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
+import AddIcon from '@mui/icons-material/Add'
+import { TodoList } from './styles/Todo.styled'
 import { useState, useContext, useEffect } from "react"
 import { UserContext } from '../context/user/UserContext'
-import { Tooltip } from '@mui/material';
-import { HabitContext } from '../context/habit/HabitContext';
-import ClickAwayListener from "@mui/base/ClickAwayListener";
-import InputAdornment from '@mui/material/InputAdornment';
-import Divider from '@mui/material/Divider';
+import { Tooltip, List, ListItem, ListItemAvatar, ListItemText, IconButton, Checkbox,
+        Fab, TextField, Button, InputAdornment, Divider } from '@mui/material'
+import { HabitContext } from '../context/habit/HabitContext'
+import ClickAwayListener from "@mui/base/ClickAwayListener"
 
 export default function Todos({habit, axiosJWT}) {
     const [showForm, setShowForm] = useState(false)

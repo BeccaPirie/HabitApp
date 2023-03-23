@@ -1,18 +1,12 @@
 import { StyledNavbar } from "./styles/Navbar.styled"
 import { Link } from "react-router-dom"
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import {IconButton, Badge, Chip, Avatar, Typography} from '@mui/material'
-import SettingsIcon from '@mui/icons-material/Settings';
-import Paper from '@mui/material/Paper';
+import {IconButton, Badge, Chip, Avatar, Typography, Paper, List, ListItem, MenuItem, MenuList, Stack} from '@mui/material'
 import { useState, useEffect, useContext } from 'react'
 import { UserContext } from "../context/user/UserContext"
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import CloseIcon from '@mui/icons-material/Close';
-import ClickAwayListener from "@mui/base/ClickAwayListener";
-import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
-import Stack from "@mui/material/Stack";
+import CloseIcon from '@mui/icons-material/Close'
+import SettingsIcon from '@mui/icons-material/Settings'
+import ClickAwayListener from "@mui/base/ClickAwayListener"
 
 export default function Navbar({text, axiosJWT}) {
     const [showMessages, setShowMessages] = useState(false)
@@ -108,7 +102,7 @@ export default function Navbar({text, axiosJWT}) {
                                             </Link>
                                         </ListItem>
                                     )
-                                }) : <div className="no-msg">No new notifications!</div>}
+                                }) : <div className="no-msg">No new notifications</div>}
                             </List>
                         </Paper>
                     </ClickAwayListener>}

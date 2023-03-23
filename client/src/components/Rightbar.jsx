@@ -3,12 +3,10 @@ import { StyledRightbar } from "./styles/Rightbar.styled"
 import { HabitContext } from "../context/habit/HabitContext"
 import { Link } from "react-router-dom"
 import { UserContext } from "../context/user/UserContext"
-import IconButton from '@mui/material/IconButton';
-import DoneIcon from '@mui/icons-material/Done';
-import BlockIcon from '@mui/icons-material/Block';
-import ClearIcon from '@mui/icons-material/Clear';
-import Tooltip from '@mui/material/Tooltip';
-import Paper from '@mui/material/Paper';
+import { IconButton, Tooltip, Paper } from '@mui/material'
+import DoneIcon from '@mui/icons-material/Done'
+import BlockIcon from '@mui/icons-material/Block'
+import ClearIcon from '@mui/icons-material/Clear'
 
 export default function Rightbar({axiosJWT}) {
     const [habitsDue, setHabitsDue] = useState([])

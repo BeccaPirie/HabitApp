@@ -7,16 +7,11 @@ import Chart from "./Chart"
 import { UserContext } from '../context/user/UserContext'
 import CalendarComponent from "./Calendar"
 import Todos from "./Todos"
-import Paper from '@mui/material/Paper';
-import Button from "@mui/material/Button"
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import Tooltip from '@mui/material/Tooltip';
-import ClickAwayListener from "@mui/base/ClickAwayListener";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Paper, Button, TextField, InputAdornment, IconButton, Tooltip} from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import ClickAwayListener from "@mui/base/ClickAwayListener"
 
 export default function Habit({axiosJWT}) {
     const [habit, setHabit] = useState({})

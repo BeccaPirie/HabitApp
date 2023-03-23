@@ -6,14 +6,8 @@ import { checkboxes } from "../checkboxes"
 import { UserContext } from "../context/user/UserContext"
 import { Ideas } from "./styles/Ideas.styled"
 import axios from "axios"
-import { Button, TextField, InputAdornment, Paper } from '@mui/material'
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Grid from '@mui/material/Grid';
+import { Button, TextField, InputAdornment, Paper, List, ListItem,
+    ListItemText, MenuItem, FormControl, Select, Grid } from '@mui/material'
 
 export default function Add({axiosJWT}) {
     const [habit, setHabit] = useState({})

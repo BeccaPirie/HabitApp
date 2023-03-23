@@ -5,9 +5,7 @@ import { PageContainer } from '../components/styles/PageContainer.styled'
 import { LoginStyled } from '../components/styles/Login.styled'
 import LoginPageImage from '../images/healthy-habits.avif'
 import { ImageStyled } from '../components/styles/Image.styled'
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Alert from '@mui/material/Alert';
+import { TextField, Button, Alert } from '@mui/material'
 
 const regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 

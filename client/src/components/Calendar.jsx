@@ -1,15 +1,12 @@
 import { StyledCalendar } from "./styles/Calendar.styled"
 import Calendar from "react-calendar"
-import { ButtonStyled } from "./styles/Button.styled"
 import { useState, useContext } from "react"
 import { UserContext } from '../context/user/UserContext'
 import { useOutletContext } from "react-router-dom"
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import {IconButton, Tooltip} from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import BlockIcon from '@mui/icons-material/Block';
 import ClearIcon from '@mui/icons-material/Clear';
-import Tooltip from '@mui/material/Tooltip';
 
 export default function CalendarComponent({axiosJWT, habit, dispatch}) {
     const [date, setDate] = useState(new Date())

@@ -2,12 +2,8 @@ import { Link } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import { StyledHabitList } from "./styles/HabitList.styled"
 import { HabitContext } from "../context/habit/HabitContext"
-import { Fab } from '@mui/material'
+import { Fab, List, ListItem, ListItemText, Divider } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
 
 export default function HabitList() {
     const { userHabits } = useContext(HabitContext)
