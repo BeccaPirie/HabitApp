@@ -67,7 +67,7 @@ export default function Signup() {
                     </Alert>}
                 
                 <form onSubmit={handleSubmit}>
-                    <h3>Habit App</h3>
+                    <h3>HabitBuild</h3>
                     <TextField
                         required
                         placeholder="Username"

@@ -38,7 +38,7 @@ export default function Login() {
 
             <LoginStyled>
                 <form onSubmit={handleSubmit}>
-                    <h3>Habit App</h3>
+                    <h3>HabitBuild</h3>
                     <TextField
                         type="email"
                         required
