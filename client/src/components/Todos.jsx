@@ -25,7 +25,7 @@ export default function Todos({habit, axiosJWT}) {
 
     const deleteTodo = async(id) => {
         try {
-            await axiosJWT.put(`/habit/${habit._id}/remove-todo`, {id:id}, {
+            await axiosJWT.put(`https://habitbuild-api.onrender.com/server/habit/${habit._id}/remove-todo`, {id:id}, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type:"DELETE_TODO", payload: {id:habit._id, todoId:id}})
@@ -42,14 +42,14 @@ export default function Todos({habit, axiosJWT}) {
                     todo: todo.todo,
                     isComplete: false
                 }
-                const res = await axiosJWT.put(`/habit/${habit._id}/add-todo`, newTodo, {
+                const res = await axiosJWT.put(`https://habitbuild-api.onrender.com/server/habit/${habit._id}/add-todo`, newTodo, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({type:"ADD_TODO", payload: res.data})
             }
 
             else if(formSetting === 'edit') {
-                await axiosJWT.put(`/habit/${habit._id}/update-todo`, todo, {
+                await axiosJWT.put(`https://habitbuild-api.onrender.com/server/habit/${habit._id}/update-todo`, todo, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type:"UPDATE_TODO", payload: {id: habit._id, todo:todo}})
@@ -66,7 +66,7 @@ export default function Todos({habit, axiosJWT}) {
             ...todo,
             isComplete: !todo.isComplete
         }
-        await axiosJWT.put(`/habit/${habit._id}/update-todo`, updatedTodo, {
+        await axiosJWT.put(`https://habitbuild-api.onrender.com/server/habit/${habit._id}/update-todo`, updatedTodo, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type:"UPDATE_TODO", payload: {id: habit._id, todo:updatedTodo}})

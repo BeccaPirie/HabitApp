@@ -17,7 +17,7 @@ export default function Navbar({text, axiosJWT}) {
 
     const deleteMessage = async(id) => {
         try {
-            await axiosJWT.put(`http://localhost:5000/server/user/remove-message/`,{id:id}, {
+            await axiosJWT.put(`https://habitbuild-api.onrender.com/server/user/remove-message/`,{id:id}, {
                 headers: {authorization:'Bearer ' + user.token}
             })
             dispatch({type: "DELETE_MESSAGE", payload: id})
@@ -34,7 +34,7 @@ export default function Navbar({text, axiosJWT}) {
                     id: message._id,
                     read: true
                 }
-                await axiosJWT.put('/user/update-message', update, {
+                await axiosJWT.put('https://habitbuild-api.onrender.com/server/user/update-message', update, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({type:"UPDATE_MESSAGE", payload: update})

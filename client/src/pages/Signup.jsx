@@ -48,7 +48,7 @@ export default function Signup() {
         }
 
         try {
-            await axios.post("/auth/signup", user)
+            await axios.post("https://habitbuild-api.onrender.com/server/auth/signup", user)
             setAlertText('')
             navigate('/login')
         } catch(err) {

@@ -23,7 +23,7 @@ export default function Index({lg, axiosJWT}) {
         try {
             getFirebaseToken(setToken)
             const setFirebaseToken = async() => {
-                await axios.put('/auth/firebase-token', {
+                await axios.put('https://habitbuild-api.onrender.com/server/auth/firebase-token', {
                     userId: user._id,
                     firebaseToken: firebaseToken
                 })
@@ -41,7 +41,7 @@ export default function Index({lg, axiosJWT}) {
         const fetchUserHabits = async () => {
             dispatch({ type: "FETCH_START"})
             try{
-                const res = await axiosJWT.get(`/habit/get-habits`, {
+                const res = await axiosJWT.get(`https://habitbuild-api.onrender.com/server/habit/get-habits`, {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 dispatch({type:"FETCH_HABITS", payload:res.data})

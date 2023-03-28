@@ -20,13 +20,13 @@ export default function App() {
   // refresh token when token has expired
     const refreshToken = async () => {
         try {
-            const res = await axios.post('/auth/refresh-token', {token: user.refreshToken, id: user._id})
+            const res = await axios.post('https://habitbuild-api.onrender.com/server/auth/refresh-token', {token: user.refreshToken, id: user._id})
             dispatch({type:"UPDATE_TOKENS", payload: res.data})
             return res.data
         } catch (err) {
             console.error(err.response.data)
             dispatch({type:"LOGOUT"})
-            window.location.href = "http://localhost:3000"
+            window.location.href = "https://habitbuild.onrender.com"
         }
     }
 
