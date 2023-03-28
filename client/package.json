@@ -53,5 +53,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://habitbuild-api.onrender.com"
+  "proxy": "https://habitbuild-api.onrender.com/server"
 }
