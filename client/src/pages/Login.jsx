@@ -22,7 +22,7 @@ export default function Login() {
         }
         dispatch({ type: "LOGIN_START" });
         try {
-            const res = await axios.post("/auth/login", userCredentials)
+            const res = await axios.post("https://habitbuild-api.onrender.com/server/auth/login", userCredentials)
             dispatch({ type:"LOGIN_SUCCESS", payload: res.data });
             setError(false)
         }
