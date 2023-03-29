@@ -44,7 +44,7 @@ export const StyledHabitList = styled.div`
         background-color: #d1ed8a;
         position: absolute;
         bottom: 40px;
-        left: 220px;
+        right: 30px;
 
         :hover {
             background-color: #c2db7f;

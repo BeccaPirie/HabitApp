@@ -55,6 +55,7 @@ export default function App() {
           <Route path='add' element={<Add axiosJWT={axiosJWT}/>}></Route>
           <Route path=':id/Details' element={<Details axiosJWT={axiosJWT}/>}></Route>
           <Route path='profile' element={<Profile axiosJWT={axiosJWT}/>}></Route>
+          <Route path='about' element={<About axiosJWT={axiosJWT}/>}></Route>
         </Route>
         <Route path='/signup'
           element={user ? <Navigate to='/' replace /> : <Signup />}>
