@@ -8,9 +8,19 @@ export const StyledHabitList = styled.div`
     background-color: #fff;
     overflow: auto;
 
-    .list-header {
-        margin: 20px;
-        padding-top: 20px;
+    .header-div {
+        display: flex;
+
+        .list-header {
+            margin: 20px;
+            margin-top: 35px;
+        }
+
+        .help-btn {
+            margin-top: 38px;
+            margin-left: 250px;
+            color: #c2db7f;
+        }
     }
 
     ul {
@@ -62,6 +72,12 @@ export const StyledHabitList = styled.div`
         background-color: rgb(179, 179, 179);
         }
 
+        .header-div {
+            .help-btn {
+                margin-left: 70px;
+            }
+        }
+        
         .addBtn {
             left: 200px;
         }

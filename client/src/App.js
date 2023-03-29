@@ -12,6 +12,7 @@ import { UserContext } from './context/user/UserContext'
 import axios from "axios"
 import jwt_decode from "jwt-decode"
 import Profile from './components/Profile'
+import HabitList from './components/HabitList'
 
 export default function App() {
   const lg = useMediaQuery('(min-width:660px)')
@@ -50,7 +51,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path='/' element={user ? <Index lg={lg} axiosJWT={axiosJWT} /> : <Login />}>
-          <Route path='' element={<About lg={lg} />}></Route>
+          <Route path='' element={lg ? <About/> : <HabitList/>}></Route>
           <Route path=':id' element={<Habit axiosJWT={axiosJWT} />}></Route>
           <Route path='add' element={<Add axiosJWT={axiosJWT}/>}></Route>
           <Route path=':id/Details' element={<Details axiosJWT={axiosJWT}/>}></Route>

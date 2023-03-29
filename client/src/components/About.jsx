@@ -1,10 +1,8 @@
-import HabitList from "./HabitList"
 import { AboutStyled } from "./styles/About.styled"
 import Paper from "@mui/material/Paper"
 
-export default function About({lg}){
-    return(
-        lg ?
+export default function About(){
+    return(        
         <AboutStyled>
             <Paper className="paper">
                 <div className="content">
@@ -47,7 +45,6 @@ export default function About({lg}){
                     </p>
                 </div>
             </Paper>
-        </AboutStyled>
-            : <HabitList />   
+        </AboutStyled> 
     )
 }

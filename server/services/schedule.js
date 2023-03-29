@@ -73,8 +73,18 @@ schedule.createSchedule = async(data) => {
 
         // schedule notification
         scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () => {            
-            // find users tokens
+            // find user and habit
             const user = await User.findById(data.userId)
+            const habit = await Habit.findById(data.habitId)
+
+            // add new message
+            const newMessage = {
+                message: `Have you completed ${habit.name} today?`,
+                userId: user._id,
+                habitId: habit._id,
+                read: false
+            }
+            await user.updateOne({$push:{messages:newMessage}})
 
             // update firebase token
             let tokens

@@ -13,9 +13,9 @@ margin: auto;
     align-items: center;
     padding-left: 20px;
 
-    h2 {
-        display: none;
-    }
+    // h2 {
+    //     display: none;
+    // }
 }
 
 .right {
@@ -91,19 +91,19 @@ margin: auto;
     width: calc(100vw - 318px);
 }
 
-@media (min-width: 400px) {
-    .left h2 {
-        display: block;
-    }
-}
+// @media (min-width: 400px) {
+//     .left h2 {
+//         display: block;
+//     }
+// }
 
-@media (min-width: 660px) {
+@media (min-width: 650px) {
     .left h2 {
         display: none;
     }
 }
 
-@media (min-width: 780px) {
+@media (min-width: 700px) {
     .left h2 {
         display: block;
     }

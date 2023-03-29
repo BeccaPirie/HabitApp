@@ -2,8 +2,9 @@ import { Link } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import { StyledHabitList } from "./styles/HabitList.styled"
 import { HabitContext } from "../context/habit/HabitContext"
-import { Fab, List, ListItem, ListItemText, Divider } from '@mui/material'
+import { Fab, List, ListItem, ListItemText, Divider, Tooltip } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 
 export default function HabitList() {
     const { userHabits } = useContext(HabitContext)
@@ -20,9 +21,16 @@ export default function HabitList() {
 
     return(
         <StyledHabitList>
-            <Link to={'/'}>
-                <h2 className="list-header">HabitBuild</h2>
-            </Link>
+            <div className="header-div">
+                <Link to={'/'}>
+                    <h2 className="list-header">HabitBuild</h2>
+                </Link>
+                <Link to={'/about'}>
+                    <Tooltip title="About">
+                        <HelpCenterIcon className="help-btn"/>
+                    </Tooltip>
+                </Link>
+            </div>
 
             <List>
                 <Divider/>
