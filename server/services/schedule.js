@@ -16,7 +16,7 @@ schedule.getJobs = function () {
 schedule.dailyCheck = async() => {
     try {
         const daysOfWeek = "0,1,2,3,4,5,6"
-        const scheduleTimeout = `00 09 * * ${daysOfWeek}`
+        const scheduleTimeout = `00 13 * * ${daysOfWeek}`
 
         scheduleLib.scheduleJob("id", scheduleTimeout, async () => {
             const habits = await Habit.find({})
