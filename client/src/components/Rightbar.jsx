@@ -25,7 +25,7 @@ export default function Rightbar({axiosJWT}) {
                 })
                 setHabitsDue(res.data) 
             } catch (err) {
-                console.error(err.response.data)
+                console.error("Couldn't fetch habits")
             }
         }
         getDueHabits()
@@ -48,7 +48,7 @@ export default function Rightbar({axiosJWT}) {
             })
             if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)
         } catch (err) {
-            console.error(err)
+            console.error("Couldn't update calendar")
         }
     }
 

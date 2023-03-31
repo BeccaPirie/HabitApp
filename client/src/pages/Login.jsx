@@ -6,13 +6,14 @@ import { LoginStyled } from '../components/styles/Login.styled'
 import LoginPageImage from '../images/healthy-habits.avif'
 import { ImageStyled } from '../components/styles/Image.styled'
 import { Link } from "react-router-dom"
-import { TextField, Button } from '@mui/material'
+import { TextField, Button, Alert } from '@mui/material'
 
 export default function Login() {
     const { dispatch } = useContext(UserContext)
     const [error, setError] = useState(false)
     const[email, setEmail] = useState('')
     const[password, setPassword] = useState('')
+    const [alertText, setAlertText] = useState('')
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -24,11 +25,12 @@ export default function Login() {
         try {
             const res = await axios.post("https://habitbuild-api.onrender.com/server/auth/login", userCredentials)
             dispatch({ type:"LOGIN_SUCCESS", payload: res.data });
+            setAlertText('')
             setError(false)
         }
         catch(err) {
             dispatch({ type:"LOGIN_FAILURE", payload: err });
-            console.error(err.response.data)
+            setAlertText("Couldn't login")
             setError(true)
         }
     }
@@ -37,6 +39,10 @@ export default function Login() {
             <ImageStyled src={LoginPageImage}/>
 
             <LoginStyled>
+            {alertText.length > 0 &&
+                <Alert className="alert" severity="error" onClose={() => {setAlertText('')}}>
+                    {alertText}
+                </Alert>}
                 <form onSubmit={handleSubmit}>
                     <h3>HabitBuild</h3>
                     <TextField

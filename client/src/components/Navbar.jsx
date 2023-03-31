@@ -22,7 +22,7 @@ export default function Navbar({text, axiosJWT}) {
             })
             dispatch({type: "DELETE_MESSAGE", payload: id})
         } catch (err) {
-            console.error(err.response.data)
+            console.error("Couldn't delete message")
         }  
     }
 

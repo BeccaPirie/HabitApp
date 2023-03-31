@@ -72,7 +72,7 @@ export default function Add({axiosJWT}) {
             navigate(`/${res.data._id}`)
             alert('Habit added', 3000, 'success')
         } catch (err) {
-            alert(err.response.data, 3000, 'error')
+            alert("Error adding habit", 3000, 'error')
         }
     }
 

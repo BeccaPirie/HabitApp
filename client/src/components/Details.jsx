@@ -26,7 +26,7 @@ export default function Details({axiosJWT}) {
                 })
                setHabit(res.data)
             } catch (err) {
-                console.error(err.response.data)
+                console.error("Couldn't fetch habit")
             } 
         }
         fetchHabit()
@@ -61,7 +61,7 @@ export default function Details({axiosJWT}) {
             navigate(`/${habit._id}`)
             alert("Habit updated", 3000, 'success')
         } catch (err) {
-            console.error(err.response.data)
+            console.error("Couldn't update habit")
         }
     }
 

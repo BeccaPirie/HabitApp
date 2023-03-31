@@ -51,7 +51,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                 console.log(res.data)
                 if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)
             } catch (err) {
-                console.error(err.response.data)
+                console.error("Couldn't update calendar")
             }
         }
         else if(dataExists) {
@@ -70,7 +70,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                 })
                 if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)
             } catch (err) {
-                console.error(err.response.data)
+                console.error("Couldn't update calendar")
             }
         }
         else {
@@ -89,7 +89,7 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                 })
                 if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)
             } catch (err) {
-                console.error(err.response.data)
+                console.error("Couldn't update calendar")
             }
         }
     }

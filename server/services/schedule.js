@@ -119,7 +119,7 @@ schedule.reSchedule = async function () {
             const scheduleTimeout = `${minutes} ${hours} * * ${dayOfWeek}`
             
             scheduleLib.scheduleJob(scheduleId, scheduleTimeout, async () => {
-                const user = await User.find(data.userId)
+                const user = await User.find(scheduledNotification.userId)
                 let token
                 if(user.token) {
                     token = user.token
@@ -127,8 +127,8 @@ schedule.reSchedule = async function () {
     
                 const payload = {
                     token,
-                    title: data.title,
-                    body: data.body,
+                    title: scheduledNotification.notification.title,
+                    body: scheduledNotification.notification.body,
                 }
                 return firebaseAdmin.sendMulticastNotification(payload);
           })

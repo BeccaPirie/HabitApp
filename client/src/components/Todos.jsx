@@ -31,7 +31,7 @@ export default function Todos({habit, axiosJWT}) {
             dispatch({type:"DELETE_TODO", payload: {id:habit._id, todoId:id}})
             console.log("todo deleted")
         } catch (err) {
-            console.error(err.response.data)
+            console.log("Couldn't delete todo")
         }
     }
 
@@ -57,7 +57,7 @@ export default function Todos({habit, axiosJWT}) {
             }
             setTodo('')
         } catch (err) {
-            console.error(err.response.data)
+            console.error("Couldn't save todo")
         }
     }
 

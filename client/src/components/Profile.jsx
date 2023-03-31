@@ -50,7 +50,7 @@ export default function Profile({axiosJWT}) {
             dispatch({type:"UPDATE_USER", payload: updatedUser})
             alert('Updated account', 3000, 'success')
         } catch (err) {
-            alert(err.response.data, 3000, 'error')
+            alert("Error updating account", 3000, 'error')
         }
     }
 
@@ -82,7 +82,7 @@ export default function Profile({axiosJWT}) {
             dispatch({type:"UPDATE_PASSWORD", payload: res.data})
             alert('Updated password', 3000, 'success')
         } catch (err) {
-            alert(err.response.data, 3000, 'error')
+            alert("Couldn't update password", 3000, 'error')
         } 
     }
 
@@ -104,7 +104,7 @@ export default function Profile({axiosJWT}) {
             console.log(res.data)
             setNotifications(res.data)
         } catch (err) {
-            console.error(err.response.data)
+            console.error("Couldn't fetch notifications")
         }
 
         // if notifications are currently switched off, set schedules for notifications
@@ -128,7 +128,7 @@ export default function Profile({axiosJWT}) {
                 // call notification settings?
                 console.log("notifications turned on")
             } catch(err) {
-                console.error(err.response.data)
+                console.error("Couldn't update notification settings")
             }
         }
         else {
@@ -144,7 +144,7 @@ export default function Profile({axiosJWT}) {
                     console.log("notification turned off")
                 }
             } catch(err) {
-                console.error(err.response.data)
+                console.error("Couldn't update notifications")
             }
         }
 
@@ -167,7 +167,7 @@ export default function Profile({axiosJWT}) {
             })
             dispatch({type:"DELETE_USER"})
         } catch (err) {
-            console.error(err.response.data)
+            console.error("Couldn't delete account")
         }
     }
 

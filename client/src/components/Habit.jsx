@@ -33,7 +33,7 @@ export default function Habit({axiosJWT}) {
                 })
                 setHabit(res.data)
             } catch (err) {
-                console.error(err.response.data)
+                console.error("Couldn't fetch habit")
             }
         }
         fetchHabit()

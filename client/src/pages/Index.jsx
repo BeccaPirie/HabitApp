@@ -31,7 +31,7 @@ export default function Index({lg, axiosJWT}) {
             }
             setFirebaseToken()
         } catch (err) {
-            console.error(err.response.data)
+            console.error("Couldn't fetch token")
         }
         
     }, [user._id, firebaseToken, dispatch])

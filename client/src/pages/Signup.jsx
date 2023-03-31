@@ -52,7 +52,7 @@ export default function Signup() {
             setAlertText('')
             navigate('/login')
         } catch(err) {
-            setAlertText(err.response.data)
+            setAlertText("Error signing up")
         }
     }
 
