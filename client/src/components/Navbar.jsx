@@ -114,7 +114,7 @@ export default function Navbar({text, axiosJWT}) {
                             aria-label="account-button"
                             onClick={() => setShowMenu(!showMenu)}>
                             <Chip
-                                avatar={<Avatar>R</Avatar>}
+                                avatar={<Avatar>{user.username.charAt(0)}</Avatar>}
                                 label={<SettingsIcon />}
                             />
                         </IconButton>
