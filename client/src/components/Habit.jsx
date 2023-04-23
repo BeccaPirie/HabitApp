@@ -62,6 +62,7 @@ export default function Habit({axiosJWT}) {
                 headers: {authorization:'Bearer ' + user.token}
             })
             // dispatch
+            dispatch({type: 'UPDATE_HABIT', payload: updatedHabit})
             setEditTitle(false)
         } catch(err) {
             console.error(err.response.data)
