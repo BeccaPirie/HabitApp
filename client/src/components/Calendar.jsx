@@ -49,7 +49,10 @@ export default function CalendarComponent({axiosJWT, habit, dispatch}) {
                     headers: {authorization:'Bearer ' + user.token}
                 })
                 console.log(res.data)
-                if(res.data.message !== undefined) alert(res.data.message, res.data.timeout, res.data.severity)
+                if(res.data.message !== undefined) {
+                    alert(res.data.message, res.data.timeout, res.data.severity)
+                    dispatch({type: 'ADD_MESSAGE', payload: [...user.messages, res.data.message]})
+                }
             } catch (err) {
                 console.error("Couldn't update calendar")
             }

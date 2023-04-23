@@ -13,6 +13,7 @@ import axios from "axios"
 import jwt_decode from "jwt-decode"
 import Profile from './components/Profile'
 import HabitList from './components/HabitList'
+import scheduleLib from "node-schedule"
 
 export default function App() {
   const lg = useMediaQuery('(min-width:660px)')
@@ -46,6 +47,20 @@ export default function App() {
     },(err) => {
         return Promise.reject(err)
     })
+
+    // display notifications in UI
+    const updateMessages = async () => {
+      const res = await axiosJWT.get('https://habitbuild-api.onrender.com/server/user/', {
+          headers: {authorization:'Bearer ' + user.token}
+      })
+      dispatch({type:"ADD_MESSAGE", payload: res.data})
+  }
+
+    // update messages after notifications are sent
+    scheduleLib.scheduleJob('10 10 * * *', async() => {updateMessages()})
+    scheduleLib.scheduleJob('10 14 * * *', async() => {updateMessages()})
+    scheduleLib.scheduleJob('10 18 * * *', async() => {updateMessages()})
+    scheduleLib.scheduleJob('10 21 * * *', async() => {updateMessages()})
 
   return (
     <BrowserRouter>

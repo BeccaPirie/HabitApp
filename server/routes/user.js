@@ -77,6 +77,16 @@ router.delete('/', protect, async(req, res) => {
     }
 })
 
+// get messages
+router.get('/', protect, async(req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+        res.status(200).json(user.messages)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
 // add message
 router.put('/message', protect, async(req, res) => {
     try {
